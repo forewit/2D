@@ -1,3 +1,5 @@
+LOG = document.getElementById("log");
+
 function init() {
     window.canvas = new Canvas();
 

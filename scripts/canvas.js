@@ -24,17 +24,21 @@ FS_01 = `
 `;
 
 class Canvas {
-    constructor () {
+    constructor() {
         this.canvasElm = document.createElement("canvas");
-
-        this.gl = this.canvasElm.getContext("webgl2");
-        this.gl.clearColor(0.4,0.6,1.0,0);
-
         document.body.appendChild(this.canvasElm);
 
-        this.worldSpaceMatrix = mat3.create();
+        this.gl = this.canvasElm.getContext("webgl2");
 
-        this.sprite = new Sprite(this.gl, "./img/fireball.png", VS_01, FS_01, {width:512, height:512});
+        if (this.gl && this.gl instanceof WebGL2RenderingContext) {
+            LOG.innerHTML = "webgl 2 enabled";
+        } else {
+            LOG.innerHTML = "webgl 2 disabled";
+        }
+
+        this.gl.clearColor(0.4, 0.6, 1.0, 0);
+        this.worldSpaceMatrix = mat3.create();
+        this.sprite = new Sprite(this.gl, "./img/fireball.png", VS_01, FS_01, { width: 512, height: 512 });
     }
 
     resize(w, h) {
@@ -43,9 +47,9 @@ class Canvas {
 
         mat3.identity(this.worldSpaceMatrix);
         mat3.translate(this.worldSpaceMatrix, this.worldSpaceMatrix, [-1, 1]);
-        mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [1/w, -1/h]);
+        mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [1 / w, -1 / h]);
 
-        this.gl.viewport(0,0,this.canvasElm.width, this.canvasElm.height);
+        this.gl.viewport(0, 0, this.canvasElm.width, this.canvasElm.height);
     }
 
     update() {

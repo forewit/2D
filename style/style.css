@@ -1,7 +1,75 @@
-* {
+html, body {
     margin: 0;
     padding: 0;
 }
+/* https://www.cssfontstack.com/Open-Sans */
+
+h1 {
+    font-family: "Open Sans";
+    font-size: 23px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 700;
+    line-height: 23px;
+}
+
+h3, #log {
+    font-family: "Open Sans";
+    font-size: 17px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 700;
+    line-height: 23px;
+}
+
+p {
+    font-family: "Open Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 23px;
+}
+
+blockquote {
+    font-family: "Open Sans";
+    font-size: 17px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 23px;
+}
+
+pre {
+    font-family: "Open Sans";
+    font-size: 11px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 23px;
+}
+
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 canvas {
     background: black;
+}
+#log {
+    position: fixed;
+    display: inline-block;
+    color: #dddddd;
+    min-width: 100px;
+    bottom: 20px;
+    left: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 
+        -6px -6px 9px 0 rgb(134, 174, 255),
+        6px 6px 6px 0 rgba(0, 0, 0, 0.2);
 }
