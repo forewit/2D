@@ -53,13 +53,18 @@ class Canvas {
     }
 
     add_sprite(url, options) {
-        if (this.sprites.hasOwnProperty(name)) {
-            alert(name + " already  exists in canvas.sprites");
-            return undefined;
-        }
-        var sprite = new Sprite(this.gl, url, VS_01, FS_01, options);
-        this.sprites.push(sprite);
+        var ID = GENERATE_ID();
+        var sprite = new Sprite(ID, this.gl, url, VS_01, FS_01, options);
+
+        this.sprites[ID] = sprite;
         return sprite;
+    }
+
+    //TODO
+    remove_sprite(sprite) {
+        delete  this.sprites[sprite.ID];
+        // release buffers?
+        // delete associated objects
     }
 
     render() {
@@ -67,8 +72,7 @@ class Canvas {
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         
-        var i;
-        for (i in this.sprites) {
+        for (const i in this.sprites) {
             this.sprites[i].render();
         }
 

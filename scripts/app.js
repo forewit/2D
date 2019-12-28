@@ -20,6 +20,9 @@ var FPS = 0;
 var ticks = 0;
 var lastFPS = 0;
 
+//  temp testing variables
+var temp_removed = false;
+
 function update_loop(delta) {
     requestAnimationFrame(update_loop);
     var perSec = delta / 1000;
@@ -28,6 +31,13 @@ function update_loop(delta) {
     this.fireball.frame.x = 10 * perSec % 6;
     this.fireball2.frame.x = 10 * perSec % 6;
     this.fireball.position.x = 10 * perSec;
+
+
+    if (perSec >= 5 && !temp_removed) {
+        window.canvas.remove_sprite(fireball2);
+        alert("Removed!");
+        temp_removed = true;
+    }
 
     window.canvas.render();
 

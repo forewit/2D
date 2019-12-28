@@ -1,5 +1,6 @@
 class Sprite {
-    constructor(gl, img_url, vs, fs, options = {}) {
+    constructor(ID, gl, img_url, vs, fs, options = {}) {
+        this.ID = ID;
         this.gl = gl;
         this.isLoaded = false;
         this.material = new Material(gl, vs, fs);

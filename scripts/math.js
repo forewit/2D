@@ -13,7 +13,6 @@ class Circle {
     }
 }
 
-
 let mat3 = {};
 
 mat3.create = function() {
