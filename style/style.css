@@ -22,7 +22,7 @@ h3 {
     line-height: 23px;
 }
 
-p, #log {
+p, #log, #fps {
     font-family: "Open Sans";
     font-size: 14px;
     font-style: normal;
@@ -60,6 +60,7 @@ pre {
 canvas {
     background: black;
 }
+
 #log {
     position: fixed;
     display: inline-block;
@@ -67,9 +68,42 @@ canvas {
     bottom: 20px;
     left: 20px;
     padding: 10px 20px;
+    background: rgb(40%,60%,100%);
     border-radius: 20px;
     box-shadow: 
         -6px -6px 9px 0 rgba(121, 166, 255, 1),
         6px 6px 9px 0 rgba(0,0,0, 0.3);
-
 }
+
+#fps {
+    position: fixed;
+    display: inline-block;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: rgb(40%,60%,100%);
+    border-radius: 20px;
+    box-shadow: 
+        -6px -6px 9px 0 rgba(121, 166, 255, 1),
+        6px 6px 9px 0 rgba(0,0,0, 0.3);
+}
+
+#loader {
+    display: none;
+    position: fixed;
+    margin-left: -30px;
+    margin-top: -30px;
+    left: 50%;
+    top: 50%;
+    /* border: 8px solid #f3f3f3; Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

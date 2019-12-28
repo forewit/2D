@@ -1,37 +1,37 @@
 class Sprite {
-    constructor(gl, img_url, vs, fs, options={}) {
+    constructor(gl, img_url, vs, fs, options = {}) {
         this.gl = gl;
         this.isLoaded = false;
         this.material = new Material(gl, vs, fs);
-
-        this.size = new Point(64,64);
-		if("width" in options){
-			this.size.x = options.width * 1;
-		}
-		if("height" in options){
-			this.size.y = options.height * 1;
-        }
-        
+        this.frame = new Point(0, 0);
+        this.position = new Point(0, 0);
+        this.size = new Point(64, 64);
         this.image = new Image();
         this.image.src = img_url;
         this.image.sprite = this;
-        this.image.onload = function() {
-            this.sprite.setup();
+
+        if ("width" in options) { this.size.x = options.width * 1; }
+        if ("height" in options) { this.size.y = options.height * 1; }
+        if ("position" in options) { this.position = options.position; }
+        if ("frame" in options) { this.frame = options.frame; }
+
+        this.image.onload = function () {
+            this.sprite.init();
         }
     }
 
-    static createRectArray(x=0, y=0, w=1, h=1){
-		return new Float32Array([
-			x, y,
-			x+w, y,
-			x, y+h,
-			x, y+h,
-			x+w, y,
-			x+w, y+h
-		]);
-	}
+    static createRectArray(x = 0, y = 0, w = 1, h = 1) {
+        return new Float32Array([
+            x, y,
+            x + w, y,
+            x, y + h,
+            x, y + h,
+            x + w, y,
+            x + w, y + h
+        ]);
+    }
 
-    setup() {
+    init() {
         let gl = this.gl;
 
         gl.useProgram(this.material.program);
@@ -46,48 +46,48 @@ class Sprite {
         gl.bindTexture(gl.TEXTURE_2D, null);
 
         this.uv_x = this.size.x / this.image.width;
-		this.uv_y = this.size.y / this.image.height;
+        this.uv_y = this.size.y / this.image.height;
 
         this.tex_buff = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.tex_buff);
-        gl.bufferData(gl.ARRAY_BUFFER, Sprite.createRectArray(0,0,this.uv_x,this.uv_y), gl.STATIC_DRAW);
-    
+        gl.bufferData(gl.ARRAY_BUFFER, Sprite.createRectArray(0, 0, this.uv_x, this.uv_y), gl.STATIC_DRAW);
+
         this.geo_buff = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.geo_buff);
-        gl.bufferData(gl.ARRAY_BUFFER, Sprite.createRectArray(0,0,this.size.x,this.size.y), gl.STATIC_DRAW);
-        
+        gl.bufferData(gl.ARRAY_BUFFER, Sprite.createRectArray(0, 0, this.size.x, this.size.y), gl.STATIC_DRAW);
+
         gl.useProgram(null);
         this.isLoaded = true;
     }
 
-    render(position, frames) {
+    render() {
         if (this.isLoaded) {
             let gl = this.gl;
 
-            let frame_x = Math.floor(frames.x) * this.uv_x;
-			let frame_y = Math.floor(frames.y) * this.uv_y;
-			
+            let frame_x = Math.floor(this.frame.x) * this.uv_x;
+            let frame_y = Math.floor(this.frame.y) * this.uv_y;
+
             let objectMatrix = mat3.create();
-            mat3.translate(objectMatrix, objectMatrix, [position.x, position.y]);
+            mat3.translate(objectMatrix, objectMatrix, [this.position.x, this.position.y]);
 
             gl.useProgram(this.material.program);
-            
+
             gl.activeTexture(gl.TEXTURE0);
-			gl.bindTexture(gl.TEXTURE_2D, this.gl_tex);
-			this.material.set("u_image", 0);
-			
-			gl.bindBuffer(gl.ARRAY_BUFFER, this.tex_buff);
-			this.material.set("a_texCoord");
-			
-			gl.bindBuffer(gl.ARRAY_BUFFER, this.geo_buff);
-			this.material.set("a_position");
-			
-			this.material.set("u_frame", frame_x, frame_y);
-			this.material.set("u_world", window.canvas.worldSpaceMatrix);
-			this.material.set("u_object", objectMatrix);
+            gl.bindTexture(gl.TEXTURE_2D, this.gl_tex);
+            this.material.set("u_image", 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.tex_buff);
+            this.material.set("a_texCoord");
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.geo_buff);
+            this.material.set("a_position");
+
+            this.material.set("u_frame", frame_x, frame_y);
+            this.material.set("u_world", window.canvas.worldSpaceMatrix);
+            this.material.set("u_object", objectMatrix);
 
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
-            
+
             gl.useProgram(null);
         }
     }

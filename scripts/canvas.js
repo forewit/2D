@@ -31,14 +31,14 @@ class Canvas {
         this.gl = this.canvasElm.getContext("webgl2");
 
         if (this.gl && this.gl instanceof WebGL2RenderingContext) {
-            LOG.innerHTML = "webgl 2 enabled";
+            LOG_DIV.innerHTML = "webgl 2 enabled";
         } else {
-            LOG.innerHTML = "webgl 2 disabled";
+            LOG_DIV.innerHTML = "webgl 2 disabled";
         }
 
-        this.gl.clearColor(0.4, 0.6, 1.0, 0);
+        this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.worldSpaceMatrix = mat3.create();
-        this.sprite = new Sprite(this.gl, "./img/fireball.png", VS_01, FS_01, { width: 512, height: 512 });
+        this.sprites = [];
     }
 
     resize(w, h) {
@@ -52,17 +52,25 @@ class Canvas {
         this.gl.viewport(0, 0, this.canvasElm.width, this.canvasElm.height);
     }
 
-    update() {
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+    add_sprite(url, options) {
+        if (this.sprites.hasOwnProperty(name)) {
+            alert(name + " already  exists in canvas.sprites");
+            return undefined;
+        }
+        var sprite = new Sprite(this.gl, url, VS_01, FS_01, options);
+        this.sprites.push(sprite);
+        return sprite;
+    }
 
+    render() {
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
-
-        this.sprite.render(
-            new Point(), // position
-            new Point((new Date() * 0.01) % 6, 0) // frame (x,y)
-        );
-
+        
+        var i;
+        for (i in this.sprites) {
+            this.sprites[i].render();
+        }
 
         this.gl.flush();
     }
