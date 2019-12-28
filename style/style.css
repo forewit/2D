@@ -13,7 +13,7 @@ h1 {
     line-height: 23px;
 }
 
-h3, #log {
+h3 {
     font-family: "Open Sans";
     font-size: 17px;
     font-style: normal;
@@ -22,7 +22,7 @@ h3, #log {
     line-height: 23px;
 }
 
-p {
+p, #log {
     font-family: "Open Sans";
     font-size: 14px;
     font-style: normal;
@@ -63,11 +63,13 @@ canvas {
 #log {
     position: fixed;
     display: inline-block;
-    background: darkred;
-    color: rgb(255, 220, 0);
     min-width: 100px;
     bottom: 20px;
     left: 20px;
     padding: 10px 20px;
     border-radius: 20px;
+    box-shadow: 
+        -6px -6px 9px 0 rgba(121, 166, 255, 1),
+        6px 6px 9px 0 rgba(0,0,0, 0.3);
+
 }
