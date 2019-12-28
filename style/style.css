@@ -63,13 +63,11 @@ canvas {
 #log {
     position: fixed;
     display: inline-block;
-    color: #dddddd;
+    background: darkred;
+    color: rgb(255, 220, 0);
     min-width: 100px;
     bottom: 20px;
     left: 20px;
-    padding: 20px;
+    padding: 10px 20px;
     border-radius: 20px;
-    box-shadow: 
-        -6px -6px 9px 0 rgb(134, 174, 255),
-        6px 6px 6px 0 rgba(0, 0, 0, 0.2);
 }
