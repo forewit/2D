@@ -62,9 +62,8 @@ class Canvas {
 
     //TODO
     remove_sprite(sprite) {
-        delete  this.sprites[sprite.ID];
-        // release buffers?
-        // delete associated objects
+        this.sprites[sprite.ID].destroy();
+        delete this.sprites[sprite.ID];
     }
 
     render() {

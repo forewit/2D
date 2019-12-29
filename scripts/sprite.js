@@ -61,6 +61,16 @@ class Sprite {
         this.isLoaded = true;
     }
 
+    destroy() {
+        let gl = this.gl;
+        this.isLoaded = false
+
+        gl.deleteBuffer(this.tex_buff)
+        gl.deleteBuffer(this.geo_buff)
+        gl.deleteTexture(this.gl_tex)
+        gl.deleteProgram(this.material.program)
+    }
+
     render() {
         if (this.isLoaded) {
             let gl = this.gl;
