@@ -38,14 +38,13 @@ class Canvas {
 
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.worldSpaceMatrix = mat3.create();
-        this.sprites = [];
         this.layers = [
             {
                 parallax_multiplier: new Point(1, 1), // parallax position multiplier
-                fade: false, // fade enabled
+                fade_enabled: false,
                 fade_start: 0, // zoom level that fade starts
                 fade_end: 0, // zoom level that fade ends
-                sprite_ids: [] // contains the IDs of all sprites on the layer
+                sprites: [] // contains all sprites on the layer
             }
         ];
     }
@@ -61,19 +60,19 @@ class Canvas {
         this.gl.viewport(0, 0, this.canvasElm.width, this.canvasElm.height);
     }
 
-    add_sprite(url, options) {
+    add_sprite(url, layer, options) {
         var ID = GENERATE_ID();
         var sprite = new Sprite(ID, this.gl, url, VS_01, FS_01, options);
+        sprite.layer = layer;
 
-        // check options for layer and add to layer sprite_ids
+        this.layers[layer].sprites[ID] = sprite;
 
-        this.sprites[ID] = sprite;
         return sprite;
     }
 
     remove_sprite(sprite) {
-        this.sprites[sprite.ID].destroy();
-        delete this.sprites[sprite.ID];
+        sprite.destroy();
+        delete this.layers[sprite.layer].sprites[sprite.ID];
     }
 
     render() {
@@ -81,10 +80,11 @@ class Canvas {
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         
-        // change to looping through layers and rendering all sprite_ids
-
-        for (const i in this.sprites) {
-            this.sprites[i].render();
+        for (const i in this.layers) {
+            var layer = this.layers[i];
+            for (const j in layer.sprites) {
+                layer.sprites[j].render();
+            }
         }
 
         this.gl.flush();

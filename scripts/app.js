@@ -10,8 +10,8 @@ function init() {
         window.canvas.resize(window.innerWidth, window.innerHeight);
     });
 
-    this.fireball = window.canvas.add_sprite("./img/fireball.png", { width: 512, height: 512 });
-    this.fireball2 = window.canvas.add_sprite("./img/fireball.png", { width: 512, height: 512,  position: {x: 200,  y: 300}});
+    this.fireball = window.canvas.add_sprite("./img/fireball.png", 0, { width: 512, height: 512 });
+    this.fireball2 = window.canvas.add_sprite("./img/fireball.png", 0, { width: 512, height: 512,  position: {x: 200,  y: 300}});
 
     requestAnimationFrame(update_loop);
 }
