@@ -12,8 +12,9 @@ function init() {
         canvas.resize(window.innerWidth, window.innerHeight);
     });
 
-    this.fireball = canvas.add_sprite("./img/fireball.png", { width: 512, height: 512 });
-    this.fireball2 = canvas.add_sprite("./img/fireball.png", { width: 512, height: 512,  position: {x: 200,  y: 300}});
+    layer1 = canvas.add_layer();
+    this.fireball = canvas.add_sprite("./img/fireball.png", layer1, { width: 512, height: 512 });
+    this.fireball2 = canvas.add_sprite("./img/fireball.png", layer1, { width: 512, height: 512,  position: {x: 200,  y: 300}});
 
     requestAnimationFrame(update_loop);
 }
@@ -35,10 +36,11 @@ function update_loop(delta) {
     fireball.position.x = 10 * perSec;
 
     if (perSec >= 5 && !temp_removed) {
-        canvas.remove_sprite(fireball2);
-
+        canvas.remove_layer(layer1);
         temp_removed = true;
     }
+    fireball.update();
+    fireball2.update();
 
     canvas.render();
 

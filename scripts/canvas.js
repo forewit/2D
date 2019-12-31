@@ -39,15 +39,7 @@ class Canvas {
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.worldSpaceMatrix = mat3.create();
         this.position = new Point();
-        this.layers = [
-            {
-                parallax_multiplier: new Point(1, 1), // parallax position multiplier
-                fade_enabled: false,
-                fade_start: 0, // zoom level that fade starts
-                fade_end: 0, // zoom level that fade ends
-                sprites: [] // contains all sprites on the layer
-            }
-        ];
+        this.layers = [];
     }
 
     resize(w, h) {
@@ -61,15 +53,11 @@ class Canvas {
         this.gl.viewport(0, 0, this.canvasElm.width, this.canvasElm.height);
     }
 
-    add_sprite(url, options) {
+    add_sprite(url, layer, options = {}) {
         var ID = GENERATE_ID();
-
-        var layer = ("layer" in options) ? options.layer : this.layers[0];
-
         var sprite = new Sprite(ID, this, layer, this.gl, url, VS_01, FS_01, options);
-
+        
         layer.sprites[ID] = sprite;
-
         return sprite;
     }
 
@@ -78,11 +66,32 @@ class Canvas {
         delete sprite.layer.sprites[sprite.ID];
     }
 
-    // add layer
+    add_layer(options = {}) {
+        var ID = GENERATE_ID();
+        var parallax_multiplier = ("parallax_multiplier" in options) ? options.parallax_multiplier : new Point(1, 1);
+        var fade_enabled = ("fade_enabled" in options) ? options.fade_enabled : false;
+        var fade_start = ("fade_start" in options) ? options.fade_start : 0;
+        var fade_end = ("fade_end" in options) ? options.fade_end : 0;
 
-    // remove layer
+        var layer = {
+            ID: ID,
+            parallax_multiplier: parallax_multiplier, // parallax position multiplier
+            fade_enabled: fade_enabled,
+            fade_start: fade_start, // zoom level that fade starts
+            fade_end: fade_end, // zoom level that fade ends
+            sprites: [] // always initializes empty
+        }
 
-    // add update loop?
+        this.layers[ID] = layer;
+        return layer;
+    }
+
+    remove_layer(layer) {
+        for (const i in layer.sprites) {
+            this.remove_sprite(layer.sprites[i]);
+        }
+        delete this.layers[layer.ID];
+    }
 
     render() {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
