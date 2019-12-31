@@ -28,12 +28,13 @@ function update_loop(delta) {
     var perSec = delta / 1000;
 
     // update
-    this.fireball.frame.x = 10 * perSec % 6;
-    this.fireball2.frame.x = 10 * perSec % 6;
-    this.fireball.position.x = 10 * perSec;
+    fireball.frame.x = 10 * perSec % 6;
+    fireball2.frame.x = 10 * perSec % 6;
+    fireball.position.x = 10 * perSec;
 
     if (perSec >= 5 && !temp_removed) {
         window.canvas.remove_sprite(fireball2);
+
         temp_removed = true;
     }
 
