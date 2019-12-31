@@ -13,8 +13,9 @@ function init() {
     });
 
     layer1 = canvas.add_layer();
+    layer2 = canvas.add_layer();
     this.fireball = canvas.add_sprite("./img/fireball.png", layer1, { width: 512, height: 512 });
-    this.fireball2 = canvas.add_sprite("./img/fireball.png", layer1, { width: 512, height: 512,  position: {x: 200,  y: 300}});
+    this.fireball2 = canvas.add_sprite("./img/fireball.png", layer2, { width: 512, height: 512,  position: {x: 200,  y: 300}});
 
     requestAnimationFrame(update_loop);
 }

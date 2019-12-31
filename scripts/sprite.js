@@ -1,25 +1,26 @@
 class Sprite {
     constructor(ID, canvas, layer, gl, img_url, vs, fs, options = {}) {
-        this.ID = ID;
-        this.gl = gl;
-        this.isLoaded = false;
-        this.material = new Material(gl, vs, fs);
-        this.frame = new Point();
-        this.position = new Point();
-        this.size = new Point(64, 64);
-        this.image = new Image();
-        this.image.src = img_url;
-        this.image.sprite = this;
-        this.layer = layer;
-        this.canvas = canvas;
+        var me = this;
 
-        if ("width" in options) { this.size.x = options.width * 1; }
-        if ("height" in options) { this.size.y = options.height * 1; }
-        if ("position" in options) { this.position = options.position; }
-        if ("frame" in options) { this.frame = options.frame; }
+        me.ID = ID;
+        me.gl = gl;
+        me.isLoaded = false;
+        me.material = new Material(gl, vs, fs);
+        me.frame = new Point();
+        me.position = new Point();
+        me.size = new Point(64, 64);
+        me.image = new Image();
+        me.image.src = img_url;
+        me.layer = layer;
+        me.canvas = canvas;
 
-        this.image.onload = function () {
-            this.sprite.init();
+        if ("width" in options) { me.size.x = options.width * 1; }
+        if ("height" in options) { me.size.y = options.height * 1; }
+        if ("position" in options) { me.position = options.position; }
+        if ("frame" in options) { me.frame = options.frame; }
+
+        me.image.onload = function () {
+            me.init();
         }
     }
 
@@ -52,7 +53,6 @@ class Sprite {
 
         this.uv_x = this.size.x / this.image.width;
         this.uv_y = this.size.y / this.image.height;
-        this.adjusted_frame = new Point();
 
         this.tex_buff = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.tex_buff);

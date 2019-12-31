@@ -54,7 +54,7 @@ class Canvas {
     }
 
     add_sprite(url, layer, options = {}) {
-        var ID = GENERATE_ID();
+        var ID = GENERATE_ID(); // util.js
         var sprite = new Sprite(ID, this, layer, this.gl, url, VS_01, FS_01, options);
         
         layer.sprites[ID] = sprite;
@@ -67,7 +67,7 @@ class Canvas {
     }
 
     add_layer(options = {}) {
-        var ID = GENERATE_ID();
+        var ID = GENERATE_ID(); // util.js
         var parallax_multiplier = ("parallax_multiplier" in options) ? options.parallax_multiplier : new Point(1, 1);
         var fade_enabled = ("fade_enabled" in options) ? options.fade_enabled : false;
         var fade_start = ("fade_start" in options) ? options.fade_start : 0;
