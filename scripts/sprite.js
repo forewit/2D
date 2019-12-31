@@ -94,7 +94,6 @@ class Sprite {
            
             // scale
             mat3.scale(this.objectMatrix, this.objectMatrix, [this.scale.x, this.scale.y]);
-
         }
     }
 

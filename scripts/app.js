@@ -40,6 +40,7 @@ function update_loop(delta) {
     if (perSec >= 5 && !temp_removed) {
         canvas.remove_layer(layer1);
         temp_removed = true;
+        LOG_DIV.innerHTML = "Removed layer1";
     }
     fireball.update();
     fireball2.update();
