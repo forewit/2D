@@ -38,6 +38,7 @@ class Canvas {
 
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.worldSpaceMatrix = mat3.create();
+        this.position = new Point();
         this.layers = [
             {
                 parallax_multiplier: new Point(1, 1), // parallax position multiplier
@@ -60,26 +61,35 @@ class Canvas {
         this.gl.viewport(0, 0, this.canvasElm.width, this.canvasElm.height);
     }
 
-    add_sprite(url, layer, options) {
+    add_sprite(url, options) {
         var ID = GENERATE_ID();
-        var sprite = new Sprite(ID, this.gl, url, VS_01, FS_01, options);
-        sprite.layer = layer;
 
-        this.layers[layer].sprites[ID] = sprite;
+        var layer = ("layer" in options) ? options.layer : this.layers[0];
+
+        var sprite = new Sprite(ID, this, layer, this.gl, url, VS_01, FS_01, options);
+
+        layer.sprites[ID] = sprite;
 
         return sprite;
     }
 
     remove_sprite(sprite) {
         sprite.destroy();
-        delete this.layers[sprite.layer].sprites[sprite.ID];
+        delete sprite.layer.sprites[sprite.ID];
     }
+
+    // add layer
+
+    // remove layer
+
+    // add update loop?
 
     render() {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         
+        // render each layer's sprites
         for (const i in this.layers) {
             var layer = this.layers[i];
             for (const j in layer.sprites) {

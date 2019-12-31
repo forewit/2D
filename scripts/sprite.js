@@ -1,5 +1,5 @@
 class Sprite {
-    constructor(ID, gl, img_url, vs, fs, options = {}) {
+    constructor(ID, canvas, layer, gl, img_url, vs, fs, options = {}) {
         this.ID = ID;
         this.gl = gl;
         this.isLoaded = false;
@@ -10,6 +10,8 @@ class Sprite {
         this.image = new Image();
         this.image.src = img_url;
         this.image.sprite = this;
+        this.layer = layer;
+        this.canvas = canvas;
 
         if ("width" in options) { this.size.x = options.width * 1; }
         if ("height" in options) { this.size.y = options.height * 1; }
@@ -71,6 +73,8 @@ class Sprite {
         gl.deleteProgram(this.material.program)
     }
 
+    // add update loop to shoulder the load
+
     render() {
         if (this.isLoaded) {
             let gl = this.gl;
@@ -79,7 +83,9 @@ class Sprite {
             let frame_y = Math.floor(this.frame.y) * this.uv_y;
 
             let objectMatrix = mat3.create();
-            mat3.translate(objectMatrix, objectMatrix, [this.position.x, this.position.y]);
+            mat3.translate(objectMatrix, objectMatrix,
+                [this.position.x + (this.canvas.position.x * this.layer.parallax_multiplier.x), 
+                this.position.y + (this.canvas.position.y * this.layer.parallax_multiplier.y)]);
 
             gl.useProgram(this.material.program);
 
@@ -94,7 +100,7 @@ class Sprite {
             this.material.set("a_position");
 
             this.material.set("u_frame", frame_x, frame_y);
-            this.material.set("u_world", window.canvas.worldSpaceMatrix);
+            this.material.set("u_world", this.canvas.worldSpaceMatrix);
             this.material.set("u_object", objectMatrix);
 
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);

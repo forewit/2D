@@ -2,16 +2,18 @@ LOG_DIV = document.getElementById("log");
 FPS_DIV = document.getElementById("fps");
 LOADER_DIV = document.getElementById("loader");
 
-function init() {
-    window.canvas = new Canvas();
+let canvas;
 
-    window.canvas.resize(window.innerWidth, window.innerHeight);
+function init() {
+    canvas = new Canvas();
+
+    canvas.resize(window.innerWidth, window.innerHeight);
     window.addEventListener("resize", function () {
-        window.canvas.resize(window.innerWidth, window.innerHeight);
+        canvas.resize(window.innerWidth, window.innerHeight);
     });
 
-    this.fireball = window.canvas.add_sprite("./img/fireball.png", 0, { width: 512, height: 512 });
-    this.fireball2 = window.canvas.add_sprite("./img/fireball.png", 0, { width: 512, height: 512,  position: {x: 200,  y: 300}});
+    this.fireball = canvas.add_sprite("./img/fireball.png", { width: 512, height: 512 });
+    this.fireball2 = canvas.add_sprite("./img/fireball.png", { width: 512, height: 512,  position: {x: 200,  y: 300}});
 
     requestAnimationFrame(update_loop);
 }
@@ -33,12 +35,12 @@ function update_loop(delta) {
     fireball.position.x = 10 * perSec;
 
     if (perSec >= 5 && !temp_removed) {
-        window.canvas.remove_sprite(fireball2);
+        canvas.remove_sprite(fireball2);
 
         temp_removed = true;
     }
 
-    window.canvas.render();
+    canvas.render();
 
     // FPS counter
     var now = Date.now();
