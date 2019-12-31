@@ -39,6 +39,15 @@ class Canvas {
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.worldSpaceMatrix = mat3.create();
         this.sprites = [];
+        this.layers = [
+            {
+                parallax_multiplier: new Point(1, 1), // parallax position multiplier
+                fade: false, // fade enabled
+                fade_start: 0, // zoom level that fade starts
+                fade_end: 0, // zoom level that fade ends
+                sprite_ids: [] // contains the IDs of all sprites on the layer
+            }
+        ];
     }
 
     resize(w, h) {
@@ -56,11 +65,12 @@ class Canvas {
         var ID = GENERATE_ID();
         var sprite = new Sprite(ID, this.gl, url, VS_01, FS_01, options);
 
+        // check options for layer and add to layer sprite_ids
+
         this.sprites[ID] = sprite;
         return sprite;
     }
 
-    //TODO
     remove_sprite(sprite) {
         this.sprites[sprite.ID].destroy();
         delete this.sprites[sprite.ID];
@@ -71,6 +81,8 @@ class Canvas {
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         
+        // change to looping through layers and rendering all sprite_ids
+
         for (const i in this.sprites) {
             this.sprites[i].render();
         }
