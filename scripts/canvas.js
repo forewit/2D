@@ -136,4 +136,14 @@ class Canvas {
 
         this.gl.flush();
     }
+
+    // load game JSON
+    load_json(url, callback) {
+
+    }
+
+    // save game as JSON
+    save_json() {
+
+    }
 }
