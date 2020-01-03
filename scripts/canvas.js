@@ -24,9 +24,8 @@ FS_01 = `
 `;
 
 class Canvas {
-    constructor() {
-        this.canvasElm = document.createElement("canvas");
-        document.body.appendChild(this.canvasElm);
+    constructor(elm) {
+        this.canvasElm = elm;
 
         this.gl = this.canvasElm.getContext("webgl2");
 
@@ -38,7 +37,8 @@ class Canvas {
 
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.worldSpaceMatrix = mat3.create();
-        this.position = new Point();
+        this.position = new Point(0, 0);
+        this.scale = new Point(0.5, 0.5);
         this.layers = [];
     }
 
@@ -46,9 +46,7 @@ class Canvas {
         this.canvasElm.width = w;
         this.canvasElm.height = h;
 
-        mat3.identity(this.worldSpaceMatrix);
-        mat3.translate(this.worldSpaceMatrix, this.worldSpaceMatrix, [-1, 1]);
-        mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [1 / w, -1 / h]);
+        this.update();
 
         this.gl.viewport(0, 0, this.canvasElm.width, this.canvasElm.height);
     }
@@ -91,6 +89,36 @@ class Canvas {
             this.remove_sprite(layer.sprites[i]);
         }
         delete this.layers[layer.ID];
+    }
+
+    // returns all sprites in a layer that intersect a given point
+    intersections(point, layer) {
+        var intersections = [];
+        for (i in layer.sprites) {
+            var sprite = layer.sprites[i];
+            var pos = sprite.position;
+            var size = sprite.size;
+            
+            if (point.x > pos.x && point.x < pos.x + size.x &&
+                point.y > pos.y && point.y < pos.y + size.y) {
+                    intersections.push(sprite);
+            }
+        }
+        return intersections;
+    }
+
+    update() {
+        // translate and scale to screen
+        mat3.identity(this.worldSpaceMatrix);
+        mat3.translate(this.worldSpaceMatrix, this.worldSpaceMatrix, [-1, 1]);
+        mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [2 / this.canvasElm.width, -2 / this.canvasElm.height]);
+
+         // position
+         mat3.translate(this.worldSpaceMatrix, this.worldSpaceMatrix, [this.position.x, this.position.y]);
+
+         // scale
+         mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [this.scale.x, this.scale.y]);
+
     }
 
     render() {

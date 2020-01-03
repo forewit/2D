@@ -57,6 +57,7 @@ pre {
     -ms-user-select: none;
     user-select: none;
 }
+
 canvas {
     background: black;
 }
@@ -64,7 +65,7 @@ canvas {
 #log {
     position: fixed;
     display: inline-block;
-    min-width: 100px;
+    min-width: 40px;
     bottom: 20px;
     left: 20px;
     padding: 10px 20px;

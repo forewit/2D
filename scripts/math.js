@@ -13,6 +13,10 @@ class Circle {
     }
 }
 
+function lerp(a, b, c) { 
+    return a + c * (b - a);
+}
+
 let mat3 = {};
 
 mat3.create = function() {

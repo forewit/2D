@@ -87,8 +87,11 @@ class Sprite {
 
     update() {
         if (this.isLoaded) {
+            // reset
+            mat3.identity(this.objectMatrix);
+
             // translate
-            mat3.translate(this.objectMatrix, mat3.create(),
+            mat3.translate(this.objectMatrix, this.objectMatrix,
                 [this.position.x + (this.canvas.position.x * this.layer.parallax_multiplier.x),
                 this.position.y + (this.canvas.position.y * this.layer.parallax_multiplier.y)]);
            

@@ -5,7 +5,8 @@ LOADER_DIV = document.getElementById("loader");
 let canvas;
 
 function init() {
-    canvas = new Canvas();
+    var elm = document.getElementById("canvas");
+    canvas = new Canvas(elm);
 
     canvas.resize(window.innerWidth, window.innerHeight);
     window.addEventListener("resize", function () {
@@ -14,9 +15,10 @@ function init() {
 
     layer1 = canvas.add_layer();
     layer2 = canvas.add_layer();
-    this.fireball = canvas.add_sprite("./img/fireball.png", layer1, { width: 512, height: 512, scale: 0.8});
-    this.fireball2 = canvas.add_sprite("./img/fireball.png", layer2, { width: 512, height: 512,  x: 200,  y: 300});
+    this.fireball = canvas.add_sprite("./img/fireball.png", layer1, { width: 512, height: 512, scale: 0.5});
+    this.fireball2 = canvas.add_sprite("./img/fireball.png", layer2, { width: 512, height: 512,  x: 0,  y: 0});
 
+    pointer_control();
     requestAnimationFrame(update_loop);
 }
 
@@ -34,7 +36,6 @@ function update_loop(delta) {
     // update
     fireball.frame.x = 10 * perSec % 6;
     fireball.position.x = 100 * perSec;
-
     fireball2.frame.x = 10 * perSec % 6;
 
     if (perSec >= 5 && !temp_removed) {
