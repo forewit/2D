@@ -21,3 +21,5 @@ function GENERATE_ID() {
     // after the decimal.
     return '_' + Math.random().toString(36).substr(2, 9);
 }
+
+function EMPTY_FUNC() {}

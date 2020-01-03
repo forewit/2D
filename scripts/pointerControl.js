@@ -1,6 +1,8 @@
 function pointer_control(options = {}) {
     // check for handlers in options
-
+    var on_start = ("onStart" in options) ? options.onStart : EMPTY_FUNC;
+    var on_drag = ("onDrag" in options) ? options.onDrag : EMPTY_FUNC;
+    var on_end = ("onEnd" in options) ? options.onEnd : EMPTY_FUNC;
 
     
     window.addEventListener('touchstart', startHandler, { passive: false });
@@ -22,6 +24,7 @@ function pointer_control(options = {}) {
         //handle pointer start
         /////////////////////////
         LOG_DIV.innerHTML = "start x:" + mouse.x + " y:" + mouse.y;
+        on_start(mouse);
     }
     function moveHandler(e) {
         mouse = (e.type == 'mousemove')
@@ -34,6 +37,7 @@ function pointer_control(options = {}) {
         //handle pointer DRAG
         /////////////////////////
         LOG_DIV.innerHTML = "drag x:" + mouse.x + " y:" + mouse.y;
+        on_drag(mouse);
 
     }
     function endHandler(e) {
@@ -51,6 +55,7 @@ function pointer_control(options = {}) {
         //handle pointer end
         /////////////////////////
         LOG_DIV.innerHTML = "end x:" + mouse.x + " y:" + mouse.y;
+        on_end(mouse);
 
     }
     function copyTouch(touch) {

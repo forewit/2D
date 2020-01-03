@@ -15,11 +15,16 @@ function init() {
 
     layer1 = canvas.add_layer();
     layer2 = canvas.add_layer();
-    this.fireball = canvas.add_sprite("./img/fireball.png", layer1, { width: 512, height: 512, scale: 0.5});
-    this.fireball2 = canvas.add_sprite("./img/fireball.png", layer2, { width: 512, height: 512,  x: 0,  y: 0});
+    fireball = canvas.add_sprite("./img/fireball.png", layer1, { width: 512, height: 512, scale: 0.5});
+    fireball2 = canvas.add_sprite("./img/fireball.png", layer2, { width: 512, height: 512,  x: 0,  y: 0});
 
-    pointer_control();
+    pointer_control({onDrag: temp_on_drag});
     requestAnimationFrame(update_loop);
+}
+
+function temp_on_drag(mouse) {
+    fireball2.position.x = mouse.x / canvas.scale.x;
+    fireball2.position.y = mouse.y / canvas.scale.y;
 }
 
 var FPS = 0;
