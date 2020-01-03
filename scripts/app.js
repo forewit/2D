@@ -14,25 +14,27 @@ function init() {
     });
 
     layer1 = canvas.add_layer();
-    layer2 = canvas.add_layer();
-    fireball = canvas.add_sprite("./img/fireball.png", layer1, { width: 512, height: 512, scale: 0.5});
-    fireball2 = canvas.add_sprite("./img/fireball.png", layer2, { width: 512, height: 512,  x: 0,  y: 0});
+    fireball = canvas.add_sprite("./img/fireball.png", layer1, { width: 512, height: 512 });
 
-    pointer_control({onDrag: temp_on_drag});
+    // start pointer control
+    pointer_control({ onDrag: function(mouse) {
+        fireball.position.y = mouse.y / canvas.scale.y;
+    } });
+
+    // start keyboard capture
+    hotkeys('f5,ctrl+r', function (event, handler) {
+        // Prevent the default refresh event under WINDOWS system
+        event.preventDefault()
+        alert('you tried to reload!')
+    });
+
+    // start app update loop
     requestAnimationFrame(update_loop);
-}
-
-function temp_on_drag(mouse) {
-    fireball2.position.x = mouse.x / canvas.scale.x;
-    fireball2.position.y = mouse.y / canvas.scale.y;
 }
 
 var FPS = 0;
 var ticks = 0;
 var lastFPS = 0;
-
-//  temp testing variables
-var temp_removed = false;
 
 function update_loop(delta) {
     requestAnimationFrame(update_loop);
@@ -40,25 +42,18 @@ function update_loop(delta) {
 
     // update
     fireball.frame.x = 10 * perSec % 6;
-    fireball.position.x = 100 * perSec;
-    fireball2.frame.x = 10 * perSec % 6;
-
-    if (perSec >= 5 && !temp_removed) {
-        canvas.remove_layer(layer1);
-        temp_removed = true;
-        LOG_DIV.innerHTML = "Removed layer1";
-    }
+    fireball.position.x = 100 * perSec % 1000;
     fireball.update();
-    fireball2.update();
 
+    // render
     canvas.render();
 
     // FPS counter
     var now = Date.now();
     if (now - lastFPS >= 1000) {
-      lastFPS = now;
-      FPS = ticks;
-      ticks = 0;
+        lastFPS = now;
+        FPS = ticks;
+        ticks = 0;
     }
     ticks++;
     FPS_DIV.innerHTML = FPS;
