@@ -37,7 +37,7 @@ class Canvas {
 
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.worldSpaceMatrix = mat3.create();
-        this.position = new Point(0, 0);
+        this.position = new Point();
         this.scale = new Point(0.5, 0.5);
         this.layers = [];
     }
@@ -77,7 +77,8 @@ class Canvas {
             fade_enabled: fade_enabled,
             fade_start: fade_start, // zoom level that fade starts
             fade_end: fade_end, // zoom level that fade ends
-            sprites: [] // always initializes empty
+            sprites: [], // always initializes empty
+            selected: [] // always initializes empty
         }
 
         this.layers[ID] = layer;
@@ -91,20 +92,30 @@ class Canvas {
         delete this.layers[layer.ID];
     }
 
-    // returns all sprites in a layer that intersect a given point
-    intersections(point, layer) {
+    intersections(coords, layer) {
         var intersections = [];
-        for (i in layer.sprites) {
+
+        for (const i in layer.sprites) {
             var sprite = layer.sprites[i];
             var pos = sprite.position;
-            var size = sprite.size;
+            var size = new Point(
+                sprite.size.x * sprite.scale.x,
+                sprite.size.y * sprite.scale.y
+            );
             
-            if (point.x > pos.x && point.x < pos.x + size.x &&
-                point.y > pos.y && point.y < pos.y + size.y) {
+            if (coords.x > pos.x && coords.x < pos.x + size.x &&
+                coords.y > pos.y && coords.y < pos.y + size.y) {
                     intersections.push(sprite);
             }
         }
         return intersections;
+    }
+
+    get_coords(point) {
+        return  new Point(
+            (point.x) / this.scale.x,
+            (point.y) / this.scale.y
+        );
     }
 
     update() {
@@ -119,6 +130,7 @@ class Canvas {
          // scale
          mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [this.scale.x, this.scale.y]);
 
+         // lock position of all sprites in selection
     }
 
     render() {
