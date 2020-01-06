@@ -19,14 +19,14 @@
     var _start = 0;
     var _moving = false;
     var _selectbox = false;
-    var _moveItem = false;
+    var _onItem = false;
 
     // PRIVATE FUNCTIONS
     function startHandler(e) {
         _start = Date.now();
         _moving = false;
         _selectbox = false;
-        _moveItem = false;
+        _onItem = false;
 
         if (e.type === 'mousedown') {
             window.addEventListener('mousemove', moveHandler, { passive: false });
@@ -42,13 +42,13 @@
         }
 
         // if pointer is on a selected object
-        // this._moveItem = true
+        // this._onItem = true
     }
 
     function moveHandler(e) {
         if (e.type == 'mousemove') {
             pointer = { x: e.clientX, y: e.clientY };
-            if (_moveItem) {
+            if (_onItem) {
                 // move items
                 console.log("moving item");
             } else if (_selectbox || (!_moving && (hotkeys.isPressed('control') || hotkeys.isPressed('shift')))) {
