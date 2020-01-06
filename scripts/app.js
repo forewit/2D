@@ -18,36 +18,6 @@ function init() {
         canvas.resize(window.innerWidth, window.innerHeight);
     });
 
-    // start pointer control
-    let offset, selected;
-    pointer_control({
-        onStart: function (mouse) {
-            pointer = mouse;
-            selected = canvas.intersections(canvas.get_coords(mouse), layer1)[0];
-
-            if (selected) {
-                let current = canvas.get_coords(mouse);
-                offset = new Point(
-                    selected.position.x - current.x,
-                    selected.position.y - current.y
-                );
-            }
-        },
-        onDrag: function (mouse) {
-            pointer = mouse;
-            if (selected) {
-                let current = canvas.get_coords(mouse);
-
-                selected.position.x = current.x + offset.x;
-                selected.position.y = current.y + offset.y;
-            }
-        },
-        onEnd: function (mouse) {
-            pointer = mouse;
-            selected = undefined;
-        }
-    });
-
     // start keyboard capture
     hotkeys('f5,ctrl+r', function (event, handler) {
         event.preventDefault()
@@ -57,6 +27,9 @@ function init() {
     // create startup content
     layer1 = canvas.add_layer();
     fireball = canvas.add_sprite("./img/fireball.png", layer1, { scale: 2, width: 512, height: 512 });
+
+    // start interactions
+    Interactions.start(layer1);
 
     // start app update loop
     requestAnimationFrame(update_loop);

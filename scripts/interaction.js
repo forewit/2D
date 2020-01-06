@@ -1,63 +1,91 @@
-class interaction {
-    constructor() {
-        this.pointer = {};
-        this.selection = []
-        this.tapDelay = 0.1;
-
-        window.addEventListener('touchstart', startHandler, { passive: false });
-        window.addEventListener('mousedown', startHandler);
+(function (root, factory) {
+    if (typeof exports === 'object') {
+        module.exports = factory();
+    } else if (typeof define === 'function' && define.amd) {
+        define([], factory);
+    } else {
+        root.Interactions = factory();
     }
+}(this, function () {
 
-    startHandler(e) {
-        var me = this;
+    'use strict';
+
+    // PRIVATE VARIABLES
+    var layer = undefined;
+    var pointer = {};
+    var selected = []
+    
+    var _tapDelay = 10; // delay before long touch
+    var _start = 0;
+    var _moving = false;
+    var _selectbox = false;
+    var _moveItem = false;
+
+    // PRIVATE FUNCTIONS
+    function startHandler(e) {
+        _start = Date.now();
+        _moving = false;
+        _selectbox = false;
+        _moveItem = false;
+
         if (e.type === 'mousedown') {
             window.addEventListener('mousemove', moveHandler, { passive: false });
             window.addEventListener('mouseup', endHandler);
-            me.pointer = { x: e.clientX, y: e.clientY };
-            me.pointer.start = Date.now();
-            /////////////////////////
-            //handle mouse start
-            /////////////////////////
+            pointer = { x: e.clientX, y: e.clientY };
         } else {
             window.addEventListener('touchmove', moveHandler, { passive: false });
             window.addEventListener('touchend', endHandler);
             window.addEventListener('touchcancel', endHandler);
-            me.pointer = copyTouch(e.targetTouches[0]);
-            me.pointer.start = Date.now();
+            pointer = copyTouch(e.targetTouches[0]);
             e.preventDefault();
             e.stopPropagation();
-            /////////////////////////
-            //handle touch start
-            /////////////////////////
         }
+
+        // if pointer is on a selected object
+        // this._moveItem = true
     }
 
-    moveHandler(e) {
-        var me = this;
+    function moveHandler(e) {
         if (e.type == 'mousemove') {
-            me.pointer = { x: e.clientX, y: e.clientY };
-            /////////////////////////
-            //handle mouse drag
-            /////////////////////////
+            pointer = { x: e.clientX, y: e.clientY };
+            if (_moveItem) {
+                // move items
+                console.log("moving item");
+            } else if (_selectbox || (!_moving && (hotkeys.isPressed('control') || hotkeys.isPressed('shift')))) {
+                _selectbox = true;
+                // draw selectbox
+                console.log("drawing selectbox");
+            } else {
+                // pan
+                console.log("panning");
+            }
         } else {
-            me.pointer = copyTouch(e.targetTouches[0]);
+            pointer = copyTouch(e.targetTouches[0]);
             e.preventDefault();
             e.stopPropagation();
             /////////////////////////
             //handle touch drag
             /////////////////////////
         }
+        _moving = true;
     }
 
-    endHandler(e) {
-        var me = this;
+    function endHandler(e) {
         if (e.type === 'mouseup') {
             window.removeEventListener('mousemove', moveHandler);
             window.removeEventListener('mouseup', endHandler);
-            /////////////////////////
-            //handle mouse end
-            /////////////////////////
-        } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.pointer.identifier) {
+            if (_selectbox) {
+                // add items in selectbox to selected
+                console.log("selecting items in selectbox");
+            } else if (!_moving) {
+                if (!(hotkeys.isPressed('control') || hotkeys.isPressed('shift'))) {
+                    selected = [];
+                    console.log("clearing selected");
+                }
+                // add item to selected
+                console.log("checking to add item to selected");
+            }
+        } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != pointer.identifier) {
             window.removeEventListener('touchmove', moveHandler);
             window.removeEventListener('touchend', endHandler);
             window.removeEventListener('touchcancel', endHandler);
@@ -67,23 +95,27 @@ class interaction {
         }
     }
 
-    // click:
-    // (ctrl or shift) + click:
-    // escape:
-    // ctrl + a:
-    // click-drag:
-    // (shift or ctrl) + click-drag:
-    // scroll:
-    // middle-click-drag:
-    // Tap:
-    // Long-press:
-    // Pinch
-
-    static copyTouch(touch) {
+    function copyTouch(touch) {
         return {
             identifier: touch.identifier,
             x: touch.clientX,
             y: touch.clientY
         };
     }
-}
+
+    var Interactions = {
+        start: function(new_layer) {
+            layer = new_layer;
+            selected = [];
+            window.addEventListener('touchstart', startHandler, { passive: false });
+            window.addEventListener('mousedown', startHandler);
+        },
+        stop: function() {
+            layer = undefined;
+            selected = [];
+            window.removeEventListener('touchstart', startHandler);
+            window.removeEventListener('mousedown', startHandler);
+        }
+    };
+    return Interactions;
+}));
