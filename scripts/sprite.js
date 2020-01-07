@@ -1,11 +1,36 @@
+VS_01 = `
+    attribute vec2 a_position;
+    attribute vec2 a_texCoord;
+
+    uniform mat3 u_world;
+    uniform mat3 u_object;
+    uniform vec2 u_frame;
+
+    varying vec2 v_texCoord;
+    void main(){
+        gl_Position = vec4( u_world * u_object * vec3(a_position, 1), 1);
+        v_texCoord = a_texCoord + u_frame;
+    }
+`;
+
+FS_01 = `
+    precision mediump float;
+    uniform sampler2D u_image;
+    varying vec2 v_texCoord;
+    
+    void main(){
+        gl_FragColor = texture2D(u_image, v_texCoord);
+    }
+`;
+
 class Sprite {
-    constructor(ID, canvas, layer, gl, img_url, vs, fs, options = {}) {
+    constructor(ID, canvas, layer, gl, img_url, options = {}) {
         var me = this;
 
         me.ID = ID;
         me.gl = gl;
         me.isLoaded = false;
-        me.material = new Material(gl, vs, fs);
+        me.material = new Material(gl, VS_01, FS_01);
         me.frame = new Point();
         me.position = new Point();
         me.size = new Point(64, 64);

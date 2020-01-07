@@ -1,28 +1,3 @@
-VS_01 = `
-    attribute vec2 a_position;
-    attribute vec2 a_texCoord;
-
-    uniform mat3 u_world;
-    uniform mat3 u_object;
-    uniform vec2 u_frame;
-
-    varying vec2 v_texCoord;
-    void main(){
-        gl_Position = vec4( u_world * u_object * vec3(a_position, 1), 1);
-        v_texCoord = a_texCoord + u_frame;
-    }
-`;
-
-FS_01 = `
-    precision mediump float;
-    uniform sampler2D u_image;
-    varying vec2 v_texCoord;
-    
-    void main(){
-        gl_FragColor = texture2D(u_image, v_texCoord);
-    }
-`;
-
 class Canvas {
     constructor(elm) {
         this.canvasElm = elm;
@@ -51,64 +26,15 @@ class Canvas {
         this.gl.viewport(0, 0, this.canvasElm.width, this.canvasElm.height);
     }
 
-    add_sprite(url, layer, options = {}) {
-        var ID = GENERATE_ID(); // util.js
-        var sprite = new Sprite(ID, this, layer, this.gl, url, VS_01, FS_01, options);
-        
-        layer.sprites[ID] = sprite;
-        return sprite;
-    }
-
-    remove_sprite(sprite) {
-        sprite.destroy();
-        delete sprite.layer.sprites[sprite.ID];
-    }
-
     add_layer(options = {}) {
-        var ID = GENERATE_ID(); // util.js
-        var parallax_multiplier = ("parallax_multiplier" in options) ? options.parallax_multiplier : new Point(1, 1);
-        var fade_enabled = ("fade_enabled" in options) ? options.fade_enabled : false;
-        var fade_start = ("fade_start" in options) ? options.fade_start : 0;
-        var fade_end = ("fade_end" in options) ? options.fade_end : 0;
-
-        var layer = {
-            ID: ID,
-            parallax_multiplier: parallax_multiplier, // parallax position multiplier
-            fade_enabled: fade_enabled,
-            fade_start: fade_start, // zoom level that fade starts
-            fade_end: fade_end, // zoom level that fade ends
-            sprites: [], // always initializes empty
-            selected: [] // always initializes empty
-        }
-
-        this.layers[ID] = layer;
+        var layer = new Layer(this, options);
+        this.layers[layer.ID] = layer;
         return layer;
     }
 
     remove_layer(layer) {
-        for (const i in layer.sprites) {
-            this.remove_sprite(layer.sprites[i]);
-        }
+        layer.destroy();
         delete this.layers[layer.ID];
-    }
-
-    intersections(coords, layer) {
-        var intersections = [];
-
-        for (const i in layer.sprites) {
-            var sprite = layer.sprites[i];
-            var pos = sprite.position;
-            var size = new Point(
-                sprite.size.x * sprite.scale.x,
-                sprite.size.y * sprite.scale.y
-            );
-            
-            if (coords.x > pos.x && coords.x < pos.x + size.x &&
-                coords.y > pos.y && coords.y < pos.y + size.y) {
-                    intersections.push(sprite);
-            }
-        }
-        return intersections;
     }
 
     get_coords(point) {
@@ -138,12 +64,8 @@ class Canvas {
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         
-        // render each layer's sprites
         for (const i in this.layers) {
-            var layer = this.layers[i];
-            for (const j in layer.sprites) {
-                layer.sprites[j].render();
-            }
+            this.layers[i].render();
         }
 
         this.gl.flush();
