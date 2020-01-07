@@ -24,21 +24,22 @@ FS_01 = `
 `;
 
 class Sprite {
-    constructor(ID, canvas, layer, gl, img_url, options = {}) {
+    constructor(ID, layer, img_url, options = {}) {
         var me = this;
 
         me.ID = ID;
-        me.gl = gl;
+        me.layer = layer;
+        me.canvas = me.layer.canvas;
+        me.gl = me.canvas.gl;
+
         me.isLoaded = false;
-        me.material = new Material(gl, VS_01, FS_01);
+        me.material = new Material(me.gl, VS_01, FS_01);
         me.frame = new Point();
         me.position = new Point();
         me.size = new Point(64, 64);
         me.scale = new Point(1, 1);
         me.image = new Image();
         me.image.src = img_url;
-        me.layer = layer;
-        me.canvas = canvas;
 
         if ("width" in options) { me.size.x = options.width * 1; }
         if ("height" in options) { me.size.y = options.height * 1; }

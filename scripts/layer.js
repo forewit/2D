@@ -19,7 +19,7 @@ class Layer {
     
     add_sprite(url, options = {}) {
         var ID = GENERATE_ID(); // util.js
-        var sprite = new Sprite(ID, this.canvas, this, this.gl, url, options);
+        var sprite = new Sprite(ID, this, url, options);
         
         this.sprites[ID] = sprite;
         return sprite;
