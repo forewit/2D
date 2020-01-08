@@ -24,10 +24,10 @@ FS_01 = `
 `;
 
 class Sprite {
-    constructor(ID, layer, img_url, options = {}) {
+    constructor(layer, img_url, options = {}) {
         var me = this;
 
-        me.ID = ID;
+        me.ID = GENERATE_ID(); // util.js
         me.layer = layer;
         me.canvas = me.layer.canvas;
         me.gl = me.canvas.gl;
