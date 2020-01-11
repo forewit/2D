@@ -90,7 +90,7 @@ canvas {
 }
 
 #loader {
-    display: none;
+    display: none; /* change to block when loading */
     position: fixed;
     margin-left: -30px;
     margin-top: -30px;
@@ -107,4 +107,15 @@ canvas {
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
+}
+
+.veritcal-menu {
+    position: fixed;
+    display: inline-block;
+    left: 20px;
+    top: 20px;
+    padding: 5px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 6px 6px 9px 0 rgba(0,0,0, 0.3);
+}

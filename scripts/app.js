@@ -4,15 +4,10 @@ LOADER_DIV = document.getElementById("loader");
 
 let canvas;
 
-// start finalizing and implementing interaction models
-//  1. Hotkeys
-//  2. Selecting sprites
-
 function init() {
     // create canvas
     var elm = document.getElementById("canvas");
     canvas = new Canvas(elm);
-
     canvas.resize(window.innerWidth, window.innerHeight);
     window.addEventListener("resize", function () {
         canvas.resize(window.innerWidth, window.innerHeight);
