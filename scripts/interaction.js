@@ -109,12 +109,20 @@
             selected = [];
             window.addEventListener('touchstart', startHandler, { passive: false });
             window.addEventListener('mousedown', startHandler);
+
+            // Interupt reload
+            hotkeys('f5,ctrl+r,cmd+r', function (event, handler) {
+                event.preventDefault()
+                alert('you tried to reload!')
+            });
         },
         stop: function() {
             layer = undefined;
             selected = [];
             window.removeEventListener('touchstart', startHandler);
             window.removeEventListener('mousedown', startHandler);
+
+            hotkeys.unbind('f5,ctrl+r,cmd+r');
         }
     };
     return Interactions;

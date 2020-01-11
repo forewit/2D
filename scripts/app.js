@@ -18,12 +18,6 @@ function init() {
         canvas.resize(window.innerWidth, window.innerHeight);
     });
 
-    // start keyboard capture
-    hotkeys('f5,ctrl+r', function (event, handler) {
-        event.preventDefault()
-        alert('you tried to reload!')
-    });
-
     // create startup content
     layer1 = canvas.add_layer();
     fireball = layer1.add_sprite("./img/fireball.png", { scale: 2, width: 512, height: 512 });
@@ -46,9 +40,6 @@ function update_loop(delta) {
     // updates
     fireball.frame.x = 10 * perSec % 6;
     fireball.update();
-    //canvas.scale.x = 1 - 0.1 * perSec;
-    //canvas.scale.y = 1 - 0.1 * perSec;
-    //canvas.update();
 
     // render
     canvas.render();
