@@ -47,6 +47,8 @@ class Layer {
         return intersections;
     }
 
+    // update function?
+
     render() {
         for (const i in this.sprites) {
             this.sprites[i].render();

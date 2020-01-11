@@ -57,6 +57,7 @@ class Canvas {
          mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [this.scale.x, this.scale.y]);
 
          // lock position of all sprites in selection
+         // update all sprites??
     }
 
     render() {
