@@ -19,7 +19,7 @@
             me.layer = new_layer;
             me.selected = [];
             window.addEventListener('touchstart', startHandler, { passive: false });
-            window.addEventListener('mousedown', startHandler);
+            window.addEventListener('mousedown', startHandler, { passive: false });
             window.addEventListener('keydown', keydownHandler, { passive: false });
             window.addEventListener('keyup', keyupHandler);
         },
@@ -95,9 +95,9 @@
             window.addEventListener('touchend', endHandler);
             window.addEventListener('touchcancel', endHandler);
             me.pointer = copyTouch(e.targetTouches[0]);
-            e.preventDefault();
-            e.stopPropagation();
         }
+        e.preventDefault();
+        e.stopPropagation();
 
         // if pointer is on a selected object
         // this._onItem = true
