@@ -57,13 +57,8 @@
 
     function select(point, point2) {
         var coords = me.layer.canvas.get_coords(point);
-
-        if (point2 != undefined) {
-            // rectangle
-        } else {
-            // point
-            return me.layer.intersections(coords);
-        }
+        var coords2 = (point2) ? me.layer.canvas.get_coords(point2) : undefined;
+        return me.layer.intersections(coords, coords2);
     }
 
     function keydownHandler(e) {
