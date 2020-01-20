@@ -1,4 +1,4 @@
-class Layer { 
+class Layer {
     constructor(canvas, options) {
         this.canvas = canvas;
 
@@ -16,7 +16,7 @@ class Layer {
             this.remove_sprite(this.sprites[i]);
         }
     }
-    
+
     add_sprite(url, options = {}) {
         var sprite = new Sprite(this, url, options);
         this.sprites[sprite.ID] = sprite;
@@ -28,7 +28,7 @@ class Layer {
         delete this.sprites[sprite.ID];
     }
 
-    intersections(coords) {
+    intersections(coords, coords2) {
         var intersections = [];
 
         for (const i in this.sprites) {
@@ -38,12 +38,22 @@ class Layer {
                 sprite.size.x * sprite.scale.x,
                 sprite.size.y * sprite.scale.y
             );
-            
-            if (coords.x > pos.x && coords.x < pos.x + size.x &&
-                coords.y > pos.y && coords.y < pos.y + size.y) {
+
+            if (coords2) {
+                var center = new Point(pos.x - size.x, pos.y - pos.y);
+                if (((center.x > coords.x && center.x < coords2.x) ||
+                    (center.x < coords.x && center.x > coords2.x)) &&
+                    ((center.y > coords.y && center.y < coords2.y) ||
+                        (center.y < coords.y && center.y > coords2.y))) {
                     intersections.push(sprite);
+                    console.log("sprite in intersection box!");
+                }
+            } else if (coords.x > pos.x && coords.x < pos.x + size.x &&
+                coords.y > pos.y && coords.y < pos.y + size.y) {
+                intersections.push(sprite);
             }
         }
+
         return intersections;
     }
 

@@ -15,7 +15,7 @@ function init() {
 
     // create startup content
     layer1 = canvas.add_layer();
-    fireball = layer1.add_sprite("./img/fireball.png", { scale: 2, width: 512, height: 512 });
+    fireball = layer1.add_sprite("./img/fireball.png", { scale: 1, width: 512, height: 512 });
 
     // start interactions
     Interactions.start(layer1);

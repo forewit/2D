@@ -13,7 +13,7 @@ class Canvas {
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.worldSpaceMatrix = mat3.create();
         this.position = new Point();
-        this.scale = new Point(0.5, 0.5);
+        this.scale = new Point(1,1);
         this.layers = [];
     }
 

@@ -55,6 +55,17 @@
         F5: 116,
     };
 
+    function select(point, point2) {
+        var coords = me.layer.canvas.get_coords(point);
+
+        if (point2 != undefined) {
+            // rectangle
+        } else {
+            // point
+            return me.layer.intersections(coords);
+        }
+    }
+
     function keydownHandler(e) {
         me.downKeys[e.keyCode] = true;
 
@@ -142,6 +153,8 @@
                 }
                 // add item to selected
                 console.log("checking to add item to selected");
+                console.log(select(me.pointer));
+
             }
         } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.pointer.identifier) {
             window.removeEventListener('touchmove', moveHandler);
