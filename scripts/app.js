@@ -15,7 +15,7 @@ function init() {
 
     // create startup content
     layer1 = canvas.add_layer();
-    fireball = layer1.add_sprite("./img/fireball.png", { scale: 1, width: 512, height: 512 });
+fireball = layer1.add_sprite("./img/untitled.png", { x: 5, y: 5, scale: 1, width: 512, height: 512 });
 
     // start interactions
     Interactions.start(layer1);
@@ -33,7 +33,7 @@ function update_loop(delta) {
     var perSec = delta / 1000;
 
     // updates
-    fireball.frame.x = 10 * perSec % 6;
+    //fireball.frame.x = 10 * perSec % 6;
     fireball.update();
 
     // render

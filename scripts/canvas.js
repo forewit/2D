@@ -39,8 +39,8 @@ class Canvas {
 
     get_coords(point) {
         return  new Point(
-            (point.x) / this.scale.x,
-            (point.y) / this.scale.y
+            (point.x / this.scale.x) + this.position.x * this.scale.x,
+            (point.y / this.scale.y) + this.position.y * this.scale.y
         );
     }
 

@@ -111,7 +111,7 @@ canvas {
 
 .veritcal-menu {
     position: fixed;
-    display: inline-block;
+    display: none;
     left: 20px;
     top: 20px;
     padding: 5px;
