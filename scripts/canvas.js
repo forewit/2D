@@ -12,8 +12,8 @@ class Canvas {
 
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.worldSpaceMatrix = mat3.create();
-        this.position = new Point();
-        this.scale = new Point(1,1);
+        this.position = new Point(10, 40);
+        this.scale = new Point(1, 1);
         this.layers = [];
     }
 
@@ -38,7 +38,7 @@ class Canvas {
     }
 
     get_coords(point) {
-        return  new Point(
+        return new Point(
             (point.x / this.scale.x) + this.position.x * this.scale.x,
             (point.y / this.scale.y) + this.position.y * this.scale.y
         );
@@ -50,21 +50,26 @@ class Canvas {
         mat3.translate(this.worldSpaceMatrix, this.worldSpaceMatrix, [-1, 1]);
         mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [2 / this.canvasElm.width, -2 / this.canvasElm.height]);
 
-         // position
-         mat3.translate(this.worldSpaceMatrix, this.worldSpaceMatrix, [this.position.x, this.position.y]);
+        // translate
+        mat3.translate(
+            this.worldSpaceMatrix, 
+            this.worldSpaceMatrix, 
+            [(this.position.x == 0) ? 0: 2 / this.position.x, (this.position.y == 0) ? 0:2 / this.position.y]
+        );
 
-         // scale
-         mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [this.scale.x, this.scale.y]);
+        // scale
+        mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [this.scale.x, this.scale.y]);
 
-         // lock position of all sprites in selection
-         // update all sprites??
+
+        // lock position of all sprites in selection
+        // update all sprites??
     }
 
     render() {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
-        
+
         for (const i in this.layers) {
             this.layers[i].render();
         }
