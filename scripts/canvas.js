@@ -12,7 +12,8 @@ class Canvas {
 
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.worldSpaceMatrix = mat3.create();
-        this.position = new Point(10, 40);
+        this.defaultWorldSpaceMatrix = mat3.create();
+        this.position = new Point();
         this.scale = new Point(1, 1);
         this.layers = [];
     }
@@ -20,6 +21,10 @@ class Canvas {
     resize(w, h) {
         this.canvasElm.width = w;
         this.canvasElm.height = h;
+
+        // translate and scale to screen
+        mat3.translate(this.defaultWorldSpaceMatrix, mat3.identity, [-1, 1]);
+        mat3.scale(this.defaultWorldSpaceMatrix, this.defaultWorldSpaceMatrix, [2 / this.canvasElm.width, -2 / this.canvasElm.height]);
 
         this.update();
 
@@ -45,24 +50,15 @@ class Canvas {
     }
 
     update() {
-        // translate and scale to screen
-        mat3.identity(this.worldSpaceMatrix);
-        mat3.translate(this.worldSpaceMatrix, this.worldSpaceMatrix, [-1, 1]);
-        mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [2 / this.canvasElm.width, -2 / this.canvasElm.height]);
-
         // translate
         mat3.translate(
-            this.worldSpaceMatrix, 
-            this.worldSpaceMatrix, 
-            [(this.position.x == 0) ? 0: 2 / this.position.x, (this.position.y == 0) ? 0:2 / this.position.y]
+            this.worldSpaceMatrix,
+            this.defaultWorldSpaceMatrix,
+            [this.position.x, this.position.y]
         );
 
         // scale
         mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [this.scale.x, this.scale.y]);
-
-
-        // lock position of all sprites in selection
-        // update all sprites??
     }
 
     render() {

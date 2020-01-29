@@ -33,7 +33,8 @@ mat3.create = function() {
     return out;
 };
 
-mat3.identity = function(out) {
+mat3.identity = [1, 0, 0, 0, 1, 0, 0, 0, 1];
+/*mat3.identity = function(out) {
     out[0] = 1;
     out[1] = 0;
     out[2] = 0;
@@ -44,7 +45,7 @@ mat3.identity = function(out) {
     out[7] = 0;
     out[8] = 1;
     return out;
-};
+};*/
 
 mat3.multiply = function (out, a, b) {
     var a00 = a[0], a01 = a[1], a02 = a[2],

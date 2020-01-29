@@ -138,6 +138,7 @@
         if (e.type === 'mouseup') {
             window.removeEventListener('mousemove', moveHandler);
             window.removeEventListener('mouseup', endHandler);
+            console.log(me.pointer);
             if (_selectbox) {
                 // add items in selectbox to selected
                 console.log("selecting items in selectbox");
