@@ -33,6 +33,7 @@ class Sprite {
         me.gl = me.canvas.gl;
 
         me.isLoaded = false;
+        me.udpated = true;
         me.material = new Material(me.gl, VS_01, FS_01);
         me.frame = new Point();
         me.position = new Point();
@@ -118,11 +119,14 @@ class Sprite {
            
             // scale
             mat3.scale(this.objectMatrix, this.objectMatrix, [this.scale.x, this.scale.y]);
+            
+            // prompts render
+            this.updated = true;
         }
     }
 
     render() {
-        if (this.isLoaded) {
+        if (this.isLoaded && this.updated) {
             let gl = this.gl;
 
             let frame_x = Math.floor(this.frame.x) * this.uv_x;
@@ -145,6 +149,8 @@ class Sprite {
 
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
             gl.useProgram(null);
+
+            this.updated = false;
         }
     }
 }
