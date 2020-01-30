@@ -8,7 +8,6 @@ function init() {
     // create canvas
     var elm = document.getElementById("canvas");
     canvas = new Canvas(elm);
-    canvas.position = new Point(20,20);
     canvas.resize(window.innerWidth, window.innerHeight);
     window.addEventListener("resize", function () {
         canvas.resize(window.innerWidth, window.innerHeight);
@@ -39,6 +38,7 @@ function update_loop(delta) {
     canvas.position.x += 0.1;
     canvas.position.y += 0.1;
     canvas.update();
+
     fireball.update();
 
     // render

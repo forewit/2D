@@ -9,6 +9,7 @@ class Layer {
         this.fade_enabled = ("fade_enabled" in options) ? options.fade_enabled : false;
         this.fade_start = ("fade_start" in options) ? options.fade_start : 0;
         this.fade_end = ("fade_end" in options) ? options.fade_end : 0;
+        this.worldSpaceMatrix = mat3.create();
     }
 
     destroy() {
@@ -56,8 +57,6 @@ class Layer {
 
         return intersections;
     }
-
-    // update function?
 
     render() {
         for (const i in this.sprites) {

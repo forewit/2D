@@ -114,9 +114,7 @@ class Sprite {
     update() {
         if (this.isLoaded) {
             // translate
-            mat3.translate(this.objectMatrix, mat3.identity,
-                [this.position.x + (this.canvas.position.x * this.layer.parallax_multiplier.x),
-                this.position.y + (this.canvas.position.y * this.layer.parallax_multiplier.y)]);
+            mat3.translate(this.objectMatrix, mat3.identity, [this.position.x,this.position.y]);
            
             // scale
             mat3.scale(this.objectMatrix, this.objectMatrix, [this.scale.x, this.scale.y]);
@@ -142,7 +140,7 @@ class Sprite {
             gl.bindBuffer(gl.ARRAY_BUFFER, this.geo_buff);
             this.material.set("a_position");
             this.material.set("u_frame", frame_x, frame_y);
-            this.material.set("u_world", this.canvas.worldSpaceMatrix);
+            this.material.set("u_world", this.layer.worldSpaceMatrix);
             this.material.set("u_object", this.objectMatrix);
 
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);

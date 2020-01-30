@@ -11,9 +11,9 @@ class Canvas {
         }
 
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
-        this.worldSpaceMatrix = mat3.create();
         this.defaultWorldSpaceMatrix = mat3.create();
         this.position = new Point();
+        this.parallaxPosition = new Point();
         this.scale = new Point(1, 1);
         this.layers = [];
     }
@@ -42,30 +42,28 @@ class Canvas {
         delete this.layers[layer.ID];
     }
 
-    get_coords(point) {
-        return new Point(
-            (point.x / this.scale.x) + this.position.x * this.scale.x,
-            (point.y / this.scale.y) + this.position.y * this.scale.y
-        );
-    }
-
     update() {
-        // translate
-        mat3.translate(
-            this.worldSpaceMatrix,
-            this.defaultWorldSpaceMatrix,
-            [this.position.x, this.position.y]
-        );
+        // parallax
+        for (const i in this.layers) {
+            var layer = this.layers[i];
 
-        // scale
-        mat3.scale(this.worldSpaceMatrix, this.worldSpaceMatrix, [this.scale.x, this.scale.y]);
+            // translate
+            mat3.translate(
+                layer.worldSpaceMatrix,
+                this.defaultWorldSpaceMatrix,
+                [this.position.x * layer.parallax_multiplier.x, this.position.y * layer.parallax_multiplier.y]
+            );
+
+            // scale
+            mat3.scale(layer.worldSpaceMatrix, layer.worldSpaceMatrix, [this.scale.x, this.scale.y]);
+        }
     }
 
     render() {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
-
+        
         for (const i in this.layers) {
             this.layers[i].render();
         }
