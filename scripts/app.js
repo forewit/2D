@@ -30,6 +30,7 @@ var FPS = 0;
 var ticks = 0;
 var lastFPS = 0;
 
+
 function update_loop(delta) {
     requestAnimationFrame(update_loop);
     var perSec = delta / 1000;
