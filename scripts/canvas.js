@@ -43,6 +43,10 @@ class Canvas {
     }
 
     update() {
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+
         // parallax
         for (const i in this.layers) {
             var layer = this.layers[i];
@@ -56,16 +60,8 @@ class Canvas {
 
             // scale
             mat3.scale(layer.worldSpaceMatrix, layer.worldSpaceMatrix, [this.scale.x, this.scale.y]);
-        }
-    }
 
-    render() {
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-        this.gl.enable(this.gl.BLEND);
-        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
-        
-        for (const i in this.layers) {
-            this.layers[i].render();
+            layer.update();
         }
 
         this.gl.flush();

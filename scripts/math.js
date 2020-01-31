@@ -5,14 +5,6 @@ class Point {
     }
 }
 
-class Circle {
-    constructor(x=0, y=0, r=20) {
-        this.x=x;
-        this.y=y;
-        this.r=r
-    }
-}
-
 function lerp(a, b, c) { 
     return a + c * (b - a);
 }

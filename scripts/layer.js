@@ -29,7 +29,7 @@ class Layer {
         delete this.sprites[sprite.ID];
     }
 
-    render() {
+    update() {
         for (const i in this.sprites) {
             this.sprites[i].render();
         }

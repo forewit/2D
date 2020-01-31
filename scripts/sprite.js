@@ -33,7 +33,6 @@ class Sprite {
         me.gl = me.canvas.gl;
 
         me.isLoaded = false;
-        me.udpated = true;
         me.material = new Material(me.gl, VS_01, FS_01);
         me.frame = new Point();
         me.position = new Point();
@@ -57,17 +56,6 @@ class Sprite {
         me.image.onload = function () {
             me.init();
         }
-    }
-
-    static createRectArray(x = 0, y = 0, w = 1, h = 1) {
-        return new Float32Array([
-            x, y,
-            x + w, y,
-            x, y + h,
-            x, y + h,
-            x + w, y,
-            x + w, y + h
-        ]);
     }
 
     init() {
@@ -102,6 +90,17 @@ class Sprite {
         this.update();
     }
 
+    static createRectArray(x = 0, y = 0, w = 1, h = 1) {
+        return new Float32Array([
+            x, y,
+            x + w, y,
+            x, y + h,
+            x, y + h,
+            x + w, y,
+            x + w, y + h
+        ]);
+    }
+
     destroy() {
         let gl = this.gl;
         this.isLoaded = false
@@ -119,14 +118,11 @@ class Sprite {
            
             // scale
             mat3.scale(this.objectMatrix, this.objectMatrix, [this.scale.x, this.scale.y]);
-            
-            // prompts render
-            this.updated = true;
         }
     }
 
     render() {
-        if (this.isLoaded && this.updated) {
+        if (this.isLoaded) {
             let gl = this.gl;
 
             let frame_x = Math.floor(this.frame.x) * this.uv_x;
@@ -149,8 +145,6 @@ class Sprite {
 
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
             gl.useProgram(null);
-
-            this.updated = false;
         }
     }
 }

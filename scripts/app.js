@@ -13,10 +13,11 @@ function init() {
         canvas.resize(window.innerWidth, window.innerHeight);
     });
 
-    // create startup content
+    // create startup content ****************
     layer1 = canvas.add_layer();
     fireball = layer1.add_sprite("./img/untitled.png", { x: 0, y: 0, scale: 1, width: 512, height: 512 });
     fireball2 = layer1.add_sprite("./img/untitled2.png", { x: -20, y: -20, scale: 1, width: 20, height: 20 });
+    // ***************************************
 
     // start interactions
     Interactions.start(layer1);
@@ -33,16 +34,14 @@ function update_loop(delta) {
     requestAnimationFrame(update_loop);
     var perSec = delta / 1000;
 
-    // updates
+    // updates *******************************
     fireball.frame.x = 10 * perSec % 6;
+    //fireball.update();
+
     canvas.position.x += 0.1;
     canvas.position.y += 0.1;
     canvas.update();
-
-    //fireball.update();
-
-    // render
-    canvas.render();
+    // ***************************************
 
     // FPS counter
     var now = Date.now();
