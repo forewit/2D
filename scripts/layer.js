@@ -28,4 +28,28 @@ class Layer {
         sprite.destroy();
         delete this.sprites[sprite.ID];
     }
+
+    intersections(p1, p2) {
+        let intersections = [];
+
+        // adjust for canvas position and canvas scale
+        var canvasPos = new Point(
+            this.canvas.position.x * this.parallax_multiplier.x * this.canvas.scale.x,
+            this.canvas.position.y * this.parallax_multiplier.y * this.canvas.scale.y
+        );
+
+        // adjust for sprite position and scale
+        for (const i in this.sprites) {
+            var sprite = this.sprites[i];
+
+            var spritePos = new Point(
+                canvasPos.x + sprite.position.x,
+                canvasPos.y + sprite.position.y
+            );
+
+            // check if p1 inside sprite
+
+            // check if p1-p2 rect contains sprite
+        }
+    }
 }

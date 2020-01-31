@@ -18,9 +18,9 @@ class Canvas {
         this.layers = [];
     }
 
-    resize(w, h) {
-        this.canvasElm.width = w;
-        this.canvasElm.height = h;
+    resize() {
+        this.canvasElm.width = window.innerWidth;
+        this.canvasElm.height = window.innerHeight;
 
         // translate and scale to screen
         mat3.translate(this.defaultWorldSpaceMatrix, mat3.identity, [-1, 1]);

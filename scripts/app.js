@@ -10,7 +10,7 @@ function init() {
     canvas = new Canvas(elm);
     canvas.resize(window.innerWidth, window.innerHeight);
     window.addEventListener("resize", function () {
-        canvas.resize(window.innerWidth, window.innerHeight);
+        canvas.resize();
     });
 
     // create startup content ****************
