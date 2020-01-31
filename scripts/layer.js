@@ -28,10 +28,4 @@ class Layer {
         sprite.destroy();
         delete this.sprites[sprite.ID];
     }
-
-    update() {
-        for (const i in this.sprites) {
-            this.sprites[i].render();
-        }
-    }
 }

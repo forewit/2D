@@ -15,15 +15,17 @@ function init() {
 
     // create startup content ****************
     layer1 = canvas.add_layer();
-    fireball = layer1.add_sprite("./img/untitled.png", { x: 0, y: 0, scale: 1, width: 512, height: 512 });
-    fireball2 = layer1.add_sprite("./img/untitled2.png", { x: -20, y: -20, scale: 1, width: 20, height: 20 });
+    layer2 = canvas.add_layer({parallax_multiplier: new Point (1.3, 1.2)});
+    fireball = layer1.add_sprite("./img/untitled.png", { x: 0, y: 0, scale: 0.5, width: 512, height: 512 });
+    fireball2 = layer2.add_sprite("./img/untitled2.png", { x: -20, y: -20, scale: 1, width: 20, height: 20 });
     // ***************************************
 
     // start interactions
     Interactions.start(layer1);
 
     // start app update loop
-    requestAnimationFrame(update_loop);
+    canvas.update();
+    requestAnimationFrame(update_loop); 
 }
 
 var FPS = 0;
@@ -36,12 +38,12 @@ function update_loop(delta) {
     var perSec = delta / 1000;
 
     // updates *******************************
-    //fireball.frame.x = 10 * perSec % 6;
+    fireball.frame.x = 10 * perSec % 6;
     fireball.update();
 
     canvas.position.x += 0.1;
     canvas.position.y += 0.1;
-    canvas.update();
+    canvas.render();
     // ***************************************
 
     // FPS counter

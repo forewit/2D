@@ -38,6 +38,7 @@
     };
 
     // PRIVATE VARIABLES
+    // https://keycode.info/
     var _tapDelay = 10; // delay before long touch
     var _start = 0;
     var _moving = false;
@@ -49,6 +50,7 @@
         Alt: 18,
         Meta: 91,
         Escape: 27,
+        Space: 32,
         A: 65,
         R: 82,
         S: 83,
@@ -74,6 +76,13 @@
             (e.keyCode == _keys.R && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey))) {
             console.log("Interupted page reload");
             e.preventDefault();
+        }
+
+        // Space
+        else if (e.keyCode == _keys.Space) {
+            console.log("Update canvas (space)");
+            e.preventDefault();
+            me.layer.canvas.update();
         }
     }
 
