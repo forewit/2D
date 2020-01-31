@@ -76,6 +76,10 @@ class Sprite {
 
         this.uv_x = this.size.x / this.image.width;
         this.uv_y = this.size.y / this.image.height;
+        this.uv_frame = new Point(
+            Math.floor(this.frame.x) * this.uv_x,
+            Math.floor(this.frame.y) * this.uv_y
+        );
 
         this.tex_buff = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.tex_buff);
@@ -118,15 +122,16 @@ class Sprite {
            
             // scale
             mat3.scale(this.objectMatrix, this.objectMatrix, [this.scale.x, this.scale.y]);
+
+            // frame
+            this.uv_frame.x = Math.floor(this.frame.x) * this.uv_x;
+            this.uv_frame.y = Math.floor(this.frame.y) * this.uv_y;
         }
     }
 
     render() {
         if (this.isLoaded) {
             let gl = this.gl;
-
-            let frame_x = Math.floor(this.frame.x) * this.uv_x;
-            let frame_y = Math.floor(this.frame.y) * this.uv_y;
 
             gl.useProgram(this.material.program);
 
@@ -139,7 +144,7 @@ class Sprite {
 
             gl.bindBuffer(gl.ARRAY_BUFFER, this.geo_buff);
             this.material.set("a_position");
-            this.material.set("u_frame", frame_x, frame_y);
+            this.material.set("u_frame", this.uv_frame.x, this.uv_frame.y);
             this.material.set("u_world", this.layer.worldSpaceMatrix);
             this.material.set("u_object", this.objectMatrix);
 
