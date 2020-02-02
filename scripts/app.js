@@ -21,7 +21,7 @@ function init() {
     // ***************************************
 
     // start interactions
-    Interactions.start(layer1);
+    Interactions.start(layer2);
 
     // start app update loop
     canvas.update();
@@ -32,7 +32,6 @@ var FPS = 0;
 var ticks = 0;
 var lastFPS = 0;
 
-
 function update_loop(delta) {
     requestAnimationFrame(update_loop);
     var perSec = delta / 1000;
@@ -41,8 +40,9 @@ function update_loop(delta) {
     fireball.frame.x = 10 * perSec % 6;
     fireball.update();
 
-    canvas.position.x += 0.1;
-    canvas.position.y += 0.1;
+    canvas.position.x += 0.05;
+    canvas.position.y += 0.05;
+    canvas.update();
     canvas.render();
     // ***************************************
 

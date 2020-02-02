@@ -33,23 +33,36 @@ class Layer {
         let intersections = [];
 
         // adjust for canvas position and canvas scale
-        var canvasPos = new Point(
-            this.canvas.position.x * this.parallax_multiplier.x * this.canvas.scale.x,
-            this.canvas.position.y * this.parallax_multiplier.y * this.canvas.scale.y
+        var offset = new Point(
+            (this.canvas.position.x * this.parallax_multiplier.x) / this.canvas.scale.x,
+            (this.canvas.position.y * this.parallax_multiplier.y) / this.canvas.scale.y
         );
+        var coords = new Point(p1.x - offset.x, p1.y - offset.y);
+        var coords2 = (p2) ? new Point(p2.x - offset.x, p2.y - offset.y) : undefined;
 
-        // adjust for sprite position and scale
+        // adjust for positions, scales, and parallax
         for (const i in this.sprites) {
             var sprite = this.sprites[i];
-
-            var spritePos = new Point(
-                canvasPos.x + sprite.position.x,
-                canvasPos.y + sprite.position.y
+            var size = new Point(
+                sprite.size.x * sprite.scale.x,
+                sprite.size.y * sprite.scale.y
             );
 
-            // check if p1 inside sprite
-
-            // check if p1-p2 rect contains sprite
+            if (coords2) {
+                var center = new Point(sprite.position.x - size.x, sprite.position.y - pos.y);
+                if (((center.x > coords.x && center.x < coords2.x) ||
+                    (center.x < coords.x && center.x > coords2.x)) &&
+                    ((center.y > coords.y && center.y < coords2.y) ||
+                        (center.y < coords.y && center.y > coords2.y))) {
+                    intersections.push(sprite);
+                    console.log("sprite in intersection box!");
+                }
+            } else if (coords.x > sprite.position.x && coords.x < sprite.position.x + size.x &&
+                coords.y > sprite.position.y && coords.y < sprite.position.y + size.y) {
+                intersections.push(sprite);
+            }
         }
+
+        return intersections;
     }
 }

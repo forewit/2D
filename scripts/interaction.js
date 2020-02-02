@@ -108,7 +108,7 @@
         e.preventDefault();
         e.stopPropagation();
 
-        // if pointer is on a selected object
+        // ***** if pointer is on a selected object *****
         // this._onItem = true
     }
 
@@ -116,13 +116,16 @@
         if (e.type == 'mousemove') {
             me.pointer = { x: e.clientX, y: e.clientY };
             if (_onItem) {
+                // ***** dragging items *****
                 // move items
                 console.log("moving item");
             } else if (_selectbox || (!_moving && (me.downKeys[_keys.Shift] || me.downKeys[_keys.Control]))) {
                 _selectbox = true;
+                // ***** shift(ctrl) + drag start *****
                 // draw selectbox
                 console.log("drawing selectbox");
             } else {
+                // ***** drag start *****
                 // pan
                 console.log("panning");
             }
@@ -142,15 +145,19 @@
             window.removeEventListener('mousemove', moveHandler);
             window.removeEventListener('mouseup', endHandler);
             if (_selectbox) {
+                // ***** shift(ctrl) + drag release *****
                 // add items in selectbox to selected
                 console.log("selecting items in selectbox");
             } else if (!_moving) {
                 if (!(me.downKeys[_keys.Shift] || me.downKeys[_keys.Control])) {
+                    // ***** click *****
                     me.selected = [];
-                    console.log("clearing selected");
+                    //console.log("clearing selected");
                 }
+                // ***** click or shift(ctrl) + click *****
                 // add item to selected
-                console.log("checking to add item to selected");
+                //console.log("checking to add item to selected");
+                console.log(me.layer.intersections(me.pointer), me.pointer);
             }
         } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.pointer.identifier) {
             window.removeEventListener('touchmove', moveHandler);
