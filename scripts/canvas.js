@@ -12,8 +12,7 @@ class Canvas {
 
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.defaultWorldSpaceMatrix = mat3.create();
-        this.position = new Point();
-        this.parallaxPosition = new Point();
+        this.position = new Point(20,20);
         this.scale = new Point(1, 1);
         this.layers = [];
     }
@@ -29,6 +28,32 @@ class Canvas {
         this.update();
 
         this.gl.viewport(0, 0, this.canvasElm.width, this.canvasElm.height);
+    }
+
+    zoom(mouse, scaleFactor) {
+
+        var point = new Point(
+            mouse.x * scaleFactor - this.position.x * scaleFactor,
+            mouse.y * scaleFactor - this.position.y * scaleFactor
+        );
+        // zoom
+        this.scale.x += scaleFactor;
+        this.scale.y += scaleFactor;
+
+        // translate
+        this.position.x -= point.x;
+        this.position.y -= point.y ;
+        /*
+        // zoom
+        this.scale.x += scaleFactor;
+        this.scale.y += scaleFactor;
+
+        // translate
+        this.position.x -= mouse.x * scaleFactor;
+        this.position.y -= mouse.y * scaleFactor;
+        */
+        // update
+        this.update();
     }
 
     add_layer(options = {}) {

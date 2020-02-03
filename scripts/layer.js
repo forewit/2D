@@ -40,7 +40,6 @@ class Layer {
         var coords = new Point(p1.x - offset.x, p1.y - offset.y);
         var coords2 = (p2) ? new Point(p2.x - offset.x, p2.y - offset.y) : undefined;
 
-        // adjust for positions, scales, and parallax
         for (const i in this.sprites) {
             var sprite = this.sprites[i];
             var size = new Point(

@@ -82,7 +82,6 @@
         else if (e.keyCode == _keys.Space) {
             console.log("Update canvas (space)");
             e.preventDefault();
-            me.layer.canvas.update();
         }
     }
 
@@ -153,11 +152,12 @@
                     // ***** click *****
                     me.selected = [];
                     //console.log("clearing selected");
+                    me.layer.canvas.zoom(new Point(me.pointer.x, me.pointer.y), 0.5);
                 }
                 // ***** click or shift(ctrl) + click *****
                 // add item to selected
                 //console.log("checking to add item to selected");
-                console.log(me.layer.intersections(me.pointer), me.pointer);
+                //console.log(me.layer.intersections(me.pointer), me.pointer);
             }
         } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.pointer.identifier) {
             window.removeEventListener('touchmove', moveHandler);
