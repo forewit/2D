@@ -152,7 +152,7 @@
                     // ***** click *****
                     me.selected = [];
                     //console.log("clearing selected");
-                    me.layer.canvas.zoom(new Point(me.pointer.x, me.pointer.y), 0.9);
+                    me.layer.canvas.zoom(new Point(me.pointer.x, me.pointer.y), 0.8);
                 }
                 // ***** click or shift(ctrl) + click *****
                 // add item to selected

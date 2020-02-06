@@ -31,13 +31,21 @@ class Canvas {
     }
 
     zoom(mouse, scaleFactor) {
-        var scaleDelta = scaleFactor*this.scale - this.scale;
+
+        this.position.x += mouse.x/(this.scale*scaleFactor) - mouse.x/this.scale;
+        this.position.y += mouse.y/(this.scale*scaleFactor) - mouse.y/this.scale;
+        
+        this.scale *= scaleFactor;
+
+        /*
+        var scaleDelta = scaleFactor * this.scale - this.scale;
         // translate
         this.position.x -= (mouse.x * scaleDelta - this.position.x * scaleDelta) / this.scale;
         this.position.y -= (mouse.y * scaleDelta - this.position.y * scaleDelta) / this.scale;
-        
+
         // scale
         this.scale *= scaleFactor;
+        */
     }
 
     add_layer(options = {}) {
@@ -58,15 +66,15 @@ class Canvas {
         for (const i in this.layers) {
             var layer = this.layers[i];
 
+            // scale
+            mat3.scale(layer.worldSpaceMatrix, this.defaultWorldSpaceMatrix, [this.scale, this.scale]);
+
             // translate
             mat3.translate(
                 layer.worldSpaceMatrix,
-                this.defaultWorldSpaceMatrix,
+                layer.worldSpaceMatrix,
                 [this.position.x * layer.parallax_multiplier.x, this.position.y * layer.parallax_multiplier.y]
             );
-
-            // scale
-            mat3.scale(layer.worldSpaceMatrix, layer.worldSpaceMatrix, [this.scale, this.scale]);
         }
     }
 
