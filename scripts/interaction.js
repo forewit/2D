@@ -22,6 +22,7 @@
             window.addEventListener('mousedown', startHandler, { passive: false });
             window.addEventListener('keydown', keydownHandler, { passive: false });
             window.addEventListener('keyup', keyupHandler);
+            window.addEventListener('wheel', wheelHandler);
         },
         stop: function () {
             me.layer = undefined;
@@ -30,6 +31,7 @@
             window.removeEventListener('mousedown', startHandler);
             window.removeEventListener('keydown', keydownHandler);
             window.removeEventListener('keyup', keyupHandler);
+            window.removeEventListener('wheel', wheelHandler);
         },
         setLayer: function (new_layer) {
             me.selected = [];
@@ -56,6 +58,14 @@
         S: 83,
         F5: 116,
     };
+
+    function wheelHandler(e) {
+        if (e.deltaY > 0) {
+            me.layer.canvas.zoom(new Point(e.clientX, e.clientY), 1.03);
+        } else {
+            me.layer.canvas.zoom(new Point(e.clientX, e.clientY), 0.97);
+        }
+    }
 
     function keydownHandler(e) {
         me.downKeys[e.keyCode] = true;
@@ -152,12 +162,11 @@
                     // ***** click *****
                     me.selected = [];
                     //console.log("clearing selected");
-                    me.layer.canvas.zoom(new Point(me.pointer.x, me.pointer.y), 0.8);
                 }
                 // ***** click or shift(ctrl) + click *****
                 // add item to selected
                 //console.log("checking to add item to selected");
-                //console.log(me.layer.intersections(me.pointer), me.pointer);
+                console.log(me.layer.intersections(me.pointer));
             }
         } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.pointer.identifier) {
             window.removeEventListener('touchmove', moveHandler);

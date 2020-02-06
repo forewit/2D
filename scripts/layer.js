@@ -5,7 +5,8 @@ class Layer {
         this.ID = GENERATE_ID(); // util.js
         this.sprites = [];
 
-        this.parallax_multiplier = ("parallax_multiplier" in options) ? options.parallax_multiplier : new Point(1, 1);
+        this.parallax = ("parallax" in options) ? options.parallax : new Point(1, 1);
+        this.parallax = ("parallax_scale" in options) ? options.parallax_scale : new Point(1, 1);
         this.fade_enabled = ("fade_enabled" in options) ? options.fade_enabled : false;
         this.fade_start = ("fade_start" in options) ? options.fade_start : 0;
         this.fade_end = ("fade_end" in options) ? options.fade_end : 0;
@@ -34,8 +35,8 @@ class Layer {
 
         // adjust for canvas position and canvas scale
         var offset = new Point(
-            (this.canvas.position.x * this.parallax_multiplier.x) / this.canvas.scale,
-            (this.canvas.position.y * this.parallax_multiplier.y) / this.canvas.scale
+            (this.canvas.position.x * this.parallax.x) / this.canvas.scale,
+            (this.canvas.position.y * this.parallax.y) / this.canvas.scale
         );
         var coords = new Point(p1.x - offset.x, p1.y - offset.y);
         var coords2 = (p2) ? new Point(p2.x - offset.x, p2.y - offset.y) : undefined;

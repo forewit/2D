@@ -31,21 +31,10 @@ class Canvas {
     }
 
     zoom(mouse, scaleFactor) {
-
         this.position.x += mouse.x/(this.scale*scaleFactor) - mouse.x/this.scale;
         this.position.y += mouse.y/(this.scale*scaleFactor) - mouse.y/this.scale;
         
         this.scale *= scaleFactor;
-
-        /*
-        var scaleDelta = scaleFactor * this.scale - this.scale;
-        // translate
-        this.position.x -= (mouse.x * scaleDelta - this.position.x * scaleDelta) / this.scale;
-        this.position.y -= (mouse.y * scaleDelta - this.position.y * scaleDelta) / this.scale;
-
-        // scale
-        this.scale *= scaleFactor;
-        */
     }
 
     add_layer(options = {}) {
@@ -73,7 +62,7 @@ class Canvas {
             mat3.translate(
                 layer.worldSpaceMatrix,
                 layer.worldSpaceMatrix,
-                [this.position.x * layer.parallax_multiplier.x, this.position.y * layer.parallax_multiplier.y]
+                [this.position.x * layer.parallax.x, this.position.y * layer.parallax.y]
             );
         }
     }
