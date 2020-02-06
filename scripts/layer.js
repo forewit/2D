@@ -34,8 +34,8 @@ class Layer {
 
         // adjust for canvas position and canvas scale
         var offset = new Point(
-            (this.canvas.position.x * this.parallax_multiplier.x) / this.canvas.scale.x,
-            (this.canvas.position.y * this.parallax_multiplier.y) / this.canvas.scale.y
+            (this.canvas.position.x * this.parallax_multiplier.x) / this.canvas.scale,
+            (this.canvas.position.y * this.parallax_multiplier.y) / this.canvas.scale
         );
         var coords = new Point(p1.x - offset.x, p1.y - offset.y);
         var coords2 = (p2) ? new Point(p2.x - offset.x, p2.y - offset.y) : undefined;
@@ -43,8 +43,8 @@ class Layer {
         for (const i in this.sprites) {
             var sprite = this.sprites[i];
             var size = new Point(
-                sprite.size.x * sprite.scale.x,
-                sprite.size.y * sprite.scale.y
+                sprite.size.x * sprite.scale,
+                sprite.size.y * sprite.scale
             );
 
             if (coords2) {

@@ -13,7 +13,7 @@ class Canvas {
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.defaultWorldSpaceMatrix = mat3.create();
         this.position = new Point();
-        this.scale = new Point(1,1);
+        this.scale = 1;
         this.layers = [];
     }
 
@@ -31,13 +31,13 @@ class Canvas {
     }
 
     zoom(mouse, scaleFactor) {
+        var scaleDelta = scaleFactor*this.scale - this.scale;
         // translate
-        this.position.x -= (mouse.x * scaleFactor - this.position.x * scaleFactor) / this.scale.x;
-        this.position.y -= (mouse.y * scaleFactor - this.position.y * scaleFactor) / this.scale.y;
+        this.position.x -= (mouse.x * scaleDelta - this.position.x * scaleDelta) / this.scale;
+        this.position.y -= (mouse.y * scaleDelta - this.position.y * scaleDelta) / this.scale;
         
         // scale
-        this.scale.x += scaleFactor;
-        this.scale.y += scaleFactor;
+        this.scale *= scaleFactor;
     }
 
     add_layer(options = {}) {
@@ -66,7 +66,7 @@ class Canvas {
             );
 
             // scale
-            mat3.scale(layer.worldSpaceMatrix, layer.worldSpaceMatrix, [this.scale.x, this.scale.y]);
+            mat3.scale(layer.worldSpaceMatrix, layer.worldSpaceMatrix, [this.scale, this.scale]);
         }
     }
 

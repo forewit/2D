@@ -45,12 +45,7 @@ class Sprite {
         if ("height" in options) { me.size.y = options.height * 1; }
         if ("x" in options) { me.position.x = options.x; }
         if ("y" in options) { me.position.y = options.y; }
-        if ("scale" in options) {
-            me.scale.x = options.scale;
-            me.scale.y = options.scale;
-        }
-        if ("scale_x" in options) { me.scale.x = options.scale_x; } // overrides scale
-        if ("scale_y" in options) { me.scale.y = options.scale_y; } // overrides scale
+        if ("scale" in options) { me.scale = options.scale; }
         if ("frame" in options) { me.frame = options.frame; }
 
         me.image.onload = function () {
@@ -121,7 +116,7 @@ class Sprite {
             mat3.translate(this.objectMatrix, mat3.identity, [this.position.x,this.position.y]);
            
             // scale
-            mat3.scale(this.objectMatrix, this.objectMatrix, [this.scale.x, this.scale.y]);
+            mat3.scale(this.objectMatrix, this.objectMatrix, [this.scale, this.scale]);
 
             // frame
             this.uv_frame.x = Math.floor(this.frame.x) * this.uv_x;
