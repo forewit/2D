@@ -62,7 +62,7 @@ class Canvas {
             mat3.translate(
                 layer.worldSpaceMatrix,
                 layer.worldSpaceMatrix,
-                [this.position.x * layer.parallax.x, this.position.y * layer.parallax.y]
+                [this.position.x * layer.parallax_multiplier.x, this.position.y * layer.parallax_multiplier.y]
             );
         }
     }
