@@ -55,8 +55,14 @@ class Canvas {
         for (const i in this.layers) {
             var layer = this.layers[i];
 
+            var scale = this.scale * layer.parallax_scale + layer.parallax_scale;
+
             // scale
-            mat3.scale(layer.worldSpaceMatrix, this.defaultWorldSpaceMatrix, [this.scale, this.scale]);
+            mat3.scale(
+                layer.worldSpaceMatrix, 
+                this.defaultWorldSpaceMatrix, 
+                [scale, scale]
+            );
 
             // translate
             mat3.translate(
