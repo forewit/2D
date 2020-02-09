@@ -60,10 +60,10 @@
     };
 
     function wheelHandler(e) {
-        if (e.deltaY > 0) {
-            me.layer.canvas.zoom(new Point(e.clientX, e.clientY), 1.03);
+        if (e.deltaY < 0) {
+            me.layer.canvas.zoom(new Point(e.clientX, e.clientY), 1.05);
         } else {
-            me.layer.canvas.zoom(new Point(e.clientX, e.clientY), 0.97);
+            me.layer.canvas.zoom(new Point(e.clientX, e.clientY), 0.95);
         }
     }
 
