@@ -58,7 +58,7 @@ class Canvas {
         for (const i in this.layers) {
             var layer = this.layers[i];
 
-            var scale = this.scale;//Math.pow(this.scale, layer.parallax_scale);// * layer.parallax_scale + layer.parallax_scale;
+            var scale = Math.pow(this.scale, layer.scale_multiplier);// * layer.parallax_scale + layer.parallax_scale;
 
             // scale
             mat3.scale(
