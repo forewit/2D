@@ -41,10 +41,9 @@ class Sprite {
         me.image = new Image();
         me.image.src = img_url;
 
-        if ("width" in options) { me.size.x = options.width * 1; }
-        if ("height" in options) { me.size.y = options.height * 1; }
         if ("x" in options) { me.position.x = options.x; }
         if ("y" in options) { me.position.y = options.y; }
+        if ("size" in options) { me.size = options.size; }
         if ("scale" in options) { me.scale = options.scale; }
         if ("frame" in options) { me.frame = options.frame; }
 
@@ -112,12 +111,14 @@ class Sprite {
 
     update() {
         if (this.isLoaded) {
-
             // scale
             mat3.scale(this.objectMatrix, mat3.identity, [this.scale, this.scale]);
 
             // translate
-            mat3.translate(this.objectMatrix, this.objectMatrix, [this.position.x,this.position.y]);
+            mat3.translate(
+                this.objectMatrix,
+                this.objectMatrix,
+                [this.position.x, this.position.y]);
 
             // frame
             this.uv_frame.x = Math.floor(this.frame.x) * this.uv_x;

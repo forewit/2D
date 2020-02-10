@@ -16,8 +16,10 @@ function init() {
     // create startup content ****************
     layer1 = canvas.add_layer();
     layer2 = canvas.add_layer({parallax_multiplier: new Point (0.9, 0.5), parallax_scale: 0.5});
-    fireball = layer1.add_sprite("./img/fireball.png", { x: 0, y: 0, scale: 1, width: 512, height: 512 });
-    fireball2 = layer2.add_sprite("./img/untitled2.png", { x: -20, y: -20, scale: 1, width: 20, height: 20 });
+    fireball = layer1.add_sprite("./img/fireball.png", { x: 0, y: 0, scale: 1, size: new Point(512, 512)});
+    fireball2 = layer2.add_sprite("./img/untitled2.png", { x: 0, y: 0, scale: 1, size: new Point(20, 20)});
+    fireball3 = layer2.add_sprite("./img/untitled2.png", { x: 512, y: 512, scale: 1, size: new Point(20, 20)});
+
     // ***************************************
 
     // start interactions

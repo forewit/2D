@@ -31,6 +31,9 @@ class Canvas {
     }
 
     zoom(mouse, scaleFactor) {
+        // move origin to mouse
+        // scale
+        // move origin back
         this.position.x += mouse.x/(this.scale*scaleFactor) - mouse.x/this.scale;
         this.position.y += mouse.y/(this.scale*scaleFactor) - mouse.y/this.scale;
         
@@ -55,7 +58,7 @@ class Canvas {
         for (const i in this.layers) {
             var layer = this.layers[i];
 
-            var scale = this.scale;// * layer.parallax_scale + layer.parallax_scale;
+            var scale = this.scale;//Math.pow(this.scale, layer.parallax_scale);// * layer.parallax_scale + layer.parallax_scale;
 
             // scale
             mat3.scale(
@@ -68,7 +71,7 @@ class Canvas {
             mat3.translate(
                 layer.worldSpaceMatrix,
                 layer.worldSpaceMatrix,
-                [this.position.x * layer.parallax_multiplier.x, this.position.y * layer.parallax_multiplier.y]
+                [this.position.x, this.position.y]
             );
         }
     }
