@@ -15,8 +15,9 @@ function init() {
 
     // create startup content ****************
     layer1 = canvas.add_layer();
-    layer2 = canvas.add_layer({offset_multiplier: new Point (0.9, 0.5), scale_multiplier: 1.5});
-    fireball = layer1.add_sprite("./img/fireball.png", { x: 0, y: 0, scale: 1, size: new Point(512, 512)});
+    layer2 = canvas.add_layer({depth: 1});
+    
+    fireball = layer1.add_sprite("./img/untitled.png", { x: 0, y: 0, scale: 1, size: new Point(256, 256)});
     corner1 = layer2.add_sprite("./img/untitled2.png", { x: 0, y: 0, scale: 1, size: new Point(20, 20)});
     corner2 = layer2.add_sprite("./img/untitled2.png", { x: canvas.canvasElm.width, y: canvas.canvasElm.height, scale: 1, size: new Point(-20, -20)});
     corner3 = layer2.add_sprite("./img/untitled2.png", { x: 0, y: canvas.canvasElm.height, scale: 1, size: new Point(20, -20)});

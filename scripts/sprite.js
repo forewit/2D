@@ -2,13 +2,14 @@ VS_01 = `
     attribute vec2 a_position;
     attribute vec2 a_texCoord;
 
+    uniform float u_depth;
     uniform mat3 u_world;
     uniform mat3 u_object;
     uniform vec2 u_frame;
 
     varying vec2 v_texCoord;
     void main(){
-        gl_Position = vec4( u_world * u_object * vec3(a_position, 1), 1);
+        gl_Position = vec4( u_world * u_object * vec3(a_position, 1) , 1);
         v_texCoord = a_texCoord + u_frame;
     }
 `;
@@ -144,6 +145,8 @@ class Sprite {
             this.material.set("u_frame", this.uv_frame.x, this.uv_frame.y);
             this.material.set("u_world", this.layer.worldSpaceMatrix);
             this.material.set("u_object", this.objectMatrix);
+            this.material.set("u_depth", this.layer.depth);
+
 
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
             gl.useProgram(null);

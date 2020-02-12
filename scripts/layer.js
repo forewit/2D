@@ -7,6 +7,7 @@ class Layer {
 
         this.offset_multiplier = ("offset_multiplier" in options) ? options.offset_multiplier : new Point(1, 1);
         // parallax scale must be > 0
+        this.depth = ("depth" in options) ? options.depth : 1;
         this.scale_multiplier = ("scale_multiplier" in options) ? options.scale_multiplier : 1;
         this.fade_enabled = ("fade_enabled" in options) ? options.fade_enabled : false;
         this.fade_start = ("fade_start" in options) ? options.fade_start : 0;
