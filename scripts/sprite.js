@@ -1,6 +1,6 @@
 VS_01 = `#version 300 es
-    in vec2 in_position;
-    in vec2 in_texCoord;
+    in vec2 a_position;
+    in vec2 a_texCoord;
 
     uniform float u_depth;
     uniform mat3 u_world;
@@ -9,8 +9,8 @@ VS_01 = `#version 300 es
 
     out vec2 texCoord;
     void main(){
-        gl_Position = vec4( u_world * u_object * vec3(in_position, 1) , 1);
-        texCoord = in_texCoord + u_frame;
+        gl_Position = vec4( u_world * u_object * vec3(a_position, 1) , 1);
+        texCoord = a_texCoord + u_frame;
     }
 `;
 
@@ -135,9 +135,9 @@ class Sprite {
             gl.bindTexture(gl.TEXTURE_2D, this.gl_tex);
             this.material.set("u_image", 0);
             gl.bindBuffer(gl.ARRAY_BUFFER, this.tex_buff);
-            this.material.set("in_texCoord");
+            this.material.set("a_texCoord");
             gl.bindBuffer(gl.ARRAY_BUFFER, this.geo_buff);
-            this.material.set("in_position");
+            this.material.set("a_position");
             this.material.set("u_frame", this.uv_frame.x, this.uv_frame.y);
             this.material.set("u_world", this.layer.worldSpaceMatrix);
             this.material.set("u_object", this.objectMatrix);
