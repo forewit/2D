@@ -34,18 +34,15 @@ class Sprite {
 
         me.isLoaded = false;
         me.material = new Material(me.gl, VS_01, FS_01);
-        me.frame = new Point();
-        me.position = new Point();
-        me.size = new Point(64, 64);
-        me.scale = new Point(1, 1);
         me.image = new Image();
         me.image.src = img_url;
 
+        me.size = ("size" in options) ? options.size : new Point(64, 64);
+        me.scale = ("scale" in options) ? options.scale : new Point(1, 1);
+        me.frame = ("frame" in options) ? options.frame : new Point();
+        me.position = ("position" in options) ? options.positions : new Point();
         if ("x" in options) { me.position.x = options.x; }
         if ("y" in options) { me.position.y = options.y; }
-        if ("size" in options) { me.size = options.size; }
-        if ("scale" in options) { me.scale = options.scale; }
-        if ("frame" in options) { me.frame = options.frame; }
 
         me.image.onload = function () {
             me.init();
