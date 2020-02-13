@@ -1,26 +1,27 @@
-VS_01 = `
-    attribute vec2 a_position;
-    attribute vec2 a_texCoord;
+VS_01 = `#version 300 es
+    in vec2 in_position;
+    in vec2 in_texCoord;
 
     uniform float u_depth;
     uniform mat3 u_world;
     uniform mat3 u_object;
     uniform vec2 u_frame;
 
-    varying vec2 v_texCoord;
+    out vec2 texCoord;
     void main(){
-        gl_Position = vec4( u_world * u_object * vec3(a_position, 1) , 1);
-        v_texCoord = a_texCoord + u_frame;
+        gl_Position = vec4( u_world * u_object * vec3(in_position, 1) , 1);
+        texCoord = in_texCoord + u_frame;
     }
 `;
 
-FS_01 = `
+FS_01 = `#version 300 es
     precision mediump float;
     uniform sampler2D u_image;
-    varying vec2 v_texCoord;
+    in vec2 texCoord;
+    out vec4 fragmentColor;
     
     void main(){
-        gl_FragColor = texture2D(u_image, v_texCoord);
+        fragmentColor = texture(u_image, texCoord);
     }
 `;
 
@@ -133,17 +134,14 @@ class Sprite {
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.gl_tex);
             this.material.set("u_image", 0);
-
             gl.bindBuffer(gl.ARRAY_BUFFER, this.tex_buff);
-            this.material.set("a_texCoord");
-
+            this.material.set("in_texCoord");
             gl.bindBuffer(gl.ARRAY_BUFFER, this.geo_buff);
-            this.material.set("a_position");
+            this.material.set("in_position");
             this.material.set("u_frame", this.uv_frame.x, this.uv_frame.y);
             this.material.set("u_world", this.layer.worldSpaceMatrix);
             this.material.set("u_object", this.objectMatrix);
             this.material.set("u_depth", this.layer.depth);
-
 
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
             gl.useProgram(null);
