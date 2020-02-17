@@ -11,7 +11,7 @@ class Canvas {
         }
 
         this.gl.clearColor(0.4, 0.6, 1.0, 1.0);
-        this.defaultWorldSpaceMatrix = mat3.create();
+        this.projectionMatrix = mat3.create();
         this.position = new Point();
         this.scale = 1;
         this.layers = [];
@@ -21,22 +21,19 @@ class Canvas {
         this.canvasElm.width = window.innerWidth;
         this.canvasElm.height = window.innerHeight;
 
-        // translate and scale to screen
-        mat3.translate(this.defaultWorldSpaceMatrix, mat3.identity, [-1, 1]);
-        mat3.scale(this.defaultWorldSpaceMatrix, this.defaultWorldSpaceMatrix, [2 / this.canvasElm.width, -2 / this.canvasElm.height]);
-
-        this.update();
+        this.projectionMatrix = mat3.make2DProjection(
+            this.canvasElm.width,
+            this.canvasElm.height
+        );
 
         this.gl.viewport(0, 0, this.canvasElm.width, this.canvasElm.height);
+        this.update();
     }
 
     zoom(mouse, scaleFactor) {
-        // move origin to mouse
-        // scale
-        // move origin back
-        this.position.x += mouse.x/(this.scale*scaleFactor) - mouse.x/this.scale;
-        this.position.y += mouse.y/(this.scale*scaleFactor) - mouse.y/this.scale;
-        
+        this.position.x += mouse.x / (this.scale * scaleFactor) - mouse.x / this.scale;
+        this.position.y += mouse.y / (this.scale * scaleFactor) - mouse.y / this.scale;
+
         this.scale *= scaleFactor;
     }
 
@@ -58,13 +55,11 @@ class Canvas {
         for (const i in this.layers) {
             var layer = this.layers[i];
 
-            var scale = Math.pow(this.scale, layer.scale_multiplier);// * layer.parallax_scale + layer.parallax_scale;
-
             // scale
             mat3.scale(
-                layer.worldSpaceMatrix, 
-                this.defaultWorldSpaceMatrix, 
-                [scale, scale]
+                layer.worldSpaceMatrix,
+                this.projectionMatrix,
+                [this.scale, this.scale]
             );
 
             // translate
