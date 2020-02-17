@@ -9,7 +9,7 @@ VS_01 = `#version 300 es
 
     out vec2 texCoord;
     void main(){
-        gl_Position = vec4( u_world * u_object * vec3(a_position, 1) , u_depth);
+        gl_Position = vec4((u_world * u_object * vec3(a_position, 1)).xy, u_depth, u_depth);
         texCoord = a_texCoord + u_frame;
     }
 `;
