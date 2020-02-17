@@ -57,7 +57,14 @@
         R: 82,
         S: 83,
         F5: 116,
+        Right: 39,
+        Left: 37,
+        Up: 38,
+        Down: 40,
+        PageDown: 34,
+        PageUp: 33,
     };
+
 
     function wheelHandler(e) {
         if (e.deltaY < 0) {
@@ -92,6 +99,30 @@
         else if (e.keyCode == _keys.Space) {
             console.log("Update canvas (space)");
             e.preventDefault();
+        }
+         // Right
+         else if (e.keyCode == _keys.Right) {
+            me.layer.canvas.position.x -= 10;
+        }
+        // Left
+        else if (e.keyCode == _keys.Left) {
+            me.layer.canvas.position.x += 10;
+        }
+        // Up
+        else if (e.keyCode == _keys.Up) {
+            me.layer.canvas.position.y += 10;
+        }
+        // Down
+        else if (e.keyCode == _keys.Down) {
+            me.layer.canvas.position.y -= 10;
+        }
+        // PageUp
+        else if (e.keyCode == _keys.PageUp) {
+            me.layer.canvas.scale *= 1.05;
+        }
+        // PageDown
+        else if (e.keyCode == _keys.PageDown) {
+            me.layer.canvas.scale *= 0.95;
         }
     }
 

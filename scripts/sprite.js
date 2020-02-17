@@ -9,15 +9,18 @@ VS_01 = `#version 300 es
 
     out vec2 texCoord;
     void main(){
-        gl_Position = vec4( u_world * u_object * vec3(a_position, 1) , 1);
+        gl_Position = vec4( u_world * u_object * vec3(a_position, 1) , u_depth);
         texCoord = a_texCoord + u_frame;
     }
 `;
 
 FS_01 = `#version 300 es
     precision mediump float;
-    uniform sampler2D u_image;
+
     in vec2 texCoord;
+
+    uniform sampler2D u_image;
+
     out vec4 fragmentColor;
     
     void main(){

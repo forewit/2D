@@ -1,13 +1,17 @@
 class Point {
-    constructor(x=0, y=0, z=0) {
+    constructor(x=0, y=0) {
         this.x=x;
         this.y=y;
-        this.z=z;
     }
 }
 
-function lerp(a, b, c) { 
+// lerp(0, 100, 0.5) == 50
+function lerp(a, b, c) {
     return a + c * (b - a);
+}
+// remap(20, 0, 100, 0, 1) == 0.2
+function remap(x, a1, a2, b1, b2) {
+    return b1 + (x - a1) / (a2 - a1) * (b2 - b1);
 }
 
 let mat3 = {};
@@ -99,3 +103,36 @@ mat3.translate = function(out, a, v) {
     out[8] = x * a02 + y * a12 + a22;
     return out;
 };
+
+mat3.rotate = function(out, a, rad) {
+    var a00 = a[0],
+        a01 = a[1],
+        a02 = a[2],
+        a10 = a[3],
+        a11 = a[4],
+        a12 = a[5],
+        a20 = a[6],
+        a21 = a[7],
+        a22 = a[8],
+        s = Math.sin(rad),
+        c = Math.cos(rad);
+    out[0] = c * a00 + s * a10;
+    out[1] = c * a01 + s * a11;
+    out[2] = c * a02 + s * a12;
+    out[3] = c * a10 - s * a00;
+    out[4] = c * a11 - s * a01;
+    out[5] = c * a12 - s * a02;
+    out[6] = a20;
+    out[7] = a21;
+    out[8] = a22;
+    return out;
+};
+
+mat3.make2DProjection = function (width, height) {
+    // Note: This matrix flips the Y axis so that 0 is at the top.
+    return [
+        2 / width, 0, 0,
+        0, -2 / height, 0,
+        -1, 1, 1
+    ];
+}
