@@ -125,14 +125,23 @@ class Sprite {
             mat3.translate(
                 this.objectMatrix,
                 this.objectMatrix,
-                [this.position.x - this.size.x / 2, 
-                    this.position.y - this.size.y / 2]);
+                [this.position.x, 
+                    this.position.y]
+            );
 
             // rotate
             mat3.rotate(
                 this.objectMatrix,
                 this.objectMatrix,
                 this.rotation
+            );
+
+            // Center
+            mat3.translate(
+                this.objectMatrix,
+                this.objectMatrix,
+                [-this.size.x / 2, 
+                    -this.size.y / 2]
             );
 
             // frame
