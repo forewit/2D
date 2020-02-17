@@ -29,6 +29,9 @@ class Layer {
         delete this.sprites[sprite.ID];
     }
 
+    /**
+     * TODO: intersections
+     */
     intersections(p1, p2) {
         let intersections = [];
 

@@ -208,6 +208,12 @@
             /////////////////////////
         }
     }
+    
+    /**
+     * TODO: interactions
+     * Panning
+     * selection (see outline shader)
+     */
 
     function copyTouch(touch) {
         return {

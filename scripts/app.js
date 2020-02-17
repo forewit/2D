@@ -15,9 +15,9 @@ function init() {
 
     // create startup content ****************
     layer1 = canvas.add_layer();
-    layer2 = canvas.add_layer({depth: 0.8});
+    layer2 = canvas.add_layer({depth: 1});
     
-    fireball = layer1.add_sprite("./img/untitled.png", { x: 0, y: 0, scale: 1, size: new Point(512, 512)});
+    fireball = layer1.add_sprite("./img/fireball.png", { x: 0, y: 0, scale: 1, size: new Point(512, 512)});
     corner1 = layer2.add_sprite("./img/untitled2.png", { x: 0, y: 0, scale: 1, size: new Point(20, 20)});
     corner2 = layer2.add_sprite("./img/untitled2.png", { x: canvas.canvasElm.width, y: canvas.canvasElm.height, scale: 1, size: new Point(-20, -20)});
     corner3 = layer2.add_sprite("./img/untitled2.png", { x: 0, y: canvas.canvasElm.height, scale: 1, size: new Point(20, -20)});
@@ -43,7 +43,7 @@ function update_loop(delta) {
     // updates *******************************
     fireball.frame.x = 10 * perSec % 6;
     fireball.scale -= 0.001;
-    //fireball.rotation += 0.001;
+    fireball.rotation += 0.001;
     fireball.position.x += 1;
     fireball.update();
 

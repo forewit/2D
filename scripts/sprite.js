@@ -1,3 +1,10 @@
+/**
+ * TODO: shaders
+ * outline shader ---> highlights edges
+ * fog shader ---> fog of war
+ * lights ---> torch, global, etc.
+ */
+
 VS_01 = `#version 300 es
     in vec2 a_position;
     in vec2 a_texCoord;

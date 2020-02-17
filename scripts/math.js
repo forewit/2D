@@ -136,3 +136,11 @@ mat3.make2DProjection = function (width, height) {
         -1, 1, 1
     ];
 }
+
+/**
+ * TODO: create more efficient Matrix math:
+ * 
+ * Rotation ---> mat2 + Center offset
+ * Translate ---> mat2
+ * Scale ---> mat2
+ */
