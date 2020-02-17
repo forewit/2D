@@ -114,19 +114,20 @@ class Sprite {
 
     update() {
         if (this.isLoaded) {
-            // scale
-            mat3.scale(
-                this.objectMatrix, 
-                mat3.identity, 
-                [this.scale, this.scale]
-            );
 
             // translate
             mat3.translate(
                 this.objectMatrix,
+                mat3.identity,
+                [this.position.x,
+                this.position.y]
+            );
+
+            // scale
+            mat3.scale(
                 this.objectMatrix,
-                [this.position.x, 
-                    this.position.y]
+                this.objectMatrix,
+                [this.scale, this.scale]
             );
 
             // rotate
@@ -140,8 +141,8 @@ class Sprite {
             mat3.translate(
                 this.objectMatrix,
                 this.objectMatrix,
-                [-this.size.x / 2, 
-                    -this.size.y / 2]
+                [-this.size.x / 2,
+                -this.size.y / 2]
             );
 
             // frame
