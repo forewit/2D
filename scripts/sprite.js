@@ -44,6 +44,7 @@ class Sprite {
 
         me.size = ("size" in options) ? options.size : new Point(64, 64);
         me.scale = ("scale" in options) ? options.scale : new Point(1, 1);
+        me.rotation = ("rotation" in options) ? options.rotation : 0;
         me.frame = ("frame" in options) ? options.frame : new Point();
         me.position = ("position" in options) ? options.positions : new Point();
         if ("x" in options) { me.position.x = options.x; }
@@ -114,13 +115,24 @@ class Sprite {
     update() {
         if (this.isLoaded) {
             // scale
-            mat3.scale(this.objectMatrix, mat3.identity, [this.scale, this.scale]);
+            mat3.scale(
+                this.objectMatrix, 
+                mat3.identity, 
+                [this.scale, this.scale]
+            );
 
             // translate
             mat3.translate(
                 this.objectMatrix,
                 this.objectMatrix,
                 [this.position.x, this.position.y]);
+
+            // rotate
+            mat3.rotate(
+                this.objectMatrix,
+                this.objectMatrix,
+                this.rotation
+            );
 
             // frame
             this.uv_frame.x = Math.floor(this.frame.x) * this.uv_x;

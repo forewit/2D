@@ -42,7 +42,8 @@ function update_loop(delta) {
 
     // updates *******************************
     //fireball.frame.x = 10 * perSec % 6;
-    fireball.update();
+    corner2.rotation += 0.001;
+    corner2.update();
 
     canvas.update();
     canvas.render();
