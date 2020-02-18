@@ -1,6 +1,6 @@
 /**
  * TODO: shaders
- * outline shader ---> highlights edges
+ * outline shader ---> highlights edges https://blogs.love2d.org/content/let-it-glow-dynamically-adding-outlines-characters#code
  * fog shader ---> fog of war
  * lights ---> torch, global, etc.
  */

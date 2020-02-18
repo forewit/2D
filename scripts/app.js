@@ -41,10 +41,10 @@ function update_loop(delta) {
     var perSec = delta / 1000;
 
     // updates *******************************
-    fireball.frame.x = 10 * perSec % 6;
-    fireball.scale -= 0.001;
-    fireball.rotation += 0.001;
-    fireball.position.x += 1;
+    //fireball.frame.x = 10 * perSec % 6;
+    //fireball.scale -= 0.001;
+    //fireball.rotation += 0.001;
+    //fireball.position.x += 1;
     fireball.update();
 
     canvas.update();
