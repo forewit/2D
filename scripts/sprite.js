@@ -27,11 +27,27 @@ FS_01 = `#version 300 es
     in vec2 texCoord;
 
     uniform sampler2D u_image;
+    uniform vec2 u_stepSize;
 
     out vec4 fragmentColor;
-    
+
+    vec4 outline(){
+        float alpha = 4.0*texture( u_image, texCoord ).a;
+        alpha -= texture( u_image, texCoord + vec2( u_stepSize.x, 0.0 ) ).a;
+        alpha -= texture( u_image, texCoord + vec2( -u_stepSize.x, 0.0 ) ).a;
+        alpha -= texture( u_image, texCoord + vec2( 0.0, u_stepSize.y ) ).a;
+        alpha -= texture( u_image, texCoord + vec2( 0.0, -u_stepSize.y ) ).a;
+
+        return vec4(1.0, 1.0, 1.0, alpha);
+    }
+
     void main(){
-        fragmentColor = texture(u_image, texCoord);
+        vec4 textureCol = texture(u_image, texCoord);
+        if (textureCol.a == 1.0) {
+            fragmentColor = textureCol;
+        } else {
+            fragmentColor = outline();
+        }
     }
 `;
 
@@ -121,7 +137,6 @@ class Sprite {
 
     update() {
         if (this.isLoaded) {
-
             // translate
             mat3.translate(
                 this.objectMatrix,
@@ -129,21 +144,18 @@ class Sprite {
                 [this.position.x,
                 this.position.y]
             );
-
             // scale
             mat3.scale(
                 this.objectMatrix,
                 this.objectMatrix,
                 [this.scale, this.scale]
             );
-
             // rotate
             mat3.rotate(
                 this.objectMatrix,
                 this.objectMatrix,
                 this.rotation
             );
-
             // Center
             mat3.translate(
                 this.objectMatrix,
@@ -151,7 +163,6 @@ class Sprite {
                 [-this.size.x / 2,
                 -this.size.y / 2]
             );
-
             // frame
             this.uv_frame.x = Math.floor(this.frame.x) * this.uv_x;
             this.uv_frame.y = Math.floor(this.frame.y) * this.uv_y;
@@ -161,7 +172,6 @@ class Sprite {
     render() {
         if (this.isLoaded) {
             let gl = this.gl;
-
             gl.useProgram(this.material.program);
 
             gl.activeTexture(gl.TEXTURE0);
@@ -175,6 +185,7 @@ class Sprite {
             this.material.set("u_world", this.layer.worldSpaceMatrix);
             this.material.set("u_object", this.objectMatrix);
             this.material.set("u_depth", this.layer.depth);
+            this.material.set("u_stepSize", 10/this.size.x, 10/this.size.y);
 
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
             gl.useProgram(null);
