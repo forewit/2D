@@ -69,7 +69,7 @@ class Sprite {
         me.scale = ("scale" in options) ? options.scale : new Point(1, 1);
         me.rotation = ("rotation" in options) ? options.rotation : 0;
         me.frame = ("frame" in options) ? options.frame : new Point();
-        me.position = ("position" in options) ? options.positions : new Point();
+        me.position = ("position" in options) ? options.position : new Point();
         if ("x" in options) { me.position.x = options.x; }
         if ("y" in options) { me.position.y = options.y; }
 
