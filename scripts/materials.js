@@ -1,4 +1,4 @@
-import gl from "./gl";
+import { gl } from "./gl.js";
 
 const VS_01 = `#version 300 es
 in vec2 a_position;

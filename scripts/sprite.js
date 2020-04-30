@@ -1,5 +1,5 @@
-import materials from "./materials.js";
-import gl from "./gl.js";
+import { materials } from "./materials.js";
+import { gl } from "./gl.js";
 
 export class Sprite {
     constructor(ID, URL) {

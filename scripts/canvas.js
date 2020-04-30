@@ -1,7 +1,6 @@
 // imports
 import * as utils from "./utils.js";
-import gl from "./gl.js";
-import elm from "./gl.js";
+import { gl, elm } from "./gl.js";
 import { Camera } from "./camera.js";
 import { Layer } from "./layer.js";
 
