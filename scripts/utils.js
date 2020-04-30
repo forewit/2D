@@ -11,27 +11,6 @@ export function generate_ID() {
 }
 
 /**
- * Creates an array of 6 points that describe the two
- * triangles that make up a rectangle
- * 
- * @param {Number} x X component
- * @param {Number} y Y component
- * @param {Number} w Width
- * @param {Number} h Height
- * @returns {Float32Array} a new rectangle array
- */
-export function createRectArray(x = 0, y = 0, w = 1, h = 1) {
-    return new Float32Array([
-        x, y,
-        x + w, y,
-        x, y + h,
-        x, y + h,
-        x + w, y,
-        x + w, y + h
-    ]);
-}
-
-/**
  * Linear interpolation function
  * Example: lerp(0, 100, 0.5) == 50
  * 

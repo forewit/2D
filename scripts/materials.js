@@ -1,7 +1,36 @@
-export class Material {
-    constructor(gl, vs, fs) {
-        this.gl = gl;
+import gl from "./gl";
 
+const VS_01 = `#version 300 es
+in vec2 a_position;
+in vec2 a_texCoord;
+
+uniform float u_depth;
+uniform mat3 u_world;
+uniform mat3 u_object;
+uniform vec2 u_frame;
+
+out vec2 texCoord;
+void main(){
+	gl_Position = vec4((u_world * u_object * vec3(a_position, 1)).xy, u_depth, u_depth);
+	texCoord = a_texCoord + u_frame;
+}`;
+
+const FS_01 = `#version 300 es
+precision mediump float;
+
+in vec2 texCoord;
+
+uniform sampler2D u_image;
+uniform vec2 u_stepSize;
+
+out vec4 fragmentColor;
+
+void main(){
+	fragmentColor = texture(u_image, texCoord);
+}`;
+		
+class Material {
+    constructor(vs, fs) {
         let vsShader = this.getShader(vs, gl.VERTEX_SHADER);
         let fsShader = this.getShader(fs, gl.FRAGMENT_SHADER);
 
@@ -28,7 +57,6 @@ export class Material {
     }
 
     gatherParameters() {
-        let gl = this.gl;
 		let isUniform = 0;
 		
 		this.parameters = {};
@@ -59,7 +87,6 @@ export class Material {
     }
 
     set(name, a, b, c, d, e){
-		let gl = this.gl;
 		if(name in this.parameters){
 			let param = this.parameters[name];
 			if(param.uniform){
@@ -91,7 +118,6 @@ export class Material {
     }
     
     getShader(script, type) {
-        let gl = this.gl;
         var output = gl.createShader(type);
         gl.shaderSource(output, script);
         gl.compileShader(output);
@@ -102,5 +128,11 @@ export class Material {
         }
 
         return output;
-    }
+	}
+	
+	destroy() {}
 }
+
+export let materials = {
+	default: new Material(VS_01, FS_01)
+};
