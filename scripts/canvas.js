@@ -47,21 +47,34 @@ const FS_01 = `#version 300 es
 	} else if ( typeof exports === 'object' ) {
 		module.exports = factory(root);
 	} else {
-		root.canvas = factory(root);
+		root.Canvas = factory(root);
 	}
 })(typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : this, function (window) {
 
 	'use strict';
 
-	// Create canvas
-	let canvas = document.createElement("canvas");
-	let gl = canvas.getContext("webgl2");
-	gl.clearColor(0.4, 0.6, 1.0, 1.0);
+    class Canvas {
+        constructor() {
+            this.elm = document.createElement("canvas");
+            this.gl = canvas.getContext("webgl2")
 
-    let test = new Material(gl, VS_01, FS_01);
+            if (!(this.gl instanceof WebGL2RenderingContext)) alert("webgl2 disabled");
 
+            this.layers = [];
+            this.materials = [];
+            this.assets = [];
+            this.cameras = [];
+            
+            // Add camera and set this.active_camera_ID
+            // add layer and set this.active_layer_ID
+            // add default materials
 
+        }
 
-    return { utils, Material };
+        resize(w, h) {}
 
+        render() {}
+    }
+
+    return Canvas;
 });
