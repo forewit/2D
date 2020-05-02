@@ -4,12 +4,14 @@ import { gl, elm } from "./gl.js";
 import { Camera } from "./camera.js";
 import { Layer } from "./layer.js";
 
-class Canvas {
+export class Canvas {
     constructor() {
         this.layers = [];
         this.active_layer_ID = this.addLayer();
         this.cameras = [];
         this.active_camera_ID = this.addCamera();
+        this.update = false;
+        this.resize();
     }
 
     addCamera() {
@@ -29,7 +31,13 @@ class Canvas {
         return delete this.layers[ID];
     }
 
-    resize(w, h) { }
+    resize() {
+        elm.width = window.innerWidth;
+        elm.height = window.innerHeight;
+        gl.viewport(0, 0, elm.width, elm.height);
+
+        //TODO: update camera projection matrix
+    }
 
     render() { }
 }

@@ -81,12 +81,10 @@ canvas {
     display: inline-block;
     bottom: 20px;
     right: 20px;
-    padding: 10px 20px;
-    background: rgb(40%,60%,100%);
-    border-radius: 20px;
-    box-shadow: 
-        -6px -6px 9px 0 rgba(121, 166, 255, 1),
-        6px 6px 9px 0 rgba(0,0,0, 0.3);
+    padding: 5px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 6px 6px 9px 0 rgba(0,0,0, 0.3);
 }
 
 #loader {
@@ -102,20 +100,49 @@ canvas {
     width: 60px;
     height: 60px;
     animation: spin 2s linear infinite;
-  }
+}
   
-  @keyframes spin {
+@keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
-.veritcal-menu {
+.menu-a {
     position: fixed;
-    display: none;
-    left: 20px;
-    top: 20px;
-    padding: 5px;
+    top: 0;
+    left: 0;    
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    max-width: calc(100vw - 56px);
+    margin: 20px;
+    padding: 8px;
     background: white;
     border-radius: 5px;
     box-shadow: 6px 6px 9px 0 rgba(0,0,0, 0.3);
 }
+
+.menu-b {
+    position: fixed;
+    bottom: 0;
+    left: 0;    
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    max-width: calc(100vw - 56px);
+    margin: 20px;
+    padding: 8px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 6px 6px 9px 0 rgba(0,0,0, 0.3);
+}
+
+.chat-box {
+    background: white;
+    border-radius: 5px;
+    box-shadow: 6px 6px 9px 0 rgba(0,0,0, 0.3);
+}
+
+/* TODO: add @media for smaller screens.
+This should also update the HTML merge the
+menus into one. */
