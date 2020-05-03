@@ -8,7 +8,7 @@ export class Layer {
         this.opacity = 1.0;
     }
 
-    addSprite(URL, material) {
+    addSprite(URL) {
         let ID = utils.generate_ID();
         this.sprites[ID] = new Sprite(ID, URL);
         return ID;

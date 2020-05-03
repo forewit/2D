@@ -7,9 +7,9 @@ import { Layer } from "./layer.js";
 export class Canvas {
     constructor() {
         this.layers = [];
-        this.active_layer_ID = this.addLayer();
+        this.active_layer_ID;
         this.cameras = [];
-        this.active_camera_ID = this.addCamera();
+        this.active_camera_ID;
         this.resize();
     }
 

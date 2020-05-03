@@ -24,7 +24,7 @@ export class Sprite {
             me.material.buffers[URL] = { sprites: [] };
             me.material.buffers[URL].sprites[ID] = me;
             me.material.buffers[URL].count = 1;
-            me.material.buffers[URL].image = new image();
+            me.material.buffers[URL].image = new Image();
             me.material.buffers[URL].image.src = URL;
 
             me.material.buffers[URL].image.onload = function () {
@@ -70,11 +70,12 @@ export class Sprite {
         let me = this
         me.isLoaded = false;
         delete me.material.buffers[me.URL].sprites[me.ID];
-        if (me.material.buffers[me.URL].count-- <= 0) {
+        if (--me.material.buffers[me.URL].count <= 0) {
             gl.deleteBuffer(me.material.buffers[me.URL].tex_buff);
             gl.deleteBuffer(me.material.buffers[me.URL].geo_buff);
             gl.deleteTexture(me.material.buffers[me.URL].gl_tex);
             delete me.material.buffers[me.URL];
+            console.log("removed material");
         }
     }
 }

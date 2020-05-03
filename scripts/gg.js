@@ -1,4 +1,5 @@
 import { Canvas } from "./canvas.js";
+import { materials } from "./materials.js";
 
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -7,18 +8,22 @@ import { Canvas } from "./canvas.js";
 }(this, (function (exports) {
     'use strict';
 
-    function start(canvas) {
-        let map1 = new Canvas();
-    }
+    // using for debug
+    let canvas = new Canvas();
+    let layerID = canvas.addLayer();
+    let spriteID = canvas.layers[layerID].addSprite("./img/untitled2.png");
+
+    exports.canvas = canvas;
+    exports.materials = materials;
+    // ***************
 
     function load(URL) { };
+    function newCanvas() { }
     function save() { };
-    function command(command) { };
 
-    exports.start = start;
     exports.load = load;
     exports.save = save;
-    exports.command = command;
+    exports.newCanvas = newCanvas;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 })));
