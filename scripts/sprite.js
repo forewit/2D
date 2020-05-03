@@ -75,7 +75,6 @@ export class Sprite {
             gl.deleteBuffer(me.material.buffers[me.URL].geo_buff);
             gl.deleteTexture(me.material.buffers[me.URL].gl_tex);
             delete me.material.buffers[me.URL];
-            console.log("removed material");
         }
     }
 }

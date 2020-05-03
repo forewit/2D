@@ -132,7 +132,35 @@ class Material {
 	}
 
 	render() {
+		gl.useProgram(this.program);
 
+		for (const i in this.buffers) {
+			let buffer = this.buffers[i];
+
+			gl.activeTexture(gl.TEXTURE0);
+			gl.bindTexture(gl.TEXTURE_2D, buffer.gl_tex);
+			this.set("u_image", 0);
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer.tex_buff);
+			this.set("a_texCoord");
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer.geo_buff);
+			this.set("a_position");
+
+			for (const j in buffer.sprites) {
+				let sprite = buffer.sprites[j];
+
+				/* ********** Set frame, world mat, object mat, ect. **********
+				this.set("u_frame", sprite.uv_frame.x, sprite.uv_frame.y);
+				this.set("u_world", this.layer.worldSpaceMatrix);
+				this.set("u_object", this.objectMatrix);
+				this.set("u_depth", this.layer.depth);
+				this.set("u_stepSize", 10/this.size.x, 10/this.size.y);
+				* *************************************************************/
+
+				gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
+			}
+		}
+
+		gl.useProgram(null);
 	}
 	
 	destroy() {}
