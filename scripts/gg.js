@@ -7,9 +7,18 @@ import { Canvas } from "./canvas.js";
 }(this, (function (exports) {
     'use strict';
 
+    function start(canvas) {
+        let map1 = new Canvas();
+    }
 
+    function load(URL) { };
+    function save() { };
+    function command(command) { };
 
-    exports.Canvas = Canvas;
+    exports.start = start;
+    exports.load = load;
+    exports.save = save;
+    exports.command = command;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 })));

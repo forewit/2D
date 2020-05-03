@@ -10,7 +10,6 @@ export class Canvas {
         this.active_layer_ID = this.addLayer();
         this.cameras = [];
         this.active_camera_ID = this.addCamera();
-        this.update = false;
         this.resize();
     }
 
@@ -39,5 +38,18 @@ export class Canvas {
         //TODO: update camera projection matrix
     }
 
-    render() { }
+    render() { 
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+
+        for (const i in this.layers) {
+            for (const j in this.layers[i].sprites) {
+                this.layers[i].sprites[j].render();
+                
+            }
+        }
+
+        this.gl.flush();
+    }
 }

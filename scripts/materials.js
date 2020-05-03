@@ -31,6 +31,7 @@ void main(){
 		
 class Material {
     constructor(vs, fs) {
+		this.buffers = [];
         let vsShader = this.getShader(vs, gl.VERTEX_SHADER);
         let fsShader = this.getShader(fs, gl.FRAGMENT_SHADER);
 
@@ -128,6 +129,10 @@ class Material {
         }
 
         return output;
+	}
+
+	render() {
+
 	}
 	
 	destroy() {}

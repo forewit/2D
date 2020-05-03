@@ -15,52 +15,66 @@ export class Sprite {
         this.opacity = 1;
         this.frame_x = 0;
         this.frame_y = 0;
-        this.image = new image();
-        this.image.src = URL;
+        this.URL = URL;
 
         let me = this;
-        me.image.onload = function () {
-            me.w = image.width;
-            me.h = image.height;
+        if (me.material.buffers[URL]) {
+            me.material.buffers[URL].count++;
+        } else {
+            me.material.buffers[URL] = { sprites: [] };
+            me.material.buffers[URL].sprites[ID] = me;
+            me.material.buffers[URL].count = 1;
+            me.material.buffers[URL].image = new image();
+            me.material.buffers[URL].image.src = URL;
 
-            gl.useProgram(me.material.program);
+            me.material.buffers[URL].image.onload = function () {
+                let w = me.material.buffers[URL].image.width;
+                let h = me.material.buffers[URL].image.height;
 
-            me.gl_tex = gl.createTexture();
-            gl.bindTexture(gl.TEXTURE_2D, me.gl_tex);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST); // maybe change to bilinear?
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); // maybe change to bilinear
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.image);
-            gl.bindTexture(gl.TEXTURE_2D, null);
+                gl.useProgram(me.material.program);
 
-            let rect = new Float32Array([
-                0, 0,
-                me.w, 0,
-                0, me.h,
-                0, me.h,
-                me.w, 0,
-                me.w, me.h
-            ]);
+                me.material.buffers[URL].gl_tex = gl.createTexture();
+                gl.bindTexture(gl.TEXTURE_2D, me.material.buffers[URL].gl_tex);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST); //TODO: maybe change to bilinear?
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); //TODO:  maybe change to bilinear
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, me.material.buffers[URL].image);
+                gl.bindTexture(gl.TEXTURE_2D, null);
 
-            me.tex_buff = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, me.tex_buff);
-            gl.bufferData(gl.ARRAY_BUFFER, rect, gl.STATIC_DRAW);
+                let rect = new Float32Array([
+                    0, 0,
+                    w, 0,
+                    0, h,
+                    0, h,
+                    w, 0,
+                    w, h
+                ]);
 
-            me.geo_buff = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, me.geo_buff);
-            gl.bufferData(gl.ARRAY_BUFFER, rect, gl.STATIC_DRAW);
+                me.material.buffers[URL].tex_buff = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, me.material.buffers[URL].tex_buff);
+                gl.bufferData(gl.ARRAY_BUFFER, rect, gl.STATIC_DRAW);
 
-            gl.useProgram(null);
-            me.isLoaded = true;
+                me.material.buffers[URL].geo_buff = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, me.material.buffers[URL].geo_buff);
+                gl.bufferData(gl.ARRAY_BUFFER, rect, gl.STATIC_DRAW);
+
+                gl.useProgram(null);
+            }
         }
+        this.isLoaded = true;
+        me.material.buffers[URL].sprites[ID] = me;
     }
 
     destroy() {
-        this.isLoaded = false;
-        gl.deleteBuffer(this.tex_buff);
-        gl.deleteBuffer(this.geo_buff);
-        gl.deleteTexture(this.gl_tex);
-        gl.deleteProgram(this.material.program)
+        let me = this
+        me.isLoaded = false;
+        delete me.material.buffers[me.URL].sprites[me.ID];
+        if (me.material.buffers[me.URL].count-- <= 0) {
+            gl.deleteBuffer(me.material.buffers[me.URL].tex_buff);
+            gl.deleteBuffer(me.material.buffers[me.URL].geo_buff);
+            gl.deleteTexture(me.material.buffers[me.URL].gl_tex);
+            delete me.material.buffers[me.URL];
+        }
     }
 }
