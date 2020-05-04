@@ -134,8 +134,8 @@ class Material {
 	render() {
 		gl.useProgram(this.program);
 
-		for (const i in this.buffers) {
-			let buffer = this.buffers[i];
+		for (const url in this.buffers) {
+			let buffer = this.buffers[url];
 
 			gl.activeTexture(gl.TEXTURE0);
 			gl.bindTexture(gl.TEXTURE_2D, buffer.gl_tex);
@@ -145,8 +145,8 @@ class Material {
 			gl.bindBuffer(gl.ARRAY_BUFFER, buffer.geo_buff);
 			this.set("a_position");
 
-			for (const j in buffer.sprites) {
-				let sprite = buffer.sprites[j];
+			for (const id in buffer.sprites) {
+				let sprite = buffer.sprites[id];
 
 				/* ********** Set frame, world mat, object mat, ect. **********
 				this.set("u_frame", sprite.uv_frame.x, sprite.uv_frame.y);
