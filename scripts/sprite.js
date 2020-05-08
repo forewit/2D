@@ -50,10 +50,17 @@ export class Sprite {
                     w, 0,
                     w, h
                 ]);
-
+                let rect2 = new Float32Array([
+                    0, 0,
+                    1, 0,
+                    0, 1,
+                    0, 1,
+                    1, 0,
+                    1, 1
+                ]);
                 me.material.buffers[URL].tex_buff = gl.createBuffer();
                 gl.bindBuffer(gl.ARRAY_BUFFER, me.material.buffers[URL].tex_buff);
-                gl.bufferData(gl.ARRAY_BUFFER, rect, gl.STATIC_DRAW);
+                gl.bufferData(gl.ARRAY_BUFFER, rect2, gl.STATIC_DRAW);
 
                 me.material.buffers[URL].geo_buff = gl.createBuffer();
                 gl.bindBuffer(gl.ARRAY_BUFFER, me.material.buffers[URL].geo_buff);

@@ -3,6 +3,7 @@ import * as utils from "./utils.js";
 import { gl, elm } from "./gl.js";
 import { Camera } from "./camera.js";
 import { Layer } from "./layer.js";
+import { materials } from "./materials.js";
 
 export class Canvas {
     constructor() {
@@ -10,6 +11,9 @@ export class Canvas {
         this.active_layer_ID;
         this.cameras = [];
         this.active_camera_ID;
+
+        gl.clearColor(0.4, 0.6, 1.0, 1.0);
+        
         this.resize();
     }
 
@@ -35,21 +39,18 @@ export class Canvas {
         elm.height = window.innerHeight;
         gl.viewport(0, 0, elm.width, elm.height);
 
-        //TODO: update camera projection matrix
+        for (const id in this.cameras) { this.cameras[ID].resize(); }
     }
 
     render() { 
         gl.clear(gl.COLOR_BUFFER_BIT);
-        this.gl.enable(this.gl.BLEND);
-        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-        for (const i in this.layers) {
-            for (const j in this.layers[i].sprites) {
-                this.layers[i].sprites[j].render();
-                
-            }
+        for (const mat in materials) {
+            materials[mat].render();
         }
 
-        this.gl.flush();
+        gl.flush();
     }
 }

@@ -111,7 +111,7 @@ canvas {
     position: fixed;
     top: 0;
     left: 0;    
-    display: grid;
+    display: none;/*grid*/
     gap: 10px;
     grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
     max-width: calc(100vw - 56px);
@@ -126,7 +126,7 @@ canvas {
     position: fixed;
     bottom: 0;
     left: 0;    
-    display: grid;
+    display: none;/*grid*/
     gap: 10px;
     grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
     max-width: calc(100vw - 56px);

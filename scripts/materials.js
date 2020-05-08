@@ -1,5 +1,8 @@
 import { gl } from "./gl.js";
 
+// Example
+// https://jsfiddle.net/dyvfg5n0/
+
 const VS_01 = `#version 300 es
 in vec2 a_position;
 in vec2 a_texCoord;
@@ -28,7 +31,37 @@ out vec4 fragmentColor;
 void main(){
 	fragmentColor = texture(u_image, texCoord);
 }`;
-		
+
+const SPRITE_VS = `#version 300 es
+in vec3 a_position;
+in vec2 a_texcoord;
+
+uniform mat4 u_matrix;
+
+out vec2 v_texcoord;
+
+void main() {
+  // Multiply the position by the matrix.
+  gl_Position = u_matrix * vec4(a_position, 1);
+
+  // Pass the texcoord to the fragment shader.
+  v_texcoord = a_texcoord;
+}`;
+
+const SPRITE_FS = `#version 300 es
+precision highp float;
+
+// Passed in from the vertex shader.
+in vec2 v_texcoord;
+
+uniform sampler2D u_texture;
+
+out vec4 outColor;
+
+void main() {
+   outColor = texture(u_texture, v_texcoord);
+}`;
+
 class Material {
     constructor(vs, fs) {
 		this.buffers = [];
@@ -133,20 +166,39 @@ class Material {
 
 	render() {
 		gl.useProgram(this.program);
-
+		
 		for (const url in this.buffers) {
 			let buffer = this.buffers[url];
-
 			gl.activeTexture(gl.TEXTURE0);
 			gl.bindTexture(gl.TEXTURE_2D, buffer.gl_tex);
-			this.set("u_image", 0);
+			this.set("u_texture", 0);
 			gl.bindBuffer(gl.ARRAY_BUFFER, buffer.tex_buff);
-			this.set("a_texCoord");
+			this.set("a_texcoord");
 			gl.bindBuffer(gl.ARRAY_BUFFER, buffer.geo_buff);
 			this.set("a_position");
+			console.log(buffer);
 
 			for (const id in buffer.sprites) {
 				let sprite = buffer.sprites[id];
+
+				// get projection matrix from camera
+				// translate
+				// rotate
+				// scale
+				// set u_matrix
+				let matrix = glMatrix.mat4.create();
+				glMatrix.mat4.fromTranslation(matrix, [sprite.x, sprite.y, sprite.z])
+				
+				let aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+				let fov = 90;
+				let zNear = 1;
+				let zFar = 200;
+				let projMat = glMatrix.mat4.create();
+				glMatrix.mat4.perspective(projMat, fov, aspect, zNear, zFar);
+
+				glMatrix.mat4.multiply(matrix, projMat, matrix);
+				
+				this.set("u_matrix", matrix);
 
 				/* ********** Set frame, world mat, object mat, ect. **********
 				this.set("u_frame", sprite.uv_frame.x, sprite.uv_frame.y);
@@ -167,5 +219,5 @@ class Material {
 }
 
 export let materials = {
-	default: new Material(VS_01, FS_01)
+	default: new Material(SPRITE_VS, SPRITE_FS)
 };

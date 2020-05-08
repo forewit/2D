@@ -12,7 +12,12 @@ import { materials } from "./materials.js";
     let canvas = new Canvas();
     let layerID = canvas.addLayer();
     let spriteID = canvas.layers[layerID].addSprite("./img/untitled2.png");
+    let cameraID = canvas.addCamera();
 
+    window.setTimeout(function() {
+        canvas.render();
+    }, 1000);
+    
     exports.canvas = canvas;
     exports.materials = materials;
     // ***************
