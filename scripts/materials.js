@@ -1,51 +1,21 @@
-import { gl } from "./gl.js";
+import { gl, elm } from "./gl.js";
+import { m3 } from "./utils.js";
 
 // Example
 // https://jsfiddle.net/dyvfg5n0/
 
-const VS_01 = `#version 300 es
-in vec2 a_position;
-in vec2 a_texCoord;
-
-uniform float u_depth;
-uniform mat3 u_world;
-uniform mat3 u_object;
-uniform vec2 u_frame;
-
-out vec2 texCoord;
-void main(){
-	gl_Position = vec4((u_world * u_object * vec3(a_position, 1)).xy, u_depth, u_depth);
-	texCoord = a_texCoord + u_frame;
-}`;
-
-const FS_01 = `#version 300 es
-precision mediump float;
-
-in vec2 texCoord;
-
-uniform sampler2D u_image;
-uniform vec2 u_stepSize;
-
-out vec4 fragmentColor;
-
-void main(){
-	fragmentColor = texture(u_image, texCoord);
-}`;
-
 const SPRITE_VS = `#version 300 es
-in vec3 a_position;
+in vec2 a_position;
 in vec2 a_texcoord;
 
-uniform mat4 u_matrix;
+uniform mat3 u_matrix;
+uniform vec2 u_frame;
 
 out vec2 v_texcoord;
 
 void main() {
-  // Multiply the position by the matrix.
-  gl_Position = u_matrix * vec4(a_position, 1);
-
-  // Pass the texcoord to the fragment shader.
-  v_texcoord = a_texcoord;
+  gl_Position = vec4(u_matrix * vec3(a_position, 1), 1);
+  v_texcoord = a_texcoord + u_frame;
 }`;
 
 const SPRITE_FS = `#version 300 es
@@ -164,8 +134,8 @@ class Material {
         return output;
 	}
 
-	render() {
-		gl.useProgram(this.program);
+	render(camera) {
+		gl.useProgram(this.program);		
 		
 		for (const url in this.buffers) {
 			let buffer = this.buffers[url];
@@ -176,42 +146,28 @@ class Material {
 			this.set("a_texcoord");
 			gl.bindBuffer(gl.ARRAY_BUFFER, buffer.geo_buff);
 			this.set("a_position");
-			console.log(buffer);
+
+			let w = buffer.image.width;
+			let h = buffer.image.height;
 
 			for (const id in buffer.sprites) {
 				let sprite = buffer.sprites[id];
 
-				// get projection matrix from camera
-				// translate
-				// rotate
-				// scale
-				// set u_matrix
-				let matrix = glMatrix.mat4.create();
-				glMatrix.mat4.fromTranslation(matrix, [sprite.x, sprite.y, sprite.z])
-				
-				let aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-				let fov = 90;
-				let zNear = 1;
-				let zFar = 200;
-				let projMat = glMatrix.mat4.create();
-				glMatrix.mat4.perspective(projMat, fov, aspect, zNear, zFar);
+				let translation = m3.translation(sprite.x - camera.x, sprite.y - camera.y);
+				// rotation
+				// scaling
+				let projection = m3.projection();
+				let matrix = m3.multiply(projection, translation);
 
-				glMatrix.mat4.multiply(matrix, projMat, matrix);
-				
 				this.set("u_matrix", matrix);
-
-				/* ********** Set frame, world mat, object mat, ect. **********
-				this.set("u_frame", sprite.uv_frame.x, sprite.uv_frame.y);
-				this.set("u_world", this.layer.worldSpaceMatrix);
-				this.set("u_object", this.objectMatrix);
-				this.set("u_depth", this.layer.depth);
-				this.set("u_stepSize", 10/this.size.x, 10/this.size.y);
-				* *************************************************************/
+				this.set("u_frame", 
+					sprite.frame_x * sprite.frame_w / w,
+					sprite.frame_y * sprite.frame_h / h
+				);
 
 				gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
 			}
 		}
-
 		gl.useProgram(null);
 	}
 	

@@ -2,6 +2,17 @@ import { materials } from "./materials.js";
 import { gl } from "./gl.js";
 
 export class Sprite {
+    static createRectArray(w = 1, h = 1) {
+        return new Float32Array([
+            0, 0,
+            w, 0,
+            0, h,
+            0, h,
+            w, 0,
+            w, h
+        ]);
+    }
+
     constructor(ID, URL) {
         this.ID = ID;
         this.isLoaded = false;
@@ -13,6 +24,8 @@ export class Sprite {
         this.scale_y = 1;
         this.rotation = 0;
         this.opacity = 1;
+        this.frame_w = 512;
+        this.frame_h = 512;
         this.frame_x = 0;
         this.frame_y = 0;
         this.URL = URL;
@@ -42,29 +55,27 @@ export class Sprite {
                 gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, me.material.buffers[URL].image);
                 gl.bindTexture(gl.TEXTURE_2D, null);
 
-                let rect = new Float32Array([
-                    0, 0,
-                    w, 0,
-                    0, h,
-                    0, h,
-                    w, 0,
-                    w, h
-                ]);
-                let rect2 = new Float32Array([
-                    0, 0,
-                    1, 0,
-                    0, 1,
-                    0, 1,
-                    1, 0,
-                    1, 1
-                ]);
                 me.material.buffers[URL].tex_buff = gl.createBuffer();
                 gl.bindBuffer(gl.ARRAY_BUFFER, me.material.buffers[URL].tex_buff);
-                gl.bufferData(gl.ARRAY_BUFFER, rect2, gl.STATIC_DRAW);
+                gl.bufferData(
+                    gl.ARRAY_BUFFER,
+                    Sprite.createRectArray(
+                        me.frame_w / w,
+                        me.frame_h / h
+                    ),
+                    gl.STATIC_DRAW
+                );
 
                 me.material.buffers[URL].geo_buff = gl.createBuffer();
                 gl.bindBuffer(gl.ARRAY_BUFFER, me.material.buffers[URL].geo_buff);
-                gl.bufferData(gl.ARRAY_BUFFER, rect, gl.STATIC_DRAW);
+                gl.bufferData(
+                    gl.ARRAY_BUFFER,
+                    Sprite.createRectArray(
+                        me.frame_w,
+                        me.frame_h
+                    ),
+                    gl.STATIC_DRAW
+                );
 
                 gl.useProgram(null);
             }

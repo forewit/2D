@@ -8,9 +8,7 @@ import { materials } from "./materials.js";
 export class Canvas {
     constructor() {
         this.layers = [];
-        this.active_layer_ID;
         this.cameras = [];
-        this.active_camera_ID;
 
         gl.clearColor(0.4, 0.6, 1.0, 1.0);
         
@@ -38,17 +36,15 @@ export class Canvas {
         elm.width = window.innerWidth;
         elm.height = window.innerHeight;
         gl.viewport(0, 0, elm.width, elm.height);
-
-        for (const id in this.cameras) { this.cameras[ID].resize(); }
     }
 
-    render() { 
+    render(camera_ID) { 
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-        for (const mat in materials) {
-            materials[mat].render();
+        for (const mat in materials) { 
+            materials[mat].render(this.cameras[camera_ID]); 
         }
 
         gl.flush();

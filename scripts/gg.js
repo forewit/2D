@@ -15,7 +15,7 @@ import { materials } from "./materials.js";
     let cameraID = canvas.addCamera();
 
     window.setTimeout(function() {
-        canvas.render();
+        canvas.render(cameraID);
     }, 1000);
     
     exports.canvas = canvas;
