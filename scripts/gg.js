@@ -17,6 +17,10 @@ import { materials } from "./materials.js";
     window.setTimeout(function() {
         canvas.render(cameraID);
     }, 1000);
+
+    window.addEventListener("resize", function () {
+        canvas.resize();
+    });
     
     exports.canvas = canvas;
     exports.materials = materials;

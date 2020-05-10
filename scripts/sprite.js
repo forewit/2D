@@ -15,7 +15,7 @@ export class Sprite {
 
     constructor(ID, URL) {
         this.ID = ID;
-        this.isLoaded = false;
+        this.enabled = false;
         this.material = materials.default;
         this.x = 0;
         this.y = 0;
@@ -80,13 +80,13 @@ export class Sprite {
                 gl.useProgram(null);
             }
         }
-        this.isLoaded = true;
-        me.material.buffers[URL].sprites[ID] = me;
+        this.enabled = true;
+        this.material.buffers[URL].sprites[ID] = this;
     }
 
     destroy() {
         let me = this
-        me.isLoaded = false;
+        me.enabled = false;
         delete me.material.buffers[me.URL].sprites[me.ID];
         if (--me.material.buffers[me.URL].count <= 0) {
             gl.deleteBuffer(me.material.buffers[me.URL].tex_buff);

@@ -1,5 +1,5 @@
 import { gl, elm } from "./gl.js";
-import { m3 } from "./utils.js";
+import { m3 } from "./math.js";
 
 // Example
 // https://jsfiddle.net/dyvfg5n0/
@@ -25,11 +25,12 @@ precision highp float;
 in vec2 v_texcoord;
 
 uniform sampler2D u_texture;
+uniform float u_opacity; 
 
 out vec4 outColor;
 
 void main() {
-   outColor = texture(u_texture, v_texcoord);
+   outColor = texture(u_texture, v_texcoord) * vec4(1,1,1,u_opacity);
 }`;
 
 class Material {
@@ -50,12 +51,10 @@ class Material {
             }
 
             this.gatherParameters();
-
             gl.detachShader(this.program, vsShader);
             gl.detachShader(this.program, fsShader);
             gl.deleteShader(vsShader);
             gl.deleteShader(fsShader);
-            
             gl.useProgram(null);
         }
     }
@@ -154,12 +153,18 @@ class Material {
 				let sprite = buffer.sprites[id];
 
 				let translation = m3.translation(sprite.x - camera.x, sprite.y - camera.y);
-				// rotation
-				// scaling
+				let center = m3.translation(-sprite.frame_w / 2,-sprite.frame_h / 2);
+				let rotation = m3.rotation(sprite.rotation);
+				let scaling = m3.scaling(sprite.scale_x, sprite.scale_y);
 				let projection = m3.projection();
+
 				let matrix = m3.multiply(projection, translation);
+				matrix = m3.multiply(matrix, rotation);
+				matrix = m3.multiply(matrix, center);
+				matrix = m3.multiply(matrix, scaling);
 
 				this.set("u_matrix", matrix);
+				this.set("u_opacity", sprite.opacity);
 				this.set("u_frame", 
 					sprite.frame_x * sprite.frame_w / w,
 					sprite.frame_y * sprite.frame_h / h

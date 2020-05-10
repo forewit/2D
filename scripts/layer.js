@@ -1,4 +1,4 @@
-import * as utils from "./utils.js";
+import * as utils from "./math.js";
 import { Sprite } from "./sprite.js";
 
 export class Layer {
