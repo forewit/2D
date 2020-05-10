@@ -11,16 +11,26 @@ import { materials } from "./materials.js";
     // using for debug
     let canvas = new Canvas();
     let layerID = canvas.addLayer();
-    let spriteID = canvas.layers[layerID].addSprite("./img/untitled2.png");
-    let cameraID = canvas.addCamera();
+    let spriteID = canvas.layers[layerID].addSprite("./img/fireball.png");
+    let fireball = canvas.layers[layerID].sprites[spriteID];
+    fireball.x = 100;
+    fireball.y = 100;
 
-    window.setTimeout(function() {
-        canvas.render(cameraID);
-    }, 1000);
 
     window.addEventListener("resize", function () {
         canvas.resize();
     });
+
+    function loop(delta) {
+        requestAnimationFrame(loop);
+        var perSec = delta / 1000;
+
+        fireball.rotation +=0.01;
+        fireball.frame_x = Math.floor(10 * perSec % 6);
+        
+        canvas.render();
+    }
+    requestAnimationFrame(loop);
     
     exports.canvas = canvas;
     exports.materials = materials;

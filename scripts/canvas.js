@@ -1,26 +1,21 @@
 // imports
 import * as utils from "./math.js";
 import { gl, elm } from "./gl.js";
-import { Camera } from "./camera.js";
 import { Layer } from "./layer.js";
 import { materials } from "./materials.js";
 
 export class Canvas {
     constructor() {
         this.layers = [];
-        this.cameras = [];
+        this.camera = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
+
         gl.clearColor(0.4, 0.6, 1.0, 1.0);
-            
         this.resize();
     }
-
-    addCamera() {
-        let ID = utils.generate_ID();
-        this.cameras[ID] = new Camera(ID);
-        if (!this.active_camera_ID) this.active_camera_ID = ID;
-        return ID;
-    }
-    removeCamera(ID) { return delete this.cameras[ID]; }
 
     addLayer() {
         let ID = utils.generate_ID();
@@ -45,7 +40,7 @@ export class Canvas {
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
         for (const mat in materials) { 
-            materials[mat].render(this.cameras[this.active_camera_ID]); 
+            materials[mat].render(this.camera); 
         }
 
         gl.flush();

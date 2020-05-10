@@ -138,6 +138,8 @@ class Material {
 		
 		for (const url in this.buffers) {
 			let buffer = this.buffers[url];
+			if (!buffer.count) return;
+
 			gl.activeTexture(gl.TEXTURE0);
 			gl.bindTexture(gl.TEXTURE_2D, buffer.gl_tex);
 			this.set("u_texture", 0);

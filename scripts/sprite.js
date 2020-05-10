@@ -35,12 +35,13 @@ export class Sprite {
             me.material.buffers[URL].count++;
         } else {
             me.material.buffers[URL] = { sprites: [] };
-            me.material.buffers[URL].sprites[ID] = me;
-            me.material.buffers[URL].count = 1;
             me.material.buffers[URL].image = new Image();
             me.material.buffers[URL].image.src = URL;
 
             me.material.buffers[URL].image.onload = function () {
+                me.material.buffers[URL].sprites[ID] = me;
+                me.material.buffers[URL].count = 1;
+                
                 let w = me.material.buffers[URL].image.width;
                 let h = me.material.buffers[URL].image.height;
 
