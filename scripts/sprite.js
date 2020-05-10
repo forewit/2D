@@ -20,8 +20,8 @@ export class Sprite {
         this.x = 0;
         this.y = 0;
         this.z = 0;
-        this.scale_x = 1;
-        this.scale_y = 1;
+        this.scale_x = 0.5;
+        this.scale_y = 0.5;
         this.rotation = 0;
         this.opacity = 1;
         this.frame_w = 512;
@@ -41,7 +41,7 @@ export class Sprite {
             me.material.buffers[URL].image.onload = function () {
                 me.material.buffers[URL].sprites[ID] = me;
                 me.material.buffers[URL].count = 1;
-                
+
                 let w = me.material.buffers[URL].image.width;
                 let h = me.material.buffers[URL].image.height;
 

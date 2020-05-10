@@ -155,7 +155,7 @@ class Material {
 				let sprite = buffer.sprites[id];
 
 				let translation = m3.translation(sprite.x - camera.x, sprite.y - camera.y);
-				let center = m3.translation(-sprite.frame_w / 2,-sprite.frame_h / 2);
+				let center = m3.translation(-sprite.frame_w * sprite.scale_x / 2,-sprite.frame_h * sprite.scale_y / 2);
 				let rotation = m3.rotation(sprite.rotation);
 				let scaling = m3.scaling(sprite.scale_x, sprite.scale_y);
 				let projection = m3.projection();
