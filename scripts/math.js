@@ -1,4 +1,3 @@
-import { elm } from "./gl.js";
 /**
  * Creates a psudo random unique identifier string
  * 
@@ -93,10 +92,10 @@ export let m3 = {
             0, 0, 1,
         ];
     },
-    projection: function() {
+    projection: function(w, h) {
         return [
-			2 / elm.width, 0, 0,
-			0, -2 / elm.height, 0,
+			2 / w, 0, 0,
+			0, -2 / h, 0,
 			-1, 1, 1
 		];
     }
