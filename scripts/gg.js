@@ -8,33 +8,55 @@ import { materials } from "./materials.js";
 }(this, (function (exports) {
     'use strict';
 
-    // using for debug
+    // using for debug ****************************
     let canvas = new Canvas();
-    let layerID = canvas.addLayer();
-    let spriteID = canvas.layers[layerID].addSprite("./img/fireball.png");
-    let fireball = canvas.layers[layerID].sprites[spriteID];
-    fireball.x = 100;
-    fireball.y = 100;
-
-
     window.addEventListener("resize", function () {
         canvas.resize();
     });
+
+    let layerID = canvas.addLayer();
+    var sprites = [];
+    for (var i = 0; i < 10; i++) {
+        let spriteID = canvas.layers[layerID].addSprite("./img/fireball.png");
+        let sprite = canvas.layers[layerID].sprites[spriteID];
+        sprite.x = Math.floor(Math.random() * Math.floor(512));
+        sprite.y = Math.floor(Math.random() * Math.floor(512));
+        sprite.rotation = Math.random() * 3.14;
+        sprite.scale_x = Math.random();
+        sprite.scale_y = sprite.scale_x;
+        sprites.push(sprite);
+    }
+
+    var FPS = 0;
+    var ticks = 0;
+    var lastFPS = 0;
+    var fps_div = document.getElementById("fps");
 
     function loop(delta) {
         requestAnimationFrame(loop);
         var perSec = delta / 1000;
 
-        fireball.rotation +=0.01;
-        fireball.frame_x = Math.floor(10 * perSec % 6);
-        
+        for (const sprite in sprites) {
+            sprites[sprite].rotation += 0.01;
+            sprites[sprite].frame_x = Math.floor(10 * perSec % 6);
+        }
         canvas.render();
+
+        // FPS counter
+        var now = Date.now();
+        if (now - lastFPS >= 1000) {
+            lastFPS = now;
+            FPS = ticks;
+            ticks = 0;
+        }
+        ticks++;
+        fps_div.innerHTML = FPS;
     }
     requestAnimationFrame(loop);
-    
+
     exports.canvas = canvas;
     exports.materials = materials;
-    // ***************
+    // **********************************************
 
     function load(URL) { };
     function newCanvas() { }

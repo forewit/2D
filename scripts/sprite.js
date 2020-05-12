@@ -24,8 +24,8 @@ export class Sprite {
         this.scale_y = 0.5;
         this.rotation = 0;
         this.opacity = 1;
-        this.frame_w = 512;
-        this.frame_h = 512;
+        this.frame_w = 64;
+        this.frame_h = 64;
         this.frame_x = 0;
         this.frame_y = 0;
         this.URL = URL;

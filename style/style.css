@@ -62,20 +62,6 @@ canvas {
     background: black;
 }
 
-#log {
-    position: fixed;
-    display: inline-block;
-    min-width: 40px;
-    bottom: 20px;
-    left: 20px;
-    padding: 10px 20px;
-    background: rgb(40%,60%,100%);
-    border-radius: 20px;
-    box-shadow: 
-        -6px -6px 9px 0 rgba(121, 166, 255, 1),
-        6px 6px 9px 0 rgba(0,0,0, 0.3);
-}
-
 #fps {
     position: fixed;
     display: inline-block;
