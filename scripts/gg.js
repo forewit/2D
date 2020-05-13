@@ -16,7 +16,7 @@ import { materials } from "./materials.js";
 
     let layerID = canvas.addLayer();
     var sprites = [];
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 4; i++) {
         let spriteID = canvas.layers[layerID].addSprite("./img/fireball.png");
         let sprite = canvas.layers[layerID].sprites[spriteID];
         sprite.x = Math.floor(Math.random() * Math.floor(512));
@@ -37,7 +37,7 @@ import { materials } from "./materials.js";
         var perSec = delta / 1000;
 
         for (const sprite in sprites) {
-            sprites[sprite].rotation += 0.01;
+            sprites[sprite].rotation = 0.2 * perSec;
             sprites[sprite].frame_x = Math.floor(10 * perSec % 6);
         }
         canvas.render();
