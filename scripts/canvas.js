@@ -41,7 +41,6 @@ export class Canvas {
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
         // OPTION #1: render by material
-        
         for (const mat in materials) { 
             materials[mat].render(this.camera); 
         } 
@@ -51,7 +50,9 @@ export class Canvas {
             let layer = this.layers[layerID];
             for (const spriteID in layer.sprites) {
                 let sprite = layer.sprites[spriteID];
-                if (!sprite.enabled) continue;
+
+                if (!sprite.enabled) break;
+
                 let material = sprite.material;
                 let buffer = material.buffers[sprite.URL]
                 

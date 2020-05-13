@@ -33,6 +33,9 @@ export class Sprite {
         let me = this;
         if (me.material.buffers[URL]) {
             me.material.buffers[URL].count++;
+            
+            me.material.buffers[URL].sprites[ID] = me;
+            me.enabled = true;
         } else {
             me.material.buffers[URL] = { sprites: [] };
             me.material.buffers[URL].image = new Image();
@@ -79,10 +82,11 @@ export class Sprite {
                 );
 
                 gl.useProgram(null);
+
+                me.material.buffers[URL].sprites[ID] = me;
+                me.enabled = true;
             }
         }
-        this.enabled = true;
-        this.material.buffers[URL].sprites[ID] = this;
     }
 
     destroy() {
