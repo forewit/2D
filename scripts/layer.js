@@ -23,4 +23,11 @@ export class Layer {
             this.removeSprite(this.sprites[i].ID);
         }
     }
+
+    render(camera) {
+        for (const ID in this.sprites) {
+            // pass in layer features like opacity
+            this.sprites[ID].render(camera, this.opacity);
+        }
+    }
 }

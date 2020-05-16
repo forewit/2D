@@ -1,5 +1,6 @@
 import { materials } from "./materials.js";
-import { gl } from "./gl.js";
+import { gl, elm } from "./gl.js";
+import { m3 } from "./math.js";
 
 export class Sprite {
     static createRectArray(w = 1, h = 1) {
@@ -33,8 +34,6 @@ export class Sprite {
         let me = this;
         if (me.material.buffers[URL]) {
             me.material.buffers[URL].count++;
-            
-            me.material.buffers[URL].sprites[ID] = me;
             me.enabled = true;
         } else {
             me.material.buffers[URL] = { sprites: [] };
@@ -83,7 +82,6 @@ export class Sprite {
 
                 gl.useProgram(null);
 
-                me.material.buffers[URL].sprites[ID] = me;
                 me.enabled = true;
             }
         }
@@ -99,5 +97,47 @@ export class Sprite {
             gl.deleteTexture(me.material.buffers[me.URL].gl_tex);
             delete me.material.buffers[me.URL];
         }
+    }
+
+    render(camera, layerOpacity) {
+        if (!this.enabled) return;
+
+        let buffer = this.material.buffers[this.URL]
+
+        // render sprite
+        gl.useProgram(this.material.program);
+
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, buffer.gl_tex);
+        this.material.set("u_texture", 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer.tex_buff);
+        this.material.set("a_texcoord");
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer.geo_buff);
+        this.material.set("a_position");
+
+        let w = buffer.image.width;
+        let h = buffer.image.height;
+
+        let translation = m3.translation(this.x - camera.x, this.y - camera.y);
+        let center = m3.translation(-this.frame_w * this.scale_x / 2, -this.frame_h * this.scale_y / 2);
+        let rotation = m3.rotation(this.rotation);
+        let scaling = m3.scaling(this.scale_x, this.scale_y);
+        let projection = m3.projection(elm.width, elm.height);
+
+        let matrix = m3.multiply(projection, translation);
+        matrix = m3.multiply(matrix, rotation);
+        matrix = m3.multiply(matrix, center);
+        matrix = m3.multiply(matrix, scaling);
+
+        this.material.set("u_matrix", matrix);
+        this.material.set("u_opacity", this.opacity * layerOpacity);
+        this.material.set("u_frame",
+            this.frame_x * this.frame_w / w,
+            this.frame_y * this.frame_h / h
+        );
+
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
+
+        gl.useProgram(null);
     }
 }
