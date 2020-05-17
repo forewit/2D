@@ -16,7 +16,6 @@ export class Sprite {
 
     constructor(ID, URL) {
         this.ID = ID;
-        this.enabled = false;
         this.material = materials.default;
         this.URL = URL;
         this.x = 0;
@@ -32,24 +31,18 @@ export class Sprite {
         this.frame_y = 0;
 
         let me = this;
-        if (me.material.buffers[URL]) {
+        if (me.material.buffers[URL] && me.material.buffers[URL].count) {
             me.material.buffers[URL].count++;
-            me.enabled = true;
         } else {
-            me.material.buffers[URL] = {
-                sprites: [],
-                image: new Image(),
-                count: 1
-            };
+            me.material.buffers[URL] = { image: new Image() };
             me.material.buffers[URL].image.onload = function () { me.setup_buffers(); };
             me.material.buffers[URL].image.src = URL;
         }
     }
 
-    setup_buffers(URL) {
-        
+    setup_buffers() {
         let buffer = this.material.buffers[this.URL];
-
+        
         let w = buffer.image.width;
         let h = buffer.image.height;
 
@@ -87,13 +80,12 @@ export class Sprite {
         );
 
         gl.useProgram(null);
+        buffer.count = 1;
         this.enabled = true;
     }
 
     destroy() {
         let me = this
-        me.enabled = false;
-        delete me.material.buffers[me.URL].sprites[me.ID];
         if (--me.material.buffers[me.URL].count <= 0) {
             gl.deleteBuffer(me.material.buffers[me.URL].tex_buff);
             gl.deleteBuffer(me.material.buffers[me.URL].geo_buff);
@@ -103,8 +95,7 @@ export class Sprite {
     }
 
     render(camera, layerOpacity) {
-        console.log(this.enabled);
-        if (!this.enabled) return;
+        if (!this.material.buffers[this.URL].count) return;
 
         let buffer = this.material.buffers[this.URL]
 
