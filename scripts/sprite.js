@@ -31,7 +31,7 @@ export class Sprite {
         this.frame_y = 0;
 
         let me = this;
-        if (me.material.buffers[URL] && me.material.buffers[URL].count) {
+        if (me.material.buffers[URL]) {
             me.material.buffers[URL].count++;
         } else {
             me.material.buffers[URL] = { image: new Image() };
@@ -41,6 +41,7 @@ export class Sprite {
     }
 
     setup_buffers() {
+        console.log("here");
         let buffer = this.material.buffers[this.URL];
         
         let w = buffer.image.width;
@@ -55,6 +56,7 @@ export class Sprite {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST); //TODO: maybe change to bilinear?
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); //TODO:  maybe change to bilinear
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, buffer.image);
+        gl.generateMipmap(gl.TEXTURE_2D);
         gl.bindTexture(gl.TEXTURE_2D, null);
 
         buffer.tex_buff = gl.createBuffer();
@@ -81,16 +83,14 @@ export class Sprite {
 
         gl.useProgram(null);
         buffer.count = 1;
-        this.enabled = true;
     }
 
     destroy() {
-        let me = this
-        if (--me.material.buffers[me.URL].count <= 0) {
-            gl.deleteBuffer(me.material.buffers[me.URL].tex_buff);
-            gl.deleteBuffer(me.material.buffers[me.URL].geo_buff);
-            gl.deleteTexture(me.material.buffers[me.URL].gl_tex);
-            delete me.material.buffers[me.URL];
+        if (--this.material.buffers[this.URL].count <= 0) {
+            gl.deleteBuffer(this.material.buffers[this.URL].tex_buff);
+            gl.deleteBuffer(this.material.buffers[this.URL].geo_buff);
+            gl.deleteTexture(this.material.buffers[this.URL].gl_tex);
+            delete this.material.buffers[this.URL];
         }
     }
 
