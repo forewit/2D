@@ -19,16 +19,17 @@ import { materials } from "./materials.js";
     for (var i = 0; i < 4; i++) {
         let spriteID = canvas.layers[layerID].addSprite("./img/fireball.png");
         let sprite = canvas.layers[layerID].sprites[spriteID];
-        sprite.x = Math.floor(Math.random() * Math.floor(512));
-        sprite.y = Math.floor(Math.random() * Math.floor(512));
-        //sprite.x = i*50 + 128;
-        //sprite.y = 128;
-        sprite.rotation = Math.random() * 3.14;
-        sprite.opacity = Math.random() + 0.5;
+        //sprite.x = Math.floor(Math.random() * Math.floor(512));
+        //sprite.y = Math.floor(Math.random() * Math.floor(512));
+        sprite.x = i*50 + 128;
+        sprite.y = 128;
+        //sprite.rotation = Math.random() * 3.14;
+        //sprite.opacity = Math.random() + 0.5;
         //sprite.scale_x = Math.random();
         //sprite.scale_y = sprite.scale_x;
         sprites.push(sprite);
     }
+    canvas.layers[layerID].bringForward(sprites[2].ID);
 
     var FPS = 0;
     var ticks = 0;
@@ -40,8 +41,8 @@ import { materials } from "./materials.js";
         var perSec = delta / 1000;
 
         for (const sprite in sprites) {
-            sprites[sprite].rotation += 0.01;
-            sprites[sprite].frame_x = Math.floor(11 * perSec % 6);
+            //sprites[sprite].rotation += 0.01;
+            //ssprites[sprite].frame_x = Math.floor(11 * perSec % 6);
         }
         canvas.render();
 
