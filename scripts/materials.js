@@ -132,8 +132,6 @@ class Material {
 
         return output;
 	}
-	
-	destroy() {}
 }
 
 export let materials = {

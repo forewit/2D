@@ -2,8 +2,6 @@
 import * as utils from "./math.js";
 import { gl, elm } from "./gl.js";
 import { Layer } from "./layer.js";
-import { m3 } from "./math.js";
-import { materials } from "./materials.js";
 
 export class Canvas {
     constructor() {

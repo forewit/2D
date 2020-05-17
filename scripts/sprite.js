@@ -18,6 +18,7 @@ export class Sprite {
         this.ID = ID;
         this.enabled = false;
         this.material = materials.default;
+        this.URL = URL;
         this.x = 0;
         this.y = 0;
         this.z = 0;
@@ -29,62 +30,64 @@ export class Sprite {
         this.frame_h = 512;
         this.frame_x = 0;
         this.frame_y = 0;
-        this.URL = URL;
 
         let me = this;
         if (me.material.buffers[URL]) {
             me.material.buffers[URL].count++;
             me.enabled = true;
         } else {
-            me.material.buffers[URL] = { sprites: [] };
-            me.material.buffers[URL].image = new Image();
+            me.material.buffers[URL] = {
+                sprites: [],
+                image: new Image(),
+                count: 1
+            };
+            me.material.buffers[URL].image.onload = function () { me.setup_buffers(); };
             me.material.buffers[URL].image.src = URL;
-
-            me.material.buffers[URL].image.onload = function () {
-                me.material.buffers[URL].sprites[ID] = me;
-                me.material.buffers[URL].count = 1;
-
-                let w = me.material.buffers[URL].image.width;
-                let h = me.material.buffers[URL].image.height;
-
-                gl.useProgram(me.material.program);
-
-                me.material.buffers[URL].gl_tex = gl.createTexture();
-                gl.bindTexture(gl.TEXTURE_2D, me.material.buffers[URL].gl_tex);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST); //TODO: maybe change to bilinear?
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); //TODO:  maybe change to bilinear
-                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, me.material.buffers[URL].image);
-                gl.bindTexture(gl.TEXTURE_2D, null);
-
-                me.material.buffers[URL].tex_buff = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, me.material.buffers[URL].tex_buff);
-                gl.bufferData(
-                    gl.ARRAY_BUFFER,
-                    Sprite.createRectArray(
-                        me.frame_w / w,
-                        me.frame_h / h
-                    ),
-                    gl.STATIC_DRAW
-                );
-
-                me.material.buffers[URL].geo_buff = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, me.material.buffers[URL].geo_buff);
-                gl.bufferData(
-                    gl.ARRAY_BUFFER,
-                    Sprite.createRectArray(
-                        me.frame_w,
-                        me.frame_h
-                    ),
-                    gl.STATIC_DRAW
-                );
-
-                gl.useProgram(null);
-
-                me.enabled = true;
-            }
         }
+    }
+
+    setup_buffers(URL) {
+        
+        let buffer = this.material.buffers[this.URL];
+
+        let w = buffer.image.width;
+        let h = buffer.image.height;
+
+        gl.useProgram(this.material.program);
+
+        buffer.gl_tex = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, buffer.gl_tex);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST); //TODO: maybe change to bilinear?
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); //TODO:  maybe change to bilinear
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, buffer.image);
+        gl.bindTexture(gl.TEXTURE_2D, null);
+
+        buffer.tex_buff = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer.tex_buff);
+        gl.bufferData(
+            gl.ARRAY_BUFFER,
+            Sprite.createRectArray(
+                this.frame_w / w,
+                this.frame_h / h
+            ),
+            gl.STATIC_DRAW
+        );
+
+        buffer.geo_buff = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer.geo_buff);
+        gl.bufferData(
+            gl.ARRAY_BUFFER,
+            Sprite.createRectArray(
+                this.frame_w,
+                this.frame_h
+            ),
+            gl.STATIC_DRAW
+        );
+
+        gl.useProgram(null);
+        this.enabled = true;
     }
 
     destroy() {
@@ -100,6 +103,7 @@ export class Sprite {
     }
 
     render(camera, layerOpacity) {
+        console.log(this.enabled);
         if (!this.enabled) return;
 
         let buffer = this.material.buffers[this.URL]
@@ -118,6 +122,7 @@ export class Sprite {
         let w = buffer.image.width;
         let h = buffer.image.height;
 
+        //TODO: can make this math more efficient
         let translation = m3.translation(this.x - camera.x, this.y - camera.y);
         let center = m3.translation(-this.frame_w * this.scale_x / 2, -this.frame_h * this.scale_y / 2);
         let rotation = m3.rotation(this.rotation);
