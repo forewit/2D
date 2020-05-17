@@ -34,14 +34,13 @@ export class Sprite {
         if (me.material.buffers[URL]) {
             me.material.buffers[URL].count++;
         } else {
-            me.material.buffers[URL] = { image: new Image() };
+            me.material.buffers[URL] = { image: new Image(), count: 1 };
             me.material.buffers[URL].image.onload = function () { me.setup_buffers(); };
             me.material.buffers[URL].image.src = URL;
         }
     }
 
     setup_buffers() {
-        console.log("here");
         let buffer = this.material.buffers[this.URL];
         
         let w = buffer.image.width;
@@ -82,7 +81,7 @@ export class Sprite {
         );
 
         gl.useProgram(null);
-        buffer.count = 1;
+        buffer.loaded = true;
     }
 
     destroy() {
@@ -95,9 +94,9 @@ export class Sprite {
     }
 
     render(camera, layerOpacity) {
-        if (!this.material.buffers[this.URL].count) return;
-
         let buffer = this.material.buffers[this.URL]
+
+        if (!buffer.loaded) return;
 
         // render sprite
         gl.useProgram(this.material.program);

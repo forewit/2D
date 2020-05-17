@@ -1,9 +1,6 @@
 import { gl, elm } from "./gl.js";
 import { m3 } from "./math.js";
 
-// Example
-// https://jsfiddle.net/dyvfg5n0/
-
 const SPRITE_VS = `#version 300 es
 in vec2 a_position;
 in vec2 a_texcoord;
@@ -25,7 +22,7 @@ precision highp float;
 in vec2 v_texcoord;
 
 uniform sampler2D u_texture;
-uniform float u_opacity; 
+uniform float u_opacity;
 
 out vec4 outColor;
 
