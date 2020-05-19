@@ -22,6 +22,15 @@ export function lerp(a, b, c) {
     return a + c * (b - a);
 }
 
+export function rotatePoint(cx, cy, x, y, rad) {
+ 
+    cos = Math.cos(rad),
+    sin = Math.sin(rad),
+    nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
+    ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+return [nx, ny];
+}
+
 /**
  * Remaps a value from a given range (a) to another 
  * range (b). Example: remap(20, 0, 100, 0, 1) == 0.2

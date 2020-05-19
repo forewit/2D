@@ -33,15 +33,15 @@ export class Canvas {
         this.render(this.active_camera_ID);
     }
 
-    render() {     
+    render() {
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-        
+
         for (const ID in this.layers) {
             this.layers[ID].render(this.camera);
         }
-        
+
         gl.flush();
     }
 }
