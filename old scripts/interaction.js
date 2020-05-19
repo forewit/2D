@@ -4,19 +4,17 @@
     } else if (typeof define === 'function' && define.amd) {
         define([], factory);
     } else {
-        root.Interactions = factory();
+        root.Interact = factory();
     }
 }(this, function () {
 
     'use strict';
 
     var me = {
-        layer: undefined,
         selected: [],
         pointer: {},
         downKeys: {},
-        start: function (new_layer) {
-            me.layer = new_layer;
+        start: function () {
             me.selected = [];
             window.addEventListener('touchstart', startHandler, { passive: false });
             window.addEventListener('mousedown', startHandler, { passive: false });
@@ -25,17 +23,12 @@
             window.addEventListener('wheel', wheelHandler);
         },
         stop: function () {
-            me.layer = undefined;
             me.selected = [];
             window.removeEventListener('touchstart', startHandler);
             window.removeEventListener('mousedown', startHandler);
             window.removeEventListener('keydown', keydownHandler);
             window.removeEventListener('keyup', keyupHandler);
             window.removeEventListener('wheel', wheelHandler);
-        },
-        setLayer: function (new_layer) {
-            me.selected = [];
-            me.layer = new_layer;
         }
     };
 
@@ -68,9 +61,9 @@
 
     function wheelHandler(e) {
         if (e.deltaY < 0) {
-            me.layer.canvas.zoom(new Point(e.clientX, e.clientY), 1.05);
+            // scroll down
         } else {
-            me.layer.canvas.zoom(new Point(e.clientX, e.clientY), 0.95);
+            // scroll up
         }
     }
 
@@ -100,30 +93,24 @@
             console.log("Update canvas (space)");
             e.preventDefault();
         }
+
          // Right
-         else if (e.keyCode == _keys.Right) {
-            me.layer.canvas.position.x -= 10;
-        }
+         else if (e.keyCode == _keys.Right) {}
+
         // Left
-        else if (e.keyCode == _keys.Left) {
-            me.layer.canvas.position.x += 10;
-        }
+        else if (e.keyCode == _keys.Left) {}
+
         // Up
-        else if (e.keyCode == _keys.Up) {
-            me.layer.canvas.position.y += 10;
-        }
+        else if (e.keyCode == _keys.Up) {}
+
         // Down
-        else if (e.keyCode == _keys.Down) {
-            me.layer.canvas.position.y -= 10;
-        }
+        else if (e.keyCode == _keys.Down) {}
+
         // PageUp
-        else if (e.keyCode == _keys.PageUp) {
-            me.layer.canvas.scale *= 1.05;
-        }
+        else if (e.keyCode == _keys.PageUp) {}
+
         // PageDown
-        else if (e.keyCode == _keys.PageDown) {
-            me.layer.canvas.scale *= 0.95;
-        }
+        else if (e.keyCode == _keys.PageDown) {}
     }
 
     function keyupHandler(e) { me.downKeys[e.keyCode] = false; }

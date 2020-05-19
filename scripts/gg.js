@@ -1,5 +1,6 @@
 import { Canvas } from "./canvas.js";
 import { materials } from "./materials.js";
+import { interact } from "./interact.js";
 
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
