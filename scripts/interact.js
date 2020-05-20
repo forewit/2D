@@ -1,14 +1,17 @@
+import { camera } from "./gl.js";
+
 var me = {
     selected: [],
     pointer: {},
     downKeys: {},
-    start: function () {
+    start: function (layer) {
         me.selected = [];
         window.addEventListener('touchstart', startHandler, { passive: false });
         window.addEventListener('mousedown', startHandler, { passive: false });
         window.addEventListener('keydown', keydownHandler, { passive: false });
         window.addEventListener('keyup', keyupHandler);
         window.addEventListener('wheel', wheelHandler);
+        window.addEventListener('blur', blurHandler);
     },
     stop: function () {
         me.selected = [];
@@ -17,11 +20,11 @@ var me = {
         window.removeEventListener('keydown', keydownHandler);
         window.removeEventListener('keyup', keyupHandler);
         window.removeEventListener('wheel', wheelHandler);
+        window.removeEventListener('blur', blurHandler);
     }
 };
 
 var _tapDelay = 10; // delay before long touch
-var _start = 0;
 var _moving = false;
 var _selectbox = false;
 var _onItem = false;
@@ -45,6 +48,9 @@ var _keys = {
     PageUp: 33,
 };
 
+function blurHandler(e) {
+    me.downKeys = {};
+}
 
 function wheelHandler(e) {
     if (e.deltaY < 0) {
@@ -76,31 +82,28 @@ function keydownHandler(e) {
     }
 
     // Space
-    else if (e.keyCode == _keys.Space) {
-        console.log("Update canvas (space)");
-        e.preventDefault();
-    }
+    else if (e.keyCode == _keys.Space) { }
 
     // Right
-    else if (e.keyCode == _keys.Right) { }
+    else if (e.keyCode == _keys.Right) { camera.x += 10; }
 
     // Left
-    else if (e.keyCode == _keys.Left) { }
+    else if (e.keyCode == _keys.Left) { camera.x -= 10; }
 
     // Up
-    else if (e.keyCode == _keys.Up) { }
+    else if (e.keyCode == _keys.Up) { camera.y -= 10; }
 
     // Down
-    else if (e.keyCode == _keys.Down) { }
+    else if (e.keyCode == _keys.Down) { camera.y += 10; }
 
-    // PageUp
+    // PageUp                         
     else if (e.keyCode == _keys.PageUp) { }
 
     // PageDown
     else if (e.keyCode == _keys.PageDown) { }
 }
 
-function keyupHandler(e) { me.downKeys[e.keyCode] = false; }
+function keyupHandler(e) { me.downKeys[e.keyCode] = false; console.log(me.downKeys); }
 
 // PRIVATE FUNCTIONS
 function startHandler(e) {
@@ -167,11 +170,12 @@ function endHandler(e) {
                 // ***** click *****
                 me.selected = [];
                 //console.log("clearing selected");
+
             }
             // ***** click or shift(ctrl) + click *****
             // add item to selected
             //console.log("checking to add item to selected");
-            console.log(me.layer.intersections(me.pointer));
+            // check intersection
         }
     } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.pointer.identifier) {
         window.removeEventListener('touchmove', moveHandler);

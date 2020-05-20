@@ -31,6 +31,7 @@ import { interact } from "./interact.js";
         sprites.push(sprite);
     }
     //canvas.layers[layerID].bringForward(sprites[2].ID);
+    interact.start();
 
     var FPS = 0;
     var ticks = 0;

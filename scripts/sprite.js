@@ -1,5 +1,5 @@
 import { materials } from "./materials.js";
-import { gl, elm } from "./gl.js";
+import { gl, elm, camera } from "./gl.js";
 import { m3 } from "./math.js";
 
 export class Sprite {
@@ -93,7 +93,7 @@ export class Sprite {
         }
     }
 
-    render(camera, layerOpacity) {
+    render(layerOpacity) {
         let buffer = this.material.buffers[this.URL]
 
         if (!buffer.loaded) return;

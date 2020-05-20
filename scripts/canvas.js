@@ -6,12 +6,6 @@ import { Layer } from "./layer.js";
 export class Canvas {
     constructor() {
         this.layers = [];
-        this.camera = {
-            x: 0,
-            y: 0,
-            z: 0
-        };
-
         gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.resize();
     }
@@ -30,7 +24,7 @@ export class Canvas {
         elm.width = window.innerWidth;
         elm.height = window.innerHeight;
         gl.viewport(0, 0, elm.width, elm.height);
-        this.render(this.active_camera_ID);
+        this.render();
     }
 
     render() {
@@ -39,7 +33,7 @@ export class Canvas {
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
         for (const ID in this.layers) {
-            this.layers[ID].render(this.camera);
+            this.layers[ID].render();
         }
 
         gl.flush();

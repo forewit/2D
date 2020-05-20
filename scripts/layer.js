@@ -1,5 +1,6 @@
 import * as utils from "./math.js";
 import { Sprite } from "./sprite.js";
+import { camera } from "./gl.js";
 
 export class Layer {
     constructor(ID) {
@@ -61,7 +62,11 @@ export class Layer {
         for (const i in this.sortedSpriteIDs) {
             let sprite = this.sprites[this.sortedSpriteIDs[i]];
 
-            point = utils.rotatePoint(sprite.x, sprite.y, x, y, -sprite.rotation);
+            point = utils.rotatePoint(
+                sprite.x, sprite.y, 
+                x + camera.x, y + camera.y, 
+                -sprite.rotation
+            );
             center = [sprite.x, sprite.y];
             halfW = sprite.frame_w * sprite.scale_x / 2;
             halfH = sprite.frame_h * sprite.scale_y / 2;
@@ -75,10 +80,10 @@ export class Layer {
         return intersections;
     }
 
-    render(camera) {
+    render() {
         for (const i in this.sortedSpriteIDs) {
             let ID = this.sortedSpriteIDs[i];
-            this.sprites[ID].render(camera, this.opacity);
+            this.sprites[ID].render(this.opacity);
         }
     }
 }
