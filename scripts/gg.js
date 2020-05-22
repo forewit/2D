@@ -23,7 +23,7 @@ import { interact } from "./interact.js";
         sprite.x = Math.floor(Math.random() * Math.floor(512));
         sprite.y = Math.floor(Math.random() * Math.floor(512));
         //sprite.x = i*50 + 128;
-        //sprite.y = 128;
+        //sprite.y = 128 ;
         sprite.rotation = Math.random() * 3.14;
         sprite.opacity = Math.random() + 0.5;
         //sprite.scale_x = Math.random();
