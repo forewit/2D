@@ -185,5 +185,5 @@ class Material {
 
 export let materials = {
 	default: new Material(SPRITE_VS, SPRITE_FS),
-	particle: new Material(PARTICLE_VS, PARTICLE_FS)
+	particle: new Material(PARTICLE_VS, PARTICLE_FS, [ "v_position", "v_velocity", "v_age", "v_life" ])
 };
