@@ -20,6 +20,7 @@ import { Emitter } from "./emitter.js";
 
     let layerID = canvas.addLayer();
     var sprites = [];
+    /*
     for (var i = 0; i < 4; i++) {
         let spriteID = canvas.layers[layerID].addSprite("./img/fireball.png");
         let sprite = canvas.layers[layerID].sprites[spriteID];
@@ -33,6 +34,7 @@ import { Emitter } from "./emitter.js";
         //sprite.scale_y = sprite.scale_x;
         sprites.push(sprite);
     }
+    */
     //canvas.layers[layerID].bringForward(sprites[2].ID);
     interact.start();
 

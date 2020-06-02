@@ -8,16 +8,16 @@ export class Emitter {
     constructor(ID) {
         this.ID = ID;
         this.material = materials.particle;
-        this.x = 128;
-        this.y = 128;
+        this.x = 256;
+        this.y = 256;
         this.scale_x = 1.0;
         this.scale_y = 1.0;
 
         // define defaults
-        var aPos = new Float32Array([0.0, 10.0, 10.0, 0.0, 10.0, 10.0]);
-        var aVel = new Float32Array([0, 1, 0, 1, 0, 1]);
+        var aPos = new Float32Array([0, 0, 0, 0, 0, 0]);
+        var aVel = new Float32Array([0, 0, 0, 0, 0, 0]);
         var aAge = new Float32Array([-9000, -9000, -9000]);
-        var aLife = new Float32Array([8000, 5000, 3000]); // age in ms
+        var aLife = new Float32Array([2000, 2000, 2000]); // age in ms
 
         var aVao = [gl.createVertexArray(), gl.createVertexArray()];
         var aTFB = [gl.createTransformFeedback(), gl.createTransformFeedback()];
@@ -43,26 +43,26 @@ export class Emitter {
             // --------------------------------
             gl.bindBuffer(gl.ARRAY_BUFFER, v[i].bPosition);
             gl.bufferData(gl.ARRAY_BUFFER, aPos, gl.STREAM_COPY);
-            gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+            gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
             gl.enableVertexAttribArray(0);
 
             // --------------------------------
             gl.bindBuffer(gl.ARRAY_BUFFER, v[i].bVelocity);
             gl.bufferData(gl.ARRAY_BUFFER, aVel, gl.STREAM_COPY);
-            gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 0, 0);
-            gl.enableVertexAttribArray(0);
+            gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 0, 0);
+            gl.enableVertexAttribArray(1);
 
             // --------------------------------
             gl.bindBuffer(gl.ARRAY_BUFFER, v[i].bAge);
             gl.bufferData(gl.ARRAY_BUFFER, aAge, gl.STREAM_COPY);
             gl.vertexAttribPointer(2, 1, gl.FLOAT, false, 0, 0);
-            gl.enableVertexAttribArray(0);
+            gl.enableVertexAttribArray(2);
 
             // --------------------------------
             gl.bindBuffer(gl.ARRAY_BUFFER, v[i].bLife);
             gl.bufferData(gl.ARRAY_BUFFER, aLife, gl.STREAM_COPY);
             gl.vertexAttribPointer(3, 1, gl.FLOAT, false, 0, 0);
-            gl.enableVertexAttribArray(0);
+            gl.enableVertexAttribArray(3);
 
             // --------------------------------
             gl.bindBuffer(gl.ARRAY_BUFFER, null);
