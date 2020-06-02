@@ -46,35 +46,33 @@ out float v_age;
 out float v_life;
 
 void main() {
-	gl_PointSize = 20.0;
+	gl_PointSize = 10.0;
 	float age = u_time - a_age;
 
 	if(age > a_life){
 		// generate new particle
 		v_position = vec2(0.0, 0.0);
-		v_velocity = vec2(0.0, 0.0);
+		v_velocity = vec2(0.5, 0.5);
 		v_age = u_time;
 		v_life = a_life;
 	}else{
 		// update particle
-		v_velocity = a_velocity - vec2(0.0, 0.05); // apply gravity
-		v_position = a_position + 0.01 * v_velocity;
+		v_velocity = a_velocity;
+		v_position = a_position + v_velocity;
 		v_age = a_age;
 		v_life = a_life;
 	}
 
 	gl_Position = vec4(u_matrix * vec3(v_position, 1), 1);
-}
-`;
+}`;
 const PARTICLE_FS = `#version 300 es
-precision highp float;
+precision mediump float;
 
 out vec4 outColor;
 
 void main() {
-   outColor = vec4(1.0, 1.0, 1.0, 1.0);
-}
-`;
+   outColor = vec4(0.0, 0.0, 0.0, 1.0);
+}`;
 
 class Material {
     constructor(vs, fs, transFeedbackVars) {
@@ -90,6 +88,7 @@ class Material {
 			// setup Transform Feedback Varying Vars before linking
 			if (transFeedbackVars !== undefined && transFeedbackVars != null) {
 				gl.transformFeedbackVaryings(this.program, transFeedbackVars, gl.SEPARATE_ATTRIBS); // could replace with INTERLEAVED_ATTRIBS
+				console.log("hi");
 			}
 
             gl.linkProgram(this.program);

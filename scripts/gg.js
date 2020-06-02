@@ -1,6 +1,7 @@
 import { Canvas } from "./canvas.js";
 import { materials } from "./materials.js";
 import { interact } from "./interact.js";
+import { Emitter } from "./emitter.js";
 
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -14,6 +15,8 @@ import { interact } from "./interact.js";
     window.addEventListener("resize", function () {
         canvas.resize();
     });
+
+    let emitter = new Emitter("E1");
 
     let layerID = canvas.addLayer();
     var sprites = [];
@@ -47,6 +50,8 @@ import { interact } from "./interact.js";
             sprites[sprite].frame_x = Math.floor(11 * perSec % 6);
         }
         canvas.render();
+
+        emitter.render(delta);
 
         // FPS counter
         var now = Date.now();

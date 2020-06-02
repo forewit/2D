@@ -25,6 +25,7 @@ var me = {
 };
 
 var _tapDelay = 10; // delay before long touch
+var _start = 0;
 var _moving = false;
 var _selectbox = false;
 var _onItem = false;
