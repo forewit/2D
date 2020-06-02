@@ -14,8 +14,6 @@ import { interact } from "./interact.js";
         canvas.resize();
     });
 
-    var emitter = new Emitter("E1");
-
     let layerID = canvas.addLayer();
     var sprites = [];
     
