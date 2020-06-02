@@ -8,6 +8,9 @@ export class Layer {
         this.sprites = [];
         this.opacity = 1.0;
         this.sortedSpriteIDs = [];
+
+        //TODO: add emitters in layers and sort among sprites
+        // consider changing sprites and emiters to "objects"??
     }
 
     addSprite(URL) {

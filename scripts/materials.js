@@ -30,6 +30,7 @@ void main() {
    outColor = texture(u_texture, v_texcoord) * vec4(1,1,1,u_opacity);
 }`;
 
+//TODO: set default values to something cool
 const PARTICLE_VS = `#version 300 es
 layout(location=0) in vec2 a_position;
 layout(location=1) in vec2 a_velocity;
@@ -45,6 +46,7 @@ out float v_age;
 out float v_life;
 
 void main() {
+	gl_PointSize = 20.0;
 	float age = u_time - a_age;
 
 	if(age > a_life){
@@ -55,7 +57,7 @@ void main() {
 		v_life = a_life;
 	}else{
 		// update particle
-		v_velocity = vec2(0.0, 0.05); // apply gravity
+		v_velocity = a_velocity - vec2(0.0, 0.05); // apply gravity
 		v_position = a_position + 0.01 * v_velocity;
 		v_age = a_age;
 		v_life = a_life;

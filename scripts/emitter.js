@@ -1,14 +1,23 @@
+// https://www.youtube.com/watch?v=PWjIeJDE7Rc
+
 import { elm, gl, camera } from "./gl.js";
+import { materials } from "./materials.js";
+import { m3 } from "./math.js";
 
 export class Emitter {
     constructor(ID) {
-        this.drawMode = gl.POINTS;
+        this.ID = ID;
+        this.material = materials.particle;
+        this.x = 0;
+        this.y = 0;
+        this.scale_x = 1.0;
+        this.scale_y = 1.0;
 
         // define defaults
-        var aPos = new Float32Array ([0,0,  0,0,  0,0]);
-        var aVel = new Float32Array ([0,1,  0,1,  0,1]);
-        var aAge = new Float32Array ([-9000, -9000, -9000]);
-        var aLife = new Float32Array ([8000, 5000, 3000]); // age in ms
+        var aPos = new Float32Array([0, 0, 0, 0, 0, 0]);
+        var aVel = new Float32Array([0, 1, 0, 1, 0, 1]);
+        var aAge = new Float32Array([-9000, -9000, -9000]);
+        var aLife = new Float32Array([8000, 5000, 3000]); // age in ms
 
         var aVao = [gl.createVertexArray(), gl.createVertexArray()];
         var aTFB = [gl.createTransformFeedback(), gl.createTransformFeedback()];
@@ -21,7 +30,7 @@ export class Emitter {
         this.bufs = v;
 
         // setup buffers
-        for (var i=0; i < aVao.length; i++) {
+        for (var i = 0; i < aVao.length; i++) {
             v[i] = {
                 bPosition: gl.createBuffer(),
                 bVelocity: gl.createBuffer(),
@@ -70,15 +79,34 @@ export class Emitter {
         this.vaoCurrent = 0;
     }
 
-    render() {
+    destroy() {
+        //TODO: remove buffers
+    }
+
+    render(time) {
         var i = (this.vaoCurrent + 1) % 2; // alternate between the VAOs
         var vaoSource = this.vao[this.vaoCurrent];
         var tFeedback = this.tFeedback[i];
 
         gl.bindVertexArray(vaoSource);
-            gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tFeedback);
+        gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tFeedback);
 
-            
+        // ---------------------------
+        let translation = m3.translation(this.x - camera.x, this.y - camera.y)
+        let scaling = m3.scaling(this.scale_x, thi.scale_y);
+        let projection = m3.projection(elm.width, elm.height);
+        let matrix = m3.multiply(projection, translation);
+        matrix = m3.multiply(matrix, scaling);
+
+        this.material.set("u_matrix", matrix);
+        this.material.set("u_time", time);
+
+        // ---------------------------
+        gl.beginTransformFeedback(gl.POINTS);
+        gl.drawArrays(gl.POINTS, 0, this.totalParticles);
+        gl.endTransformFeedback();
+
+        this.vaoCurrent = i; // alternate between VAOs
     }
 }
 
