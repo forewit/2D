@@ -1,5 +1,6 @@
 import * as utils from "./math.js";
 import { Sprite } from "./sprite.js";
+import { Emitter } from "./emitter.js";
 import { camera } from "./gl.js";
 
 export class Layer {

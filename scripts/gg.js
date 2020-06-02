@@ -1,7 +1,5 @@
 import { Canvas } from "./canvas.js";
-import { materials } from "./materials.js";
 import { interact } from "./interact.js";
-import { Emitter } from "./emitter.js";
 
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -16,11 +14,11 @@ import { Emitter } from "./emitter.js";
         canvas.resize();
     });
 
-    let emitter = new Emitter("E1");
+    var emitter = new Emitter("E1");
 
     let layerID = canvas.addLayer();
     var sprites = [];
-    /*
+    
     for (var i = 0; i < 4; i++) {
         let spriteID = canvas.layers[layerID].addSprite("./img/fireball.png");
         let sprite = canvas.layers[layerID].sprites[spriteID];
@@ -34,7 +32,7 @@ import { Emitter } from "./emitter.js";
         //sprite.scale_y = sprite.scale_x;
         sprites.push(sprite);
     }
-    */
+    
     //canvas.layers[layerID].bringForward(sprites[2].ID);
     interact.start();
 
@@ -51,9 +49,8 @@ import { Emitter } from "./emitter.js";
             sprites[sprite].rotation += 0.01;
             sprites[sprite].frame_x = Math.floor(11 * perSec % 6);
         }
-        canvas.render();
 
-        emitter.render(delta);
+        canvas.render(delta);
 
         // FPS counter
         var now = Date.now();
@@ -68,7 +65,6 @@ import { Emitter } from "./emitter.js";
     requestAnimationFrame(loop);
 
     exports.canvas = canvas;
-    exports.materials = materials;
     // **********************************************
 
     function load(URL) { };
