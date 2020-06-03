@@ -9,88 +9,111 @@ export class Layer {
         this.sprites = [];
         this.opacity = 1.0;
         this.sortedSpriteIDs = [];
-        
-        this.emitters = [];
-        this.sortedIDs = [];
 
-        //TODO: add emitters in layers and sort among sprites
-        // consider changing sprites and emiters to "objects"??
+        // objects must have a render and destroy function
+        this.objects = [];
+    }
+
+    addEmitter() {
+        let ID = utils.generate_ID();
+        let emitter = new Emitter(ID);
+        this.objects.push(emitter);
+        return emitter;
     }
 
     addSprite(URL) {
         let ID = utils.generate_ID();
-        this.sprites[ID] = new Sprite(ID, URL);
-        this.sortedSpriteIDs.push(ID);
-        return ID;
+        let sprite = new Sprite(ID, URL);
+        this.objects.push(sprite);
+        return sprite;
     }
 
-    removeSprite(ID) {
-        this.sprites[ID].destroy();
-        for (const i in this.sortedSpriteIDs) {
-            if (this.sortedSpriteIDs[i] == ID) {
-                this.sortedSpriteIDs.splice(i, 1);
-                return;
+    destroyObject(object) {
+        for (var i = 0, len = this.objects.length; i < len; i++) {
+            if (this.objects[i].ID == object.ID) {
+                this.objects[i].destroy();
+                this.objects.splice(i, 1);
+                return true;
             }
         }
-        return delete this.sprites[ID];
+        return false;
     }
 
     destroy() {
-        for (const i in this.sprites) {
-            this.removeSprite(this.sprites[i].ID);
+        // destroy objects
+        for (var i = 0, len = this.objects.length; i < len; i++) {
+            this.objects[i].destroy();
         }
+        // clear objects array
+        this.objects.length = 0;
     }
 
-    bringForward(spriteID) {
-        console.log(spriteID);
-        for (const i in this.sortedSpriteIDs) {
-            if (this.sortedSpriteIDs[i] == spriteID) {
-                this.sortedSpriteIDs.splice(i, 1);
-                this.sortedSpriteIDs.push(spriteID);
-                return;
+    bringForward(object) {
+        for (var i = 0, len = this.objects.length; i < len; i++) {
+            if (this.objects[i].ID == object.ID) {
+                this.objects.splice(i, 1);
+                this.objects.push(object);
+                return true;
             }
         }
+        return false;
     }
 
-    sendBackward(spriteID) {
-        for (const i in this.sortedSpriteIDs) {
-            if (this.sortedSpriteIDs[i] == spriteID) {
-                this.sortedSpriteIDs.splice(i, 1);
-                this.sortedSpriteIDs.unshift(spriteID);
-                return;
+    sendBackward(object) {
+        for (var i = 0, len = this.objects.length; i < len; i++) {
+            if (this.objects[i].ID == object.ID) {
+                this.objects.splice(i, 1);
+                this.objects.unshift(object);
+                return true;
             }
         }
+        return false;
     }
 
     intersections(x, y) {
         let point = center = intersections = [];
         let halfW = halfH = 0;
 
-        for (const i in this.sortedSpriteIDs) {
-            let sprite = this.sprites[this.sortedSpriteIDs[i]];
+        for (var i = 0, len = this.objects.length; i < len; i++) {
+            let object = this.objects[i];
 
-            point = utils.rotatePoint(
-                sprite.x, sprite.y, 
-                x + camera.x, y + camera.y, 
-                -sprite.rotation
-            );
-            center = [sprite.x, sprite.y];
-            halfW = sprite.frame_w * sprite.scale_x / 2;
-            halfH = sprite.frame_h * sprite.scale_y / 2;
+            switch (object.constructor.name) {
+                case "Sprite":
+                    // check for Sprite intersections
+                    point = utils.rotatePoint(
+                        object.x, object.y,
+                        x + camera.x, y + camera.y,
+                        -object.rotation
+                    );
+                    center = [object.x, object.y];
+                    halfW = object.frame_w * object.scale_x / 2;
+                    halfH = object.frame_h * object.scale_y / 2;
 
-            if (point[0] >= center[0] - halfW && point[0] <= center[0] + halfW &&
-                point[1] >= center[1] - halfH && point[1] <= center[1] + halfH) {
-                intersections.push(spriteID);
+                    if (point[0] >= center[0] - halfW && point[0] <= center[0] + halfW &&
+                        point[1] >= center[1] - halfH && point[1] <= center[1] + halfH) {
+                        intersections.push(object);
+                    }
+                    break;
+
+                case "Emitter":
+                    // check for Emitter intersections
+                    break;
+
+                default:
+                    console.log("Invalid object type for intersections!");
+                    break;
             }
+
+
         }
-        
+
         return intersections;
     }
 
-    render() {
-        for (const i in this.sortedSpriteIDs) {
-            let ID = this.sortedSpriteIDs[i];
-            this.sprites[ID].render(this.opacity);
+    render(time) {
+        for (var i = 0, len = this.objects.length; i < len; i++) {
+            // Emitters and Sprites accept the same render args
+            this.objects[i].render({ opacity: this.opacity, time: time });
         }
     }
 }

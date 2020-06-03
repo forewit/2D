@@ -10,16 +10,14 @@ import { interact } from "./interact.js";
 
     // using for debug ****************************
     let canvas = new Canvas();
-    window.addEventListener("resize", function () {
-        canvas.resize();
-    });
+    window.addEventListener("resize", canvas.resize);
 
-    let layerID = canvas.addLayer();
+    let layer = canvas.addLayer();
     var sprites = [];
-    
-    for (var i = 0; i < 4; i++) {
-        let spriteID = canvas.layers[layerID].addSprite("./img/fireball.png");
-        let sprite = canvas.layers[layerID].sprites[spriteID];
+
+    for (var i = 3; i < 4; i++) {
+        let sprite = layer.addSprite("./img/fireball.png");
+
         sprite.x = Math.floor(Math.random() * Math.floor(512));
         sprite.y = Math.floor(Math.random() * Math.floor(512));
         //sprite.x = i*50 + 128;
@@ -31,7 +29,9 @@ import { interact } from "./interact.js";
         sprites.push(sprite);
     }
     
-    //canvas.layers[layerID].bringForward(sprites[2].ID);
+    let emitter = layer.addEmitter();
+    
+    //layer.bringForward(sprites[2].ID);
     interact.start();
 
     var FPS = 0;
@@ -43,11 +43,11 @@ import { interact } from "./interact.js";
         requestAnimationFrame(loop);
         var perSec = delta / 1000;
 
-        for (const sprite in sprites) {
-            sprites[sprite].rotation += 0.01;
-            sprites[sprite].frame_x = Math.floor(11 * perSec % 6);
+        for (var i = 0, len = sprites.length; i < len; i++) {
+            sprites[i].rotation += 0.01;
+            sprites[i].frame_x = Math.floor(11 * perSec % 6);
         }
-
+        
         canvas.render(delta);
 
         // FPS counter

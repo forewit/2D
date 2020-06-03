@@ -104,7 +104,7 @@ function keydownHandler(e) {
     else if (e.keyCode == _keys.PageDown) { }
 }
 
-function keyupHandler(e) { me.downKeys[e.keyCode] = false; console.log(me.downKeys); }
+function keyupHandler(e) { me.downKeys[e.keyCode] = false; /* Do something */ }
 
 // PRIVATE FUNCTIONS
 function startHandler(e) {

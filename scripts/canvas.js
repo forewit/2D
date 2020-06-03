@@ -12,19 +12,26 @@ export class Canvas {
 
     addLayer() {
         let ID = utils.generate_ID();
-        this.layers[ID] = new Layer(ID);
-        return ID;
+        let layer = new Layer(ID);
+        this.layers.push(layer);
+        return layer;
     }
-    removeLayer(ID) {
-        layer.destroy();
-        return delete this.layers[ID];
+    
+    destroyLayer(layer) {
+        for (var i = 0, len = this.layers.length; i < len; i++) {
+            if (this.layers[i].ID == layer.ID) {
+                this.layers[i].destroy;
+                this.layers.splice(i, 1);
+                return true;
+            }
+        }
+        return false;
     }
 
     resize() {
         elm.width = window.innerWidth;
         elm.height = window.innerHeight;
         gl.viewport(0, 0, elm.width, elm.height);
-        this.render();
     }
 
     render(time) {
@@ -32,8 +39,8 @@ export class Canvas {
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-        for (const ID in this.layers) {
-            this.layers[ID].render(time);
+        for (var i = 0, len = this.layers.length; i < len; i++) {
+            this.layers[i].render(time);
         }
 
         gl.flush();

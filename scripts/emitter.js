@@ -80,10 +80,10 @@ export class Emitter {
     }
 
     destroy() {
-        //TODO: remove buffers
+        //TODO: delete buffers
     }
 
-    render(time) {
+    render(options) {
         gl.useProgram(this.material.program);
 
         var i = (this.vaoCurrent + 1) % 2; // alternate between the VAOs
@@ -101,7 +101,7 @@ export class Emitter {
         matrix = m3.multiply(matrix, scaling);
 
         this.material.set("u_matrix", matrix);
-        this.material.set("u_time", time);
+        this.material.set("u_time", options.time);
 
         // ---------------------------
         gl.beginTransformFeedback(gl.POINTS);

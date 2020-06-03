@@ -93,24 +93,24 @@ export class Sprite {
         }
     }
 
-    render(layerOpacity) {
-        let buffer = this.material.buffers[this.URL]
-
-        if (!buffer.loaded) return;
+    render(options) {
+        // verify buffers are loaded
+        let buffers = this.material.buffers[this.URL]
+        if (!buffers.loaded) return;
 
         // render sprite
         gl.useProgram(this.material.program);
 
         gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, buffer.gl_tex);
+        gl.bindTexture(gl.TEXTURE_2D, buffers.gl_tex);
         this.material.set("u_texture", 0);
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffer.tex_buff);
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.tex_buff);
         this.material.set("a_texcoord");
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffer.geo_buff);
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.geo_buff);
         this.material.set("a_position");
 
-        let w = buffer.image.width;
-        let h = buffer.image.height;
+        let w = buffers.image.width;
+        let h = buffers.image.height;
 
         //TODO: can make this math more efficient
         let translation = m3.translation(this.x - camera.x, this.y - camera.y);
@@ -125,7 +125,7 @@ export class Sprite {
         matrix = m3.multiply(matrix, scaling);
 
         this.material.set("u_matrix", matrix);
-        this.material.set("u_opacity", this.opacity * layerOpacity);
+        this.material.set("u_opacity", this.opacity * options.opacity);
         this.material.set("u_frame",
             this.frame_x * this.frame_w / w,
             this.frame_y * this.frame_h / h
