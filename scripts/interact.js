@@ -1,5 +1,8 @@
 import { camera } from "./gl.js";
-
+/**
+ * TODO: create a new repository in Github for a standalone
+ * interaction model.
+ */
 var me = {
     selected: [],
     pointer: {},
