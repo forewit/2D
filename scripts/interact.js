@@ -24,8 +24,8 @@ var me = {
     }
 };
 
-var _tapDelay = 10; // delay before long touch
-var _start = 0;
+var _longPressDelay = 200; // delay (ms) before long press
+var _start = 0; // touch down start time
 var _moving = false;
 var _selectbox = false;
 var _onItem = false;
@@ -191,7 +191,7 @@ function endHandler(e) {
 /**
  * TODO: interactions
  * Panning
- * selection (see outline shader)
+ * Selection
  */
 
 function copyTouch(touch) {
