@@ -110,6 +110,7 @@ export class Emitter {
 
         this.vaoCurrent = i; // alternate between VAOs
 
+        gl.bindVertexArray(null);
         gl.useProgram(null);
     }
 }

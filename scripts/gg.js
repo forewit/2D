@@ -15,7 +15,7 @@ import { interact } from "./interact.js";
     let layer = canvas.addLayer();
     var sprites = [];
 
-    for (var i = 3; i < 4; i++) {
+    for (var i = 0; i < 4; i++) {
         let sprite = layer.addSprite("./img/fireball.png");
 
         sprite.x = Math.floor(Math.random() * Math.floor(512));
