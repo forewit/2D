@@ -32,19 +32,20 @@ void main() {
 
 //TODO: set default values to something cool
 const PARTICLE_VS = `#version 300 es
-layout(location=0) in vec2 a_position;
-layout(location=1) in vec2 a_velocity;
-layout(location=2) in float a_age; // current age of particle in seconds
-layout(location=3) in float a_life; // maximum age of particle
+layout(location=0) in vec2 a_vertices;
+layout(location=1) in vec2 a_position;
+layout(location=2) in vec2 a_velocity;
+layout(location=3) in float a_age; // current age of particle in seconds
+layout(location=4) in float a_life; // maximum age of particle
 
 uniform float u_time;
 uniform mat3 u_matrix;
 
 out vec2 v_position;
 out vec2 v_velocity;
-out float v_age; 
-out float v_life;
+out float v_age;
 
+// -----------------------------------
 highp float random(vec2 co){
 	highp float a = 12.9898;
 	highp float b = 78.233;
@@ -53,25 +54,25 @@ highp float random(vec2 co){
 	highp float sn = mod(dt,3.14);
 	return fract(sin(sn) * c);
 }
+// ------------------------------------
 
 void main() {
 	gl_PointSize = 10.0;
 	float age = u_time - a_age;
 
 	if(age > a_life){
-		float r = random(vec2(gl_VertexID,u_time));
+		//float r = random(vec2(gl_VertexID,u_time));
+		float r = random(vec2(gl_InstanceID,u_time));
 
 		// generate new particle
-		v_position = vec2(r * 20.0, 0.0);
+		v_position = vec2(r * 256.0, 0.0);
 		v_velocity = vec2(0.0, -r);
 		v_age = u_time;
-		v_life = a_life;
 	}else{
 		// update particle
-		v_velocity = a_velocity;
+		v_velocity = a_velocity + vec2(0.0, 0.01);
 		v_position = a_position + v_velocity;
 		v_age = a_age;
-		v_life = a_life;
 	}
 
 	gl_Position = vec4(u_matrix * vec3(v_position, 1), 1);
@@ -194,5 +195,5 @@ class Material {
 
 export let materials = {
 	default: new Material(SPRITE_VS, SPRITE_FS),
-	particle: new Material(PARTICLE_VS, PARTICLE_FS, ["v_position", "v_velocity", "v_age", "v_life"])
+	particle: new Material(PARTICLE_VS, PARTICLE_FS, ["v_position", "v_velocity", "v_age"])
 };
