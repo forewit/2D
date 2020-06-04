@@ -86,6 +86,83 @@ void main() {
    outColor = vec4(0.0, 0.0, 0.0, 1.0);
 }`;
 
+const PARTICLE_QUAD_VS = `#version 300 es
+layout(location=0) in vec2 a_position;
+layout(location=1) in vec2 a_uv;
+layout(location=2) in vec2 a_offset;
+layout(location=3) in float a_ageNorm;
+
+uniform mat3 u_matrix;
+
+out vec2 v_uv;
+out float v_age;
+
+void main() {
+	v_uv = a_uv;
+	v_age = a_ageNorm;
+
+	gl_Position = vec4(u_matrix * vec3(a_position + a_offset, 1), 1);
+}`;
+const PARTICLE_QUAD_FS = `#version 300 es
+precision mediump float;
+
+in vec2 v_uv;
+in float v_age;
+
+out vec4 outColor;
+
+void main() {
+	outColor = vec4(0.0, 0.0, 0.0, 1.0);
+}`;
+
+const PARTICLE_COMPUTE_VS = `#version 300 es
+layout(location=0) in vec2 a_offset;
+layout(location=1) in vec2 a_velocity;
+layout(location=2) in float a_age; // current age of particle in seconds
+layout(location=3) in float a_ageNorm;
+layout(location=4) in float a_life; // maximum age of particle
+
+uniform float u_time;
+
+out vec2 o_offset;
+out vec2 o_velocity;
+out float o_age;
+out float o_ageNorm;
+
+// -----------------------------------
+highp float random(vec2 co){
+	highp float a = 12.9898;
+	highp float b = 78.233;
+	highp float c = 43758.5453;
+	highp float dt = dot(co.xy ,vec2(a,b));
+	highp float sn = mod(dt,3.14);
+	return fract(sin(sn) * c);
+}
+// ------------------------------------
+
+void main() {
+	float age = u_time - a_age;
+
+	if(age > a_life){
+		//float r = random(vec2(gl_VertexID,u_time));
+		float r = random(vec2(gl_InstanceID,u_time));
+
+		// generate new particle
+		o_offset = vec2(r * 256.0, 0.0);
+		o_velocity = vec2(0.0, -r);
+		o_age = u_time;
+		o_ageNorm = 0.0;
+	}else{
+		// update particle
+		o_velocity = a_velocity + vec2(0.0, 0.01);
+		o_offset = a_offset + o_velocity;
+		o_age = a_age;
+		o_ageNorm = age / a_life;
+	}
+}`;
+const PARTICLE_COMPUTE_FS = `#version 300 es
+void main() { }`;
+
 class Material {
 	constructor(vs, fs, transFeedbackVars) {
 		this.buffers = [];
@@ -195,5 +272,7 @@ class Material {
 
 export let materials = {
 	default: new Material(SPRITE_VS, SPRITE_FS),
-	particle: new Material(PARTICLE_VS, PARTICLE_FS, ["v_position", "v_velocity", "v_age"])
+	particle: new Material(PARTICLE_VS, PARTICLE_FS, ["v_position", "v_velocity", "v_age"]),
+	particleQuad: new Material(PARTICLE_QUAD_VS, PARTICLE_QUAD_FS),
+	particleCompute: new Material(PARTICLE_COMPUTE_VS, PARTICLE_COMPUTE_FS, [ "o_offset", "o_velocity", "o_age", "o_ageNorm" ])
 };

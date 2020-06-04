@@ -19,7 +19,7 @@ export class Emitter {
         //var aAge = new Float32Array([-9000, -9000, -9000]);
         //var aLife = new Float32Array([2000, 2000, 2000]); // age in ms
 
-        var aVert = new Float32Array([0, 0]); // list partical vertices
+        var aVert = new Float32Array([0, 0]); // list particle vertices
         this.vertCount = aVert.length / 2;
 
         var count = 100;
