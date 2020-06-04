@@ -15,6 +15,7 @@ import { interact } from "./interact.js";
     let layer = canvas.addLayer();
     var sprites = [];
 
+    /*
     for (var i = 0; i < 4; i++) {
         let sprite = layer.addSprite("./img/fireball.png");
 
@@ -28,7 +29,7 @@ import { interact } from "./interact.js";
         //sprite.scale_y = sprite.scale_x;
         sprites.push(sprite);
     }
-    
+    */
     let emitter = layer.addEmitter();
     
     //layer.bringForward(sprites[2].ID);

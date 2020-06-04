@@ -1,6 +1,7 @@
 import * as utils from "./math.js";
 import { Sprite } from "./sprite.js";
 import { Emitter } from "./emitter.js";
+import { quadEmitter } from "./quadEmitter.js";
 import { camera } from "./gl.js";
 
 export class Layer {
@@ -16,7 +17,7 @@ export class Layer {
 
     addEmitter() {
         let ID = utils.generate_ID();
-        let emitter = new Emitter(ID);
+        let emitter = new quadEmitter(ID);
         this.objects.push(emitter);
         return emitter;
     }

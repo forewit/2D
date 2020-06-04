@@ -138,10 +138,10 @@ export class quadEmitter {
         //Vertices
         var bVertices = gl.createBuffer();
         var aVert = new Float32Array([
-            -0.5, -0.5,
-            0.5, -0.5,
-            0.5, 0.5,
-            -0.5, 0.5,
+            -5.0, -5.0,
+            5.0, -5.0,
+            5.0, 5.0,
+            -5.0, 5.0,
         ]);
 
         var locVert = 0;
@@ -197,7 +197,7 @@ export class quadEmitter {
 
             //CLEANUP
             gl.bindVertexArray(null);
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+            gl.bindBuffer(EBUF, null);
             gl.bindBuffer(ABUF, null);
         }
     }
@@ -215,14 +215,7 @@ export class quadEmitter {
         // Compute Shader
         gl.useProgram(this.computeMaterial.program);
 
-        let translation = m3.translation(this.x - camera.x, this.y - camera.y)
-        let scaling = m3.scaling(this.scale_x, this.scale_y);
-        let projection = m3.projection(elm.width, elm.height);
-        let matrix = m3.multiply(projection, translation);
-        matrix = m3.multiply(matrix, scaling);
-
-        this.material.set("u_matrix", matrix);
-        this.material.set("u_time", options.time);
+        this.computeMaterial.set("u_time", options.time);
 
         gl.bindVertexArray(vaoTFRead);                                  // READ FROM
         gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, vaoTFWrite);    // WRITE TO
@@ -235,12 +228,22 @@ export class quadEmitter {
         gl.disable(gl.RASTERIZER_DISCARD);                              // Enable fragment shader
         gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null);          // Cleanup
 
+
         // ---------------------------
         // Render Quad Shader
         gl.useProgram(this.quadMaterial.program);
 
+        let translation = m3.translation(this.x - camera.x, this.y - camera.y)
+        let scaling = m3.scaling(this.scale_x, this.scale_y);
+        let projection = m3.projection(elm.width, elm.height);
+        let matrix = m3.multiply(projection, translation);
+        matrix = m3.multiply(matrix, scaling);
+
+        this.quadMaterial.set("u_matrix", matrix);
+
         gl.bindVertexArray(this.vaoRender[nextIdx]); // Alternate between two render VAOs
         gl.drawElementsInstanced(gl.TRIANGLES, this.vaoCount, gl.UNSIGNED_SHORT, 0, this.instanceCount);
+
 
         // ---------------------------
         // Cleanup
