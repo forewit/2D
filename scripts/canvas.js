@@ -6,6 +6,8 @@ import { Layer } from "./layer.js";
 export class Canvas {
     constructor() {
         this.layers = [];
+        this.measureScale = 1; // Used for the "Measure" tool
+
         gl.clearColor(0.4, 0.6, 1.0, 1.0);
         this.resize();
     }
