@@ -67,7 +67,7 @@ import { interact } from "./interact.js";
     // **********************************************
 
     function load(URL) { };
-    function newCanvas() { }
+    function newCanvas() { };
     function save() { };
 
     exports.load = load;
