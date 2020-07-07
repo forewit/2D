@@ -209,17 +209,17 @@ function copyTouch(touch) {
  * CONSTANTS
  * - tap_delay
  * 
- * Callbacks
- * - tap(modifiers[], x, y)
- * - rightClick(modifiers[], x, y)
- * - pinchStart(x, y)
- * - pinching(x, y)
- * - longpress(modifiers[], x, y)
- * - dragStart(modifiers[], x, y)
- * - dragging(x, y)
- * - dragEnd(x, y)
- * - key(modifiers[], keycode)
- * - wheel(modifiers[], deltaY)
- */
+ * ACTIONS
+ * Add to selected TRIVIAL
+ * draw select box (ax,ay,bx,by)
+ * copy
+ * paste
+ * select all 
+ * save
+ * open search
+ * clear selection TRIVIAL
+ * pan(dx,dy)
+ * zoom(amount)
+*/
 
 export { me as interact };
